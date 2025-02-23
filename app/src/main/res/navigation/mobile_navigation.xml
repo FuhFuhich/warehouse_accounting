@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/nav_costs"
         android:name="com.example.warehouse_accounting.ui.costs.CostsFragment"
-        android:label="@string/menu_documents"
+        android:label="@string/menu_costs"
         tools:layout="@layout/fragment_costs" />
 
     <fragment
@@ -48,31 +48,31 @@
         tools:layout="@layout/fragment_buyers" />
 
     <fragment
-        android:id="@+id/warehouses"
+        android:id="@+id/nav_warehouses"
         android:name="com.example.warehouse_accounting.ui.warehouses.WarehousesFragment"
         android:label="@string/menu_warehouses"
         tools:layout="@layout/fragment_warehouses" />
 
     <fragment
-        android:id="@+id/settings"
+        android:id="@+id/nav_settings"
         android:name="com.example.warehouse_accounting.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
-        android:id="@+id/help"
+        android:id="@+id/nav_help"
         android:name="com.example.warehouse_accounting.ui.help.HelpFragment"
         android:label="@string/menu_help"
         tools:layout="@layout/fragment_help" />
 
     <fragment
-        android:id="@+id/what_new"
+        android:id="@+id/nav_what_new"
         android:name="com.example.warehouse_accounting.ui.what_new.WhatNewFragment"
         android:label="@string/menu_what_new"
         tools:layout="@layout/fragment_what_new" />
 
     <fragment
-        android:id="@+id/need_help"
+        android:id="@+id/nav_need_help"
         android:name="com.example.warehouse_accounting.ui.need_help.NeedHelpFragment"
         android:label="@string/menu_need_help"
         tools:layout="@layout/fragment_need_help" />
