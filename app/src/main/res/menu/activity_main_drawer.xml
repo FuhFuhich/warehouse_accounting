@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <!-- Исправить айдишник -->
+        <item
+            android:id="@+id/nav_main_menu"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_main_menu" />
+        <!-- Исправить айдишник -->
+        <item
+            android:id="@+id/nav_products"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_products" />
+        <!-- Исправить айдишник -->
+        <item
+            android:id="@+id/nav_documents"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_documents" />
+        <item
+            android:id="@+id/nav_costs"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_costs" />
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_reports" />
+        <item
+            android:id="@+id/nav_suppliers"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_suppliers" />
+        <item
+            android:id="@+id/nav_buyers"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_buyers" />
+        <item
+            android:id="@+id/nav_warehouses"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_warehouses" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/menu_help" />
+        <item
+            android:id="@+id/nav_what_new"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_what_new" />
+        <item
+            android:id="@+id/nav_need_help"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/menu_need_help" />
+    </group>
+</menu>

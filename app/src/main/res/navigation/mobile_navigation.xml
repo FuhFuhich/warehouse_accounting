@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_main_menu">
+
+    <fragment
+        android:id="@+id/nav_main_menu"
+        android:name="com.example.warehouse_accounting.ui.main_menu.MainMenuFragment"
+        android:label="@string/menu_main_menu"
+        tools:layout="@layout/fragment_main_menu" />
+
+    <fragment
+        android:id="@+id/nav_products"
+        android:name="com.example.warehouse_accounting.ui.products.ProductsFragment"
+        android:label="@string/menu_products"
+        tools:layout="@layout/fragment_products" />
+
+    <fragment
+        android:id="@+id/nav_documents"
+        android:name="com.example.warehouse_accounting.ui.documents.DocumentsFragment"
+        android:label="@string/menu_documents"
+        tools:layout="@layout/fragment_documents" />
+</navigation>
