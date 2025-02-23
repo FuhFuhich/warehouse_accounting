@@ -28,7 +28,7 @@ class DocumentsFragment : Fragment() {
         _binding = FragmentDocumentsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSlideshow
+        val textView: TextView = binding.textDocuments
         documentsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }

@@ -1,4 +1,4 @@
-package com.example.warehouse_accounting.ui.products
+package com.example.warehouse_accounting.ui.need_help
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.warehouse_accounting.databinding.FragmentProductsBinding
+import com.example.warehouse_accounting.databinding.FragmentNeedHelpBinding
 
-class ProductsFragment : Fragment() {
+class NeedHelpFragment : Fragment() {
 
-    private var _binding: FragmentProductsBinding? = null
+    private var _binding: FragmentNeedHelpBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class ProductsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val productsViewModel =
-            ViewModelProvider(this).get(ProductsViewModel::class.java)
+        val helpViewModel =
+            ViewModelProvider(this).get(NeedHelpViewModel::class.java)
 
-        _binding = FragmentProductsBinding.inflate(inflater, container, false)
+        _binding = FragmentNeedHelpBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProducts
-        productsViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textNeedHelp
+        helpViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
