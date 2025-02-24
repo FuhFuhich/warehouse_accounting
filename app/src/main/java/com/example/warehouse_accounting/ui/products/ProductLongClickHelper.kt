@@ -18,7 +18,6 @@ class ProductLongClickHelper(private val context: Context) {
                 }
             }
             .create()
-
         dialog.show()
     }
 

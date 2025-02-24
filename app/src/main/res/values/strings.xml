@@ -25,6 +25,14 @@
     <string name="products_fab_menu_check_stock">Наличие на складах</string>
     <string name="products_fab_menu_movement">Движение товара</string>
 
+    <string name="suppliers_fab_name">Наименование</string>
+    <string name="suppliers_fab_address">Адрес</string>
+    <string name="suppliers_fab_email">Эл. почта</string>
+    <string name="suppliers_fab_phone">Телефон</string>
+    <string name="suppliers_fab_TIN">ИНН</string>
+    <string name="suppliers_fab_bank_details">Банковские реквизиты</string>
+    <string name="suppliers_fab_note">Примечание</string>
+
     <string name="products_item_product_image">Изображение товара</string>
     <string name="products_item_product_name">Наименование товара</string>
     <string name="products_item_description">Описание</string>

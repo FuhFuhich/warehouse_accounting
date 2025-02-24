@@ -10,7 +10,7 @@ import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
 
 class ProductAdapter(
-    private val products: MutableList<Product>,
+    private var products: MutableList<Product>,
     private val longClickHelper: ProductLongClickHelper,
     private val editProductCallback: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
@@ -49,4 +49,9 @@ class ProductAdapter(
     }
 
     override fun getItemCount(): Int = products.size
+
+    fun updateProducts(newProducts: MutableList<Product>) {
+        products = newProducts
+        notifyDataSetChanged()
+    }
 }

@@ -33,10 +33,10 @@
 
     <ImageView
         android:id="@+id/iv_product_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@android:drawable/ic_menu_camera"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:contentDescription="@string/products_dialog_product_image" />
+        android:contentDescription="@string/products_dialog_product_image"
+        android:src="@android:drawable/ic_menu_camera" />
 </LinearLayout>

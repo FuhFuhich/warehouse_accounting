@@ -14,13 +14,11 @@ import com.example.warehouse_accounting.models.Product
 
 class ProductFabHelper(
     private val context: Context,
-    private val productList: MutableList<Product>,
     private val onProductAdded: (Product) -> Unit
 ) {
     private var productImageUri: Uri? = null
     private val IMAGE_PICK_CODE = 1000
 
-    // Создание
     fun showAddProductDialog() {
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_products_dialog_add_product, null)
@@ -47,7 +45,6 @@ class ProductFabHelper(
                         imageUri = productImageUri,
                         quantity = quantity.toInt()
                     )
-                    productList.add(product)
                     onProductAdded(product)
                     Toast.makeText(context, "Товар добавлен", Toast.LENGTH_SHORT).show()
                 } else {
@@ -64,7 +61,6 @@ class ProductFabHelper(
         }
     }
 
-    // Редактирование
     fun showEditProductDialog(product: Product, onProductUpdated: (Product) -> Unit) {
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_products_dialog_add_product, null)
