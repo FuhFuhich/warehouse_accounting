@@ -35,11 +35,6 @@ class ProfileFragment : Fragment() {
             textView.text = it
         }
 
-        val fab: FloatingActionButton = binding.fabProfile
-        fab.setOnClickListener {
-            Toast.makeText(requireContext(), "Редактирование профиля", Toast.LENGTH_SHORT).show()
-        }
-
         return root
     }
 

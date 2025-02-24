@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.warehouse_accounting.databinding.FragmentBuyersBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class BuyersFragment : Fragment() {
 
@@ -32,6 +34,12 @@ class BuyersFragment : Fragment() {
         buyersViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        val fab: FloatingActionButton = binding.fabBuyers
+        fab.setOnClickListener {
+            Toast.makeText(requireContext(), "Добавление покупателей", Toast.LENGTH_SHORT).show()
+        }
+
         return root
     }
 
