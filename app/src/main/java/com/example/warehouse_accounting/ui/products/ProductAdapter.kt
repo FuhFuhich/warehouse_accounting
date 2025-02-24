@@ -10,8 +10,9 @@ import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
 
 class ProductAdapter(
-    private val products: List<Product>,
-    private val fabHelper: ProductLongClickHelper
+    private val products: MutableList<Product>,
+    private val longClickHelper: ProductLongClickHelper,
+    private val editProductCallback: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,9 +36,13 @@ class ProductAdapter(
         holder.tvBarcode.text = product.barcode
         holder.tvQuantity.text = product.quantity.toString()
 
+        holder.itemView.setOnClickListener {
+            editProductCallback(product)
+        }
+
         holder.itemView.setOnLongClickListener {
-            fabHelper.showOptionsDialog { selectedOption ->
-                fabHelper.showToast(selectedOption)
+            longClickHelper.showOptionsDialog { selectedOption ->
+                longClickHelper.showToast(selectedOption)
             }
             true
         }

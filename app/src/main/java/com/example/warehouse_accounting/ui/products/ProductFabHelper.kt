@@ -20,6 +20,7 @@ class ProductFabHelper(
     private var productImageUri: Uri? = null
     private val IMAGE_PICK_CODE = 1000
 
+    // Создание
     fun showAddProductDialog() {
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_products_dialog_add_product, null)
@@ -49,6 +50,55 @@ class ProductFabHelper(
                     productList.add(product)
                     onProductAdded(product)
                     Toast.makeText(context, "Товар добавлен", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .create()
+
+        dialog.show()
+
+        productImageView.setOnClickListener {
+            pickImageFromGallery()
+        }
+    }
+
+    // Редактирование
+    fun showEditProductDialog(product: Product, onProductUpdated: (Product) -> Unit) {
+        val dialogView = LayoutInflater.from(context)
+            .inflate(R.layout.fragment_products_dialog_add_product, null)
+        val nameEditText: EditText = dialogView.findViewById(R.id.et_product_name)
+        val barcodeEditText: EditText = dialogView.findViewById(R.id.et_barcode)
+        val descriptionEditText: EditText = dialogView.findViewById(R.id.et_description)
+        val quantityEditText: EditText = dialogView.findViewById(R.id.et_quantity)
+        val productImageView: ImageView = dialogView.findViewById(R.id.iv_product_image)
+
+        nameEditText.setText(product.name)
+        barcodeEditText.setText(product.barcode)
+        descriptionEditText.setText(product.description)
+        quantityEditText.setText(product.quantity.toString())
+        productImageUri = product.imageUri
+
+        val dialog = AlertDialog.Builder(context)
+            .setTitle("Редактировать товар")
+            .setView(dialogView)
+            .setPositiveButton("Сохранить") { _, _ ->
+                val newName = nameEditText.text.toString()
+                val newBarcode = barcodeEditText.text.toString()
+                val newDescription = descriptionEditText.text.toString()
+                val newQuantity = quantityEditText.text.toString()
+
+                if (newName.isNotEmpty() && newBarcode.isNotEmpty() && newQuantity.isNotEmpty()) {
+                    val updatedProduct = product.copy(
+                        name = newName,
+                        barcode = newBarcode,
+                        description = newDescription,
+                        imageUri = productImageUri,
+                        quantity = newQuantity.toInt()
+                    )
+                    onProductUpdated(updatedProduct)
+                    Toast.makeText(context, "Товар обновлён", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
                 }

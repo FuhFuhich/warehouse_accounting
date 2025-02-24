@@ -19,9 +19,8 @@ class ProductsFragment : Fragment() {
 
     private val productList = mutableListOf<Product>()
 
-    private lateinit var productFabHelper: ProductFabHelper
+    private lateinit var ProductFabHelper: ProductFabHelper
     private lateinit var productLongClickHelper: ProductLongClickHelper
-
     private lateinit var adapter: ProductAdapter
 
     override fun onCreateView(
@@ -36,17 +35,27 @@ class ProductsFragment : Fragment() {
         val root: View = binding.root
 
         productLongClickHelper = ProductLongClickHelper(requireContext())
-        productFabHelper = ProductFabHelper(requireContext(), productList) { product ->
+        ProductFabHelper = ProductFabHelper(requireContext(), productList) { product ->
             adapter.notifyDataSetChanged()
         }
 
-        adapter = ProductAdapter(productList, productLongClickHelper)
+        // Передаём callback для редактирования товара
+        adapter = ProductAdapter(productList, productLongClickHelper) { product ->
+            ProductFabHelper.showEditProductDialog(product) { updatedProduct ->
+                // Обновляем товар в списке
+                val index = productList.indexOf(product)
+                if (index != -1) {
+                    productList[index] = updatedProduct
+                    adapter.notifyItemChanged(index)
+                }
+            }
+        }
         binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.rvProducts.adapter = adapter
 
         val fab: FloatingActionButton = binding.fabProducts
         fab.setOnClickListener {
-            productFabHelper.showAddProductDialog()
+            ProductFabHelper.showAddProductDialog()
         }
 
         return root
@@ -54,7 +63,7 @@ class ProductsFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        productFabHelper.onActivityResult(requestCode, resultCode, data)
+        ProductFabHelper.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {
