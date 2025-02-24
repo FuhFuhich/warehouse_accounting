@@ -8,18 +8,29 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
 
 class ProductsFabHelper(
-    private val context: Context,
+    private val fragment: Fragment,  // Заменил context на Fragment для работы с результатом
     private val onProductAdded: (Product) -> Unit
 ) {
     private var productImageUri: Uri? = null
-    private val IMAGE_PICK_CODE = 1000
+
+    // Новый API для обработки результата выбора изображения
+    private val imagePickerLauncher =
+        fragment.registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                productImageUri = uri
+                Toast.makeText(fragment.requireContext(), "Изображение выбрано", Toast.LENGTH_SHORT).show()
+            }
+        }
 
     fun showAddProductDialog() {
+        val context = fragment.requireContext()
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_products_dialog_add_product, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.et_product_name)
@@ -61,64 +72,7 @@ class ProductsFabHelper(
         }
     }
 
-    fun showEditProductDialog(product: Product, onProductUpdated: (Product) -> Unit) {
-        val dialogView = LayoutInflater.from(context)
-            .inflate(R.layout.fragment_products_dialog_add_product, null)
-        val nameEditText: EditText = dialogView.findViewById(R.id.et_product_name)
-        val barcodeEditText: EditText = dialogView.findViewById(R.id.et_product_barcode)
-        val descriptionEditText: EditText = dialogView.findViewById(R.id.et_product_description)
-        val quantityEditText: EditText = dialogView.findViewById(R.id.et_product_quantity)
-        val productImageView: ImageView = dialogView.findViewById(R.id.iv_product_image)
-
-        nameEditText.setText(product.name)
-        barcodeEditText.setText(product.barcode)
-        descriptionEditText.setText(product.description)
-        quantityEditText.setText(product.quantity.toString())
-        productImageUri = product.imageUri
-
-        val dialog = AlertDialog.Builder(context)
-            .setTitle("Редактировать товар")
-            .setView(dialogView)
-            .setPositiveButton("Сохранить") { _, _ ->
-                val newName = nameEditText.text.toString()
-                val newBarcode = barcodeEditText.text.toString()
-                val newDescription = descriptionEditText.text.toString()
-                val newQuantity = quantityEditText.text.toString()
-
-                if (newName.isNotEmpty() && newBarcode.isNotEmpty() && newQuantity.isNotEmpty()) {
-                    val updatedProduct = product.copy(
-                        name = newName,
-                        barcode = newBarcode,
-                        description = newDescription,
-                        imageUri = productImageUri,
-                        quantity = newQuantity.toInt()
-                    )
-                    onProductUpdated(updatedProduct)
-                    Toast.makeText(context, "Товар обновлён", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Отмена", null)
-            .create()
-
-        dialog.show()
-
-        productImageView.setOnClickListener {
-            pickImageFromGallery()
-        }
-    }
-
     private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        (context as Activity).startActivityForResult(intent, IMAGE_PICK_CODE)
-    }
-
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            productImageUri = data?.data
-            Toast.makeText(context, "Изображение выбрано", Toast.LENGTH_SHORT).show()
-        }
+        imagePickerLauncher.launch("image/*")  // Открытие галереи
     }
 }

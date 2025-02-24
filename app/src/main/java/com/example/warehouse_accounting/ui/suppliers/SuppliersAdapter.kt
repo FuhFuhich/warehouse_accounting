@@ -20,7 +20,7 @@ class SuppliersAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuppliersViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_products_item, parent, false)
+            .inflate(R.layout.fragment_suppliers_item, parent, false)
         return SuppliersViewHolder(view)
     }
 
