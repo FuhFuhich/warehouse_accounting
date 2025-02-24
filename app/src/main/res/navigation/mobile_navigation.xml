@@ -6,6 +6,12 @@
     app:startDestination="@+id/nav_main_menu">
 
     <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.warehouse_accounting.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
         android:id="@+id/nav_main_menu"
         android:name="com.example.warehouse_accounting.ui.main_menu.MainMenuFragment"
         android:label="@string/menu_main_menu"
