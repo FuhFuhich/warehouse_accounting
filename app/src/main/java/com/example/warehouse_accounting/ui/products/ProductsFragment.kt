@@ -17,6 +17,7 @@ class ProductsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: ProductsViewModel
+
     private lateinit var productsFabHelper: ProductsFabHelper
     private lateinit var productsLongClickHelper: ProductsLongClickHelper
     private lateinit var adapter: ProductsAdapter
@@ -31,12 +32,14 @@ class ProductsFragment : Fragment() {
         val root: View = binding.root
 
         productsLongClickHelper = ProductsLongClickHelper(requireContext())
-        productsFabHelper = ProductsFabHelper(this) { product ->
+        productsFabHelper = ProductsFabHelper(requireContext()) { product ->
             viewModel.addProduct(product)
         }
 
         adapter = ProductsAdapter(mutableListOf(), productsLongClickHelper) { product ->
-            productsFabHelper.showAddProductDialog()
+            productsFabHelper.showEditProductDialog(product) { updatedProduct ->
+                viewModel.updateProduct(updatedProduct)
+            }
         }
         binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.rvProducts.adapter = adapter
@@ -53,9 +56,13 @@ class ProductsFragment : Fragment() {
         return root
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        productsFabHelper.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-
