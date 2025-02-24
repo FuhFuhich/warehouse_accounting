@@ -18,9 +18,9 @@ class ProductsFragment : Fragment() {
 
     private lateinit var viewModel: ProductsViewModel
 
-    private lateinit var productFabHelper: ProductFabHelper
-    private lateinit var productLongClickHelper: ProductLongClickHelper
-    private lateinit var adapter: ProductAdapter
+    private lateinit var productsFabHelper: ProductsFabHelper
+    private lateinit var productsLongClickHelper: ProductsLongClickHelper
+    private lateinit var adapter: ProductsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,13 +31,13 @@ class ProductsFragment : Fragment() {
         _binding = FragmentProductsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        productLongClickHelper = ProductLongClickHelper(requireContext())
-        productFabHelper = ProductFabHelper(requireContext()) { product ->
+        productsLongClickHelper = ProductsLongClickHelper(requireContext())
+        productsFabHelper = ProductsFabHelper(requireContext()) { product ->
             viewModel.addProduct(product)
         }
 
-        adapter = ProductAdapter(mutableListOf(), productLongClickHelper) { product ->
-            productFabHelper.showEditProductDialog(product) { updatedProduct ->
+        adapter = ProductsAdapter(mutableListOf(), productsLongClickHelper) { product ->
+            productsFabHelper.showEditProductDialog(product) { updatedProduct ->
                 viewModel.updateProduct(updatedProduct)
             }
         }
@@ -50,7 +50,7 @@ class ProductsFragment : Fragment() {
 
         val fab: FloatingActionButton = binding.fabProducts
         fab.setOnClickListener {
-            productFabHelper.showAddProductDialog()
+            productsFabHelper.showAddProductDialog()
         }
 
         return root
@@ -58,7 +58,7 @@ class ProductsFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        productFabHelper.onActivityResult(requestCode, resultCode, data)
+        productsFabHelper.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {

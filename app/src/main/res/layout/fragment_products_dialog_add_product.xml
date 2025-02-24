@@ -12,20 +12,20 @@
         android:hint="@string/products_dialog_product_name" />
 
     <EditText
-        android:id="@+id/et_barcode"
+        android:id="@+id/et_product_barcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/products_dialog_barcode"
         android:inputType="number"/>
 
     <EditText
-        android:id="@+id/et_description"
+        android:id="@+id/et_product_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/products_dialog_description" />
 
     <EditText
-        android:id="@+id/et_quantity"
+        android:id="@+id/et_product_quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/products_dialog_quantity"

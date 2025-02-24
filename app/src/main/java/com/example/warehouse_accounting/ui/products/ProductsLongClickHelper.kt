@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
-class ProductLongClickHelper(private val context: Context) {
+class ProductsLongClickHelper(private val context: Context) {
 
     fun showOptionsDialog(onOptionSelected: (String) -> Unit) {
         val options = arrayOf("Наличие на складах", "Движение товаров", "Удалить")

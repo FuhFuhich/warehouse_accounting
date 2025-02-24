@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
 
-class ProductAdapter(
+class ProductsAdapter(
     private var products: MutableList<Product>,
-    private val longClickHelper: ProductLongClickHelper,
+    private val longClickHelper: ProductsLongClickHelper,
     private val editProductCallback: (Product) -> Unit
-) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+) : RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tv_product_name)

@@ -3,11 +3,23 @@ package com.example.warehouse_accounting.ui.suppliers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.warehouse_accounting.models.Suppliers
 
 class SuppliersViewModel : ViewModel() {
+    private val _suppliers = MutableLiveData<MutableList<Suppliers>>(mutableListOf())
+    val suppliers: LiveData<MutableList<Suppliers>> = _suppliers
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+    fun addSuppliers(suppliers: Suppliers) {
+        _suppliers.value?.add(suppliers)
+        _suppliers.value = _suppliers.value
     }
-    val text: LiveData<String> = _text
+
+    fun updateSuppliers(updatedSuppliers: Suppliers) {
+        val currentList = _suppliers.value ?: return
+        val index = currentList.indexOfFirst { it.tin == updatedSuppliers.tin }
+        if (index != -1) {
+            currentList[index] = updatedSuppliers
+            _suppliers.value = currentList
+        }
+    }
 }

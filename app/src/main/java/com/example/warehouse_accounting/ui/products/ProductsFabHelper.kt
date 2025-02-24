@@ -12,7 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
 
-class ProductFabHelper(
+class ProductsFabHelper(
     private val context: Context,
     private val onProductAdded: (Product) -> Unit
 ) {
@@ -23,9 +23,9 @@ class ProductFabHelper(
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_products_dialog_add_product, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.et_product_name)
-        val barcodeEditText: EditText = dialogView.findViewById(R.id.et_barcode)
-        val descriptionEditText: EditText = dialogView.findViewById(R.id.et_description)
-        val quantityEditText: EditText = dialogView.findViewById(R.id.et_quantity)
+        val barcodeEditText: EditText = dialogView.findViewById(R.id.et_product_barcode)
+        val descriptionEditText: EditText = dialogView.findViewById(R.id.et_product_description)
+        val quantityEditText: EditText = dialogView.findViewById(R.id.et_product_quantity)
         val productImageView: ImageView = dialogView.findViewById(R.id.iv_product_image)
 
         val dialog = AlertDialog.Builder(context)
@@ -65,9 +65,9 @@ class ProductFabHelper(
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_products_dialog_add_product, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.et_product_name)
-        val barcodeEditText: EditText = dialogView.findViewById(R.id.et_barcode)
-        val descriptionEditText: EditText = dialogView.findViewById(R.id.et_description)
-        val quantityEditText: EditText = dialogView.findViewById(R.id.et_quantity)
+        val barcodeEditText: EditText = dialogView.findViewById(R.id.et_product_barcode)
+        val descriptionEditText: EditText = dialogView.findViewById(R.id.et_product_description)
+        val quantityEditText: EditText = dialogView.findViewById(R.id.et_product_quantity)
         val productImageView: ImageView = dialogView.findViewById(R.id.iv_product_image)
 
         nameEditText.setText(product.name)
