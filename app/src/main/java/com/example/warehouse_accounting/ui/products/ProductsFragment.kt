@@ -1,23 +1,28 @@
 package com.example.warehouse_accounting.ui.products
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.warehouse_accounting.databinding.FragmentProductsBinding
+import com.example.warehouse_accounting.models.Product
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ProductsFragment : Fragment() {
 
     private var _binding: FragmentProductsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    private val productList = mutableListOf<Product>()
+
+    private lateinit var productFabHelper: ProductFabHelper
+    private lateinit var productLongClickHelper: ProductLongClickHelper
+
+    private lateinit var adapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,17 +35,26 @@ class ProductsFragment : Fragment() {
         _binding = FragmentProductsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProducts
-        productsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        productLongClickHelper = ProductLongClickHelper(requireContext())
+        productFabHelper = ProductFabHelper(requireContext(), productList) { product ->
+            adapter.notifyDataSetChanged()
         }
+
+        adapter = ProductAdapter(productList, productLongClickHelper)
+        binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvProducts.adapter = adapter
 
         val fab: FloatingActionButton = binding.fabProducts
         fab.setOnClickListener {
-            Toast.makeText(requireContext(), "Добавление продуктов", Toast.LENGTH_SHORT).show()
+            productFabHelper.showAddProductDialog()
         }
 
         return root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        productFabHelper.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {
