@@ -9,26 +9,26 @@
         android:id="@+id/et_product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Наименование товара" />
+        android:hint="@string/products_dialog_product_name" />
 
     <EditText
         android:id="@+id/et_barcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Штрих код"
+        android:hint="@string/products_dialog_barcode"
         android:inputType="number"/>
 
     <EditText
         android:id="@+id/et_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Описание" />
+        android:hint="@string/products_dialog_description" />
 
     <EditText
         android:id="@+id/et_quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Количество"
+        android:hint="@string/products_dialog_quantity"
         android:inputType="number" />
 
     <ImageView
@@ -38,5 +38,5 @@
         android:src="@android:drawable/ic_menu_camera"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-        android:contentDescription="Добавить изображение товара" />
+        android:contentDescription="@string/products_dialog_product_image" />
 </LinearLayout>

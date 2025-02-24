@@ -21,7 +21,19 @@
     <string name="menu_what_new">Что нового?</string>
     <string name="menu_need_help">Нужна помощь?</string>
 
-    <string name="fab_menu_products_delete">Удалить</string>
-    <string name="fab_menu_check_stock">Наличие на складах</string>
-    <string name="fab_menu_movement">Движение товара</string>
+    <string name="products_fab_menu_products_delete">Удалить</string>
+    <string name="products_fab_menu_check_stock">Наличие на складах</string>
+    <string name="products_fab_menu_movement">Движение товара</string>
+
+    <string name="products_item_product_image">Изображение товара</string>
+    <string name="products_item_product_name">Наименование товара</string>
+    <string name="products_item_description">Описание</string>
+    <string name="products_item_barcode">Штрих код</string>
+    <string name="products_item_quantity">Количество</string>
+
+    <string name="products_dialog_product_image">Изображение товара</string>
+    <string name="products_dialog_product_name">Наименование товара</string>
+    <string name="products_dialog_description">Описание</string>
+    <string name="products_dialog_barcode">Штрих код</string>
+    <string name="products_dialog_quantity">Количество</string>
 </resources>

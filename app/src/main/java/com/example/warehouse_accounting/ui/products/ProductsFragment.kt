@@ -39,10 +39,8 @@ class ProductsFragment : Fragment() {
             adapter.notifyDataSetChanged()
         }
 
-        // Передаём callback для редактирования товара
         adapter = ProductAdapter(productList, productLongClickHelper) { product ->
             ProductFabHelper.showEditProductDialog(product) { updatedProduct ->
-                // Обновляем товар в списке
                 val index = productList.indexOf(product)
                 if (index != -1) {
                     productList[index] = updatedProduct
