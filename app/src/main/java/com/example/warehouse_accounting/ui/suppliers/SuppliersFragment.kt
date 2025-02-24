@@ -59,6 +59,18 @@ class SuppliersFragment : Fragment() {
             suppliersFabHelper.showAddSuppliersDialog()
         }
 
+        viewModel.suppliers.observe(viewLifecycleOwner) { suppliers ->
+            adapter.updateSuppliers(suppliers)
+
+            if (suppliers.isEmpty()) {
+                binding.tvNoSuppliers.visibility = View.VISIBLE
+                binding.rvSuppliers.visibility = View.GONE
+            } else {
+                binding.tvNoSuppliers.visibility = View.GONE
+                binding.rvSuppliers.visibility = View.VISIBLE
+            }
+        }
+
         return root
     }
 

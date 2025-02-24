@@ -10,16 +10,12 @@ class BuyersViewModel : ViewModel() {
     val buyers: LiveData<MutableList<Buyers>> = _buyers
 
     fun addBuyers(buyers: Buyers) {
-        _buyers.value?.add(buyers)
-        _buyers.value = _buyers.value
+        _buyers.value = (_buyers.value ?: mutableListOf()).apply { add(buyers) }
     }
 
     fun updateBuyers(updatedBuyers: Buyers) {
-        val currentList = _buyers.value ?: return
-        val index = currentList.indexOfFirst { it.tin == updatedBuyers.tin }
-        if (index != -1) {
-            currentList[index] = updatedBuyers
-            _buyers.value = currentList
-        }
+        _buyers.value = _buyers.value?.map {
+            if (it.tin == updatedBuyers.tin) updatedBuyers else it
+        }?.toMutableList()
     }
 }

@@ -50,13 +50,25 @@ class BuyersFragment : Fragment() {
         binding.rvBuyers.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBuyers.adapter = adapter
 
-        viewModel.buyers.observe(viewLifecycleOwner) { иuyers ->
-            adapter.updateBuyers(иuyers)
+        viewModel.buyers.observe(viewLifecycleOwner) { buyers ->
+            adapter.updateBuyers(buyers)
         }
 
         val fab: FloatingActionButton = binding.fabBuyers
         fab.setOnClickListener {
             buyersFabHelper.showAddBuyersDialog()
+        }
+
+        viewModel.buyers.observe(viewLifecycleOwner) { buyers ->
+            adapter.updateBuyers(buyers)
+
+            if (buyers.isEmpty()) {
+                binding.tvNoBuyers.visibility = View.VISIBLE
+                binding.rvBuyers.visibility = View.GONE
+            } else {
+                binding.tvNoBuyers.visibility = View.GONE
+                binding.rvBuyers.visibility = View.VISIBLE
+            }
         }
 
         return root

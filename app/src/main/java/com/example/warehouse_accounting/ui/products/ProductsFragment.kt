@@ -53,6 +53,18 @@ class ProductsFragment : Fragment() {
             productsFabHelper.showAddProductDialog()
         }
 
+        viewModel.products.observe(viewLifecycleOwner) { products ->
+            adapter.updateProducts(products)
+
+            if (products.isEmpty()) {
+                binding.tvNoProducts.visibility = View.VISIBLE
+                binding.rvProducts.visibility = View.GONE
+            } else {
+                binding.tvNoProducts.visibility = View.GONE
+                binding.rvProducts.visibility = View.VISIBLE
+            }
+        }
+
         return root
     }
 

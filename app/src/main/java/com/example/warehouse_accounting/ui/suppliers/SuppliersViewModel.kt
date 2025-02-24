@@ -15,11 +15,8 @@ class SuppliersViewModel : ViewModel() {
     }
 
     fun updateSuppliers(updatedSuppliers: Suppliers) {
-        val currentList = _suppliers.value ?: return
-        val index = currentList.indexOfFirst { it.tin == updatedSuppliers.tin }
-        if (index != -1) {
-            currentList[index] = updatedSuppliers
-            _suppliers.value = currentList
-        }
+        _suppliers.value = _suppliers.value?.map {
+            if (it.tin == updatedSuppliers.tin) updatedSuppliers else it
+        }?.toMutableList()
     }
 }

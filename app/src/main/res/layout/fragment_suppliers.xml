@@ -7,6 +7,20 @@
     tools:context=".ui.suppliers.SuppliersFragment">
 
     <TextView
+        android:id="@+id/tv_no_suppliers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_no_suppliers"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
         android:id="@+id/text_suppliers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

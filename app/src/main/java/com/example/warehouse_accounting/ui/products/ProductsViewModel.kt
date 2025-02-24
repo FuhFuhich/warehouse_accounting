@@ -10,16 +10,12 @@ class ProductsViewModel : ViewModel() {
     val products: LiveData<MutableList<Product>> = _products
 
     fun addProduct(product: Product) {
-        _products.value?.add(product)
-        _products.value = _products.value
+        _products.value = (_products.value ?: mutableListOf()).apply { add(product) }
     }
 
     fun updateProduct(updatedProduct: Product) {
-        val currentList = _products.value ?: return
-        val index = currentList.indexOfFirst { it.barcode == updatedProduct.barcode }
-        if (index != -1) {
-            currentList[index] = updatedProduct
-            _products.value = currentList
-        }
+        _products.value = _products.value?.map {
+            if (it.barcode == updatedProduct.barcode) updatedProduct else it
+        }?.toMutableList()
     }
 }
