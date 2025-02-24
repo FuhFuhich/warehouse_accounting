@@ -11,7 +11,7 @@ import com.example.warehouse_accounting.models.Suppliers
 class SuppliersAdapter(
     private var suppliers: MutableList<Suppliers>,
     private val longClickHelper: SuppliersLongClickHelper,
-    private val editProductCallback: (Suppliers) -> Unit
+    private val editSuppliersCallback: (Suppliers) -> Unit
 ) : RecyclerView.Adapter<SuppliersAdapter.SuppliersViewHolder>() {
 
     inner class SuppliersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -29,7 +29,7 @@ class SuppliersAdapter(
         holder.tvName.text = suppliers.name
 
         holder.itemView.setOnClickListener {
-            editProductCallback(suppliers)
+            editSuppliersCallback(suppliers)
         }
 
         holder.itemView.setOnLongClickListener {

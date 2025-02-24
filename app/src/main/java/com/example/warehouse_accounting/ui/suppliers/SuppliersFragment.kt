@@ -47,8 +47,8 @@ class SuppliersFragment : Fragment() {
                 viewModel.updateSuppliers(updatedSuppliers)
             }
         }
-        binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvProducts.adapter = adapter
+        binding.rvSuppliers.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvSuppliers.adapter = adapter
 
         viewModel.suppliers.observe(viewLifecycleOwner) { suppliers ->
             adapter.updateSuppliers(suppliers)

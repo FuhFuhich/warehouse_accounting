@@ -33,11 +33,23 @@
     <string name="suppliers_fab_bank_details">Банковские реквизиты</string>
     <string name="suppliers_fab_note">Примечание</string>
 
+    <string name="buyers_fab_name">Наименование</string>
+    <string name="buyers_fab_address">Адрес</string>
+    <string name="buyers_fab_email">Эл. почта</string>
+    <string name="buyers_fab_phone">Телефон</string>
+    <string name="buyers_fab_TIN">ИНН</string>
+    <string name="buyers_fab_bank_details">Банковские реквизиты</string>
+    <string name="buyers_fab_note">Примечание</string>
+
     <string name="products_item_product_image">Изображение товара</string>
     <string name="products_item_product_name">Наименование товара</string>
     <string name="products_item_description">Описание</string>
     <string name="products_item_barcode">Штрих код</string>
     <string name="products_item_quantity">Количество</string>
+
+    <string name="suppliers_item_description">Описание</string>
+
+    <string name="buyers_item_description">Описание</string>
 
     <string name="products_dialog_product_image">Изображение товара</string>
     <string name="products_dialog_product_name">Наименование товара</string>
