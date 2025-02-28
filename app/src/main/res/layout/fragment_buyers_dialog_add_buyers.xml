@@ -9,6 +9,8 @@
         android:id="@+id/et_buyers_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:hint="@string/buyers_fab_name" />
 
     <EditText
@@ -16,38 +18,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/buyers_fab_address"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:inputType="number"/>
 
     <EditText
         android:id="@+id/et_buyers_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/buyers_fab_email" />
+        android:hint="@string/buyers_fab_email"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
 
     <EditText
         android:id="@+id/et_buyers_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/buyers_fab_phone"
-        android:inputType="number" />
+        android:inputType="number"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
 
     <EditText
         android:id="@+id/et_buyers_TIN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/buyers_fab_TIN"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:inputType="number"/>
 
     <EditText
         android:id="@+id/et_buyers_bank_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/buyers_fab_bank_details" />
+        android:hint="@string/buyers_fab_bank_details"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
 
     <EditText
         android:id="@+id/et_buyers_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/buyers_fab_note"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:inputType="number" />
 </LinearLayout>

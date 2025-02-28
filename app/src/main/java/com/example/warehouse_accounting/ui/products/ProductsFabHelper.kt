@@ -28,7 +28,7 @@ class ProductsFabHelper(
         val quantityEditText: EditText = dialogView.findViewById(R.id.et_product_quantity)
         val productImageView: ImageView = dialogView.findViewById(R.id.iv_product_image)
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
             .setTitle("Добавить новый товар")
             .setView(dialogView)
             .setPositiveButton("Добавить") { _, _ ->

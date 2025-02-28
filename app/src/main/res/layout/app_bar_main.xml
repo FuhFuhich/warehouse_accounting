@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -15,7 +16,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#222222"
+            android:titleTextColor="#FFFFFF"
+            app:navigationIconTint="@color/white"
             app:popupTheme="@style/Theme.Warehouse_accounting.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>

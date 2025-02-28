@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:text="@string/products_item_product_name"
         android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@id/iv_product_image"
         app:layout_constraintTop_toTopOf="@id/iv_product_image"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -29,6 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/products_item_description"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@id/iv_product_image"
         app:layout_constraintTop_toBottomOf="@id/tv_product_name"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -38,6 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/products_item_barcode"
+        android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@id/iv_product_image"
         app:layout_constraintTop_toBottomOf="@id/tv_description"/>
 
@@ -46,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/products_item_quantity"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_description"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
