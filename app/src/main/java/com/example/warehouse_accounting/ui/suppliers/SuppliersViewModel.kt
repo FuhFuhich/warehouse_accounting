@@ -6,17 +6,27 @@ import androidx.lifecycle.ViewModel
 import com.example.warehouse_accounting.models.Suppliers
 
 class SuppliersViewModel : ViewModel() {
+    private val _allSuppliers = mutableListOf<Suppliers>()
     private val _suppliers = MutableLiveData<MutableList<Suppliers>>(mutableListOf())
     val suppliers: LiveData<MutableList<Suppliers>> = _suppliers
 
-    fun addSuppliers(suppliers: Suppliers) {
-        _suppliers.value?.add(suppliers)
-        _suppliers.value = _suppliers.value
+    fun addSuppliers(supplier: Suppliers) {
+        _allSuppliers.add(supplier)
+        _suppliers.value = _allSuppliers.toMutableList()
     }
 
-    fun updateSuppliers(updatedSuppliers: Suppliers) {
-        _suppliers.value = _suppliers.value?.map {
-            if (it.tin == updatedSuppliers.tin) updatedSuppliers else it
-        }?.toMutableList()
+    fun updateSuppliers(updatedSupplier: Suppliers) {
+        _allSuppliers.replaceAll { if (it.tin == updatedSupplier.tin) updatedSupplier else it }
+        _suppliers.value = _allSuppliers.toMutableList()
+    }
+
+    fun filterSuppliers(query: String) {
+        if (query.isEmpty()) {
+            _suppliers.value = _allSuppliers.toMutableList()
+        } else {
+            _suppliers.value = _allSuppliers.filter {
+                it.name.contains(query, ignoreCase = true)
+            }.toMutableList()
+        }
     }
 }

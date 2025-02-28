@@ -3,13 +3,17 @@ package com.example.warehouse_accounting.ui.suppliers
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.databinding.FragmentSuppliersBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -72,6 +76,30 @@ class SuppliersFragment : Fragment() {
         }
 
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.suppliers_menu_action_bar, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.filterSuppliers(newText)
+                return true
+            }
+        })
+
+        searchView.setOnCloseListener {
+            viewModel.filterSuppliers("")
+            false
+        }
+
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onDestroyView() {
