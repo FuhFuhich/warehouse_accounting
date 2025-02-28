@@ -3,11 +3,15 @@ package com.example.warehouse_accounting.ui.products
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.databinding.FragmentProductsBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -21,6 +25,11 @@ class ProductsFragment : Fragment() {
     private lateinit var productsFabHelper: ProductsFabHelper
     private lateinit var productsLongClickHelper: ProductsLongClickHelper
     private lateinit var adapter: ProductsAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +76,31 @@ class ProductsFragment : Fragment() {
 
         return root
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.products_menu_action_bar, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.filterProducts(newText)
+                return true
+            }
+        })
+
+        searchView.setOnCloseListener {
+            viewModel.filterProducts("")
+            false
+        }
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
