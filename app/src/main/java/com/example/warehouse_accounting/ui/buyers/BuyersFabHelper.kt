@@ -40,11 +40,8 @@ class BuyersFabHelper(
                 val bankDetails = bankDetailsEditText.text.toString()
                 val note = noteEditText.text.toString()
 
-                if (name.isNotEmpty() && address.isNotEmpty() &&
-                    email.isNotEmpty() && phone.isNotEmpty() &&
-                    tin.isNotEmpty() && bankDetails.isNotEmpty() &&
-                    note.isNotEmpty()
-                ) {
+                if (name.isNotEmpty())
+                {
                     val buyers = Buyers(
                         name = name,
                         address = address,
@@ -97,11 +94,8 @@ class BuyersFabHelper(
                 val newBankDetails = bankDetailsEditText.text.toString()
                 val newNote = noteEditText.text.toString()
 
-                if (newName.isNotEmpty() && newAddress.isNotEmpty() &&
-                    newEmail.isNotEmpty() && newPhone.isNotEmpty() &&
-                    newTin.isNotEmpty() && newBankDetails.isNotEmpty() &&
-                    newNote.isNotEmpty()
-                ) {
+                if (newName.isNotEmpty())
+                {
                     val updatedBuyers = Buyers(
                         name = newName,
                         address = newAddress,
