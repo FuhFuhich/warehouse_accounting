@@ -1,6 +1,7 @@
 package com.example.warehouse_accounting.ui.buyers
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -26,6 +27,12 @@ class BuyersFragment : Fragment() {
     private lateinit var buyersFabHelper: BuyersFabHelper
     private lateinit var buyersLongClickHelper: BuyersLongClickHelper
     private lateinit var adapter: BuyersAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
 
     private val activityResultLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -81,6 +88,7 @@ class BuyersFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.buyers_menu_action_bar, menu)
         val searchItem = menu.findItem(R.id.action_search)
+        searchItem.icon?.setTint(Color.WHITE)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

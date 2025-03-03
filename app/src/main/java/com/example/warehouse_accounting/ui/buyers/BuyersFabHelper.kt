@@ -28,7 +28,7 @@ class BuyersFabHelper(
         val bankDetailsEditText: EditText = dialogView.findViewById(R.id.et_buyers_bank_details)
         val noteEditText: EditText = dialogView.findViewById(R.id.et_buyers_note)
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
             .setTitle("Добавить нового поставщика")
             .setView(dialogView)
             .setPositiveButton("Добавить") { _, _ ->

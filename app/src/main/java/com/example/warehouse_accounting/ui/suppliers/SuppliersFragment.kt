@@ -1,6 +1,7 @@
 package com.example.warehouse_accounting.ui.suppliers
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -31,6 +32,11 @@ class SuppliersFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             suppliersFabHelper.handleActivityResult(result.resultCode, result.data)
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,6 +87,7 @@ class SuppliersFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.suppliers_menu_action_bar, menu)
         val searchItem = menu.findItem(R.id.action_search)
+        searchItem.icon?.setTint(Color.WHITE)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
