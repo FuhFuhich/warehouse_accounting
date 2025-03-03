@@ -22,4 +22,8 @@
     <style name="Theme.Warehouse_accounting.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Warehouse_accounting.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.WarehouseAccounting" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:statusBarColor">#141414</item>
+    </style>
 </resources>
