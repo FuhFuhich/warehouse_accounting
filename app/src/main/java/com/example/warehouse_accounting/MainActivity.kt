@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_profile,
-                R.id.nav_main_menu, R.id.nav_products, R.id.nav_documents,
+                R.id.nav_profile, R.id.nav_products, R.id.nav_documents,
                 R.id.nav_costs, R.id.nav_reports, R.id.nav_suppliers,
                 R.id.nav_buyers, R.id.nav_warehouses, R.id.nav_settings,
                 R.id.nav_help, R.id.nav_what_new, R.id.nav_need_help

@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/nav_main_menu"
-        android:name="com.example.warehouse_accounting.ui.main_menu.MainMenuFragment"
-        android:label="@string/menu_main_menu"
-        tools:layout="@layout/fragment_main_menu" />
-
-    <fragment
         android:id="@+id/nav_products"
         android:name="com.example.warehouse_accounting.ui.products.ProductsFragment"
         android:label="@string/menu_products"
@@ -82,4 +76,6 @@
         android:name="com.example.warehouse_accounting.ui.need_help.NeedHelpFragment"
         android:label="@string/menu_need_help"
         tools:layout="@layout/fragment_need_help" />
+
+
 </navigation>
