@@ -1,13 +1,13 @@
-package com.example.warehouse_accounting.ui.settings
+package com.example.warehouse_accounting.ui.mistral
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SettingsViewModel : ViewModel() {
+class MistralViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is SettingsViewModel Fragment"
+        value = "This is MistralViewModel Fragment"
     }
     val text: LiveData<String> = _text
 }

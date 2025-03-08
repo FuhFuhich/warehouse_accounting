@@ -1,4 +1,4 @@
-package com.example.warehouse_accounting.ui.settings
+package com.example.warehouse_accounting.ui.mistral
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.warehouse_accounting.databinding.FragmentSettingsBinding
 
-class SettingsFragment : Fragment() {
+class MistralFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
 
@@ -22,14 +22,14 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+        val mistralViewModel =
+            ViewModelProvider(this).get(MistralViewModel::class.java)
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textSettings
-        settingsViewModel.text.observe(viewLifecycleOwner) {
+        mistralViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

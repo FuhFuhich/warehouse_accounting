@@ -25,7 +25,7 @@
     <string name="menu_suppliers">Поставщики</string>
     <string name="menu_buyers">Покупатели</string>
     <string name="menu_warehouses">Склады</string>
-    <string name="menu_settings">Настройки</string>
+    <string name="menu_mistral">Мистрал</string>
     <string name="menu_help">Справка</string>
     <string name="menu_what_new">Что нового?</string>
     <string name="menu_need_help">Нужна помощь?</string>
