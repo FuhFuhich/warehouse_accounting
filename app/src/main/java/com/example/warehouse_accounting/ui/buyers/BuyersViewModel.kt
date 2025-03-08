@@ -4,20 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.warehouse_accounting.models.Buyers
+import com.example.warehouse_accounting.models.Product
 
 class BuyersViewModel : ViewModel() {
     private val _allBuyers = mutableListOf<Buyers>()
     private val _buyers = MutableLiveData<MutableList<Buyers>>(mutableListOf())
     val buyers: LiveData<MutableList<Buyers>> = _buyers
 
-    fun addBuyers(supplier: Buyers) {
-        _allBuyers.add(supplier)
-        _buyers.value = _allBuyers.toMutableList()
+    private val _searchQuery = MutableLiveData<String>("")
+    val searchQuery: LiveData<String> = _searchQuery
+
+    fun addBuyers(buyers: Buyers) {
+        _allBuyers.add(buyers)
+        filterBuyers(_searchQuery.value ?: "")
     }
 
-    fun updateBuyers(updatedSupplier: Buyers) {
-        _allBuyers.replaceAll { if (it.tin == updatedSupplier.tin) updatedSupplier else it }
-        _buyers.value = _allBuyers.toMutableList()
+    fun updateBuyers(updatedBuyers: Buyers) {
+        _allBuyers.replaceAll { if (it.tin == updatedBuyers.tin) updatedBuyers else it }
+        filterBuyers(_searchQuery.value ?: "")
     }
 
     fun filterBuyers(query: String) {

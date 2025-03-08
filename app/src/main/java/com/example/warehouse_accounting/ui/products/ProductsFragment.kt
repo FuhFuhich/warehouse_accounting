@@ -82,7 +82,18 @@ class ProductsFragment : Fragment() {
         inflater.inflate(R.menu.products_menu_action_bar, menu)
         val searchItem = menu.findItem(R.id.action_search)
         searchItem.icon?.setTint(Color.WHITE)
+
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+
+        val isLandscape = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+        searchView.maxWidth = if (isLandscape) Integer.MAX_VALUE else 800
+
+        viewModel.searchQuery.observe(viewLifecycleOwner) { query ->
+            if (!query.isNullOrEmpty()) {
+                searchItem.expandActionView()
+                searchView.setQuery(query, false)
+            }
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

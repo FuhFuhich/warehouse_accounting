@@ -10,23 +10,25 @@ class ProductsViewModel : ViewModel() {
     private val _products = MutableLiveData<MutableList<Product>>(mutableListOf())
     val products: LiveData<MutableList<Product>> = _products
 
+    private val _searchQuery = MutableLiveData<String>("")
+    val searchQuery: LiveData<String> = _searchQuery
+
     fun addProduct(product: Product) {
         _allProducts.add(product)
-        _products.value = _allProducts.toMutableList()
+        filterProducts(_searchQuery.value ?: "")
     }
 
     fun updateProduct(updatedProduct: Product) {
         _allProducts.replaceAll { if (it.barcode == updatedProduct.barcode) updatedProduct else it }
-        _products.value = _allProducts.toMutableList()
+        filterProducts(_searchQuery.value ?: "")
     }
 
     fun filterProducts(query: String) {
-        if (query.isEmpty()) {
-            _products.value = _allProducts.toMutableList()
+        _searchQuery.value = query
+        _products.value = if (query.isEmpty()) {
+            _allProducts.toMutableList()
         } else {
-            _products.value = _allProducts.filter {
-                it.name.contains(query, ignoreCase = true)
-            }.toMutableList()
+            _allProducts.filter { it.name.contains(query, ignoreCase = true) }.toMutableList()
         }
     }
 }

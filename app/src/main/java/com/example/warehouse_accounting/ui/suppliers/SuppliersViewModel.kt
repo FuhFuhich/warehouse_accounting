@@ -10,14 +10,17 @@ class SuppliersViewModel : ViewModel() {
     private val _suppliers = MutableLiveData<MutableList<Suppliers>>(mutableListOf())
     val suppliers: LiveData<MutableList<Suppliers>> = _suppliers
 
-    fun addSuppliers(supplier: Suppliers) {
-        _allSuppliers.add(supplier)
-        _suppliers.value = _allSuppliers.toMutableList()
+    private val _searchQuery = MutableLiveData<String>("")
+    val searchQuery: LiveData<String> = _searchQuery
+
+    fun addSuppliers(suppliers: Suppliers) {
+        _allSuppliers.add(suppliers)
+        filterSuppliers(_searchQuery.value ?: "")
     }
 
-    fun updateSuppliers(updatedSupplier: Suppliers) {
-        _allSuppliers.replaceAll { if (it.tin == updatedSupplier.tin) updatedSupplier else it }
-        _suppliers.value = _allSuppliers.toMutableList()
+    fun updateSuppliers(updatedSuppliers: Suppliers) {
+        _allSuppliers.replaceAll { if (it.tin == updatedSuppliers.tin) updatedSuppliers else it }
+        filterSuppliers(_searchQuery.value ?: "")
     }
 
     fun filterSuppliers(query: String) {
