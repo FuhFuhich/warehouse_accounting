@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
@@ -43,12 +44,12 @@ class ProductsFragment : Fragment() {
 
         productsLongClickHelper = ProductsLongClickHelper(requireContext())
         productsFabHelper = ProductsFabHelper(requireContext()) { product ->
-            viewModel.addProduct(product)
+            viewModel.addProducts(product)
         }
 
         adapter = ProductsAdapter(mutableListOf(), productsLongClickHelper) { product ->
             productsFabHelper.showEditProductDialog(product) { updatedProduct ->
-                viewModel.updateProduct(updatedProduct)
+                viewModel.updateProducts(updatedProduct)
             }
         }
         binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
@@ -114,6 +115,19 @@ class ProductsFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_update -> {
+                updateProductsList()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun updateProductsList() {
+        viewModel.loadUpdatedProducts()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

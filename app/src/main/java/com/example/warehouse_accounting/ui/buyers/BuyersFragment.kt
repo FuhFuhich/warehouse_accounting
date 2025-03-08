@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
@@ -89,6 +90,8 @@ class BuyersFragment : Fragment() {
         inflater.inflate(R.menu.buyers_menu_action_bar, menu)
         val searchItem = menu.findItem(R.id.action_search)
         searchItem.icon?.setTint(Color.WHITE)
+        val updateItem = menu.findItem(R.id.action_update)
+        updateItem.icon?.setTint(Color.WHITE)
 
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
 
@@ -119,5 +122,19 @@ class BuyersFragment : Fragment() {
         }
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_update -> {
+                updateBuyersList()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun updateBuyersList() {
+        viewModel.loadUpdatedBuyers()
     }
 }

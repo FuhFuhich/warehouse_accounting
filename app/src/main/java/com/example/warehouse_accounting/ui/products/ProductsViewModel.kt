@@ -13,14 +13,18 @@ class ProductsViewModel : ViewModel() {
     private val _searchQuery = MutableLiveData<String>("")
     val searchQuery: LiveData<String> = _searchQuery
 
-    fun addProduct(product: Product) {
+    fun addProducts(product: Product) {
         _allProducts.add(product)
         filterProducts(_searchQuery.value ?: "")
     }
 
-    fun updateProduct(updatedProduct: Product) {
+    fun updateProducts(updatedProduct: Product) {
         _allProducts.replaceAll { if (it.barcode == updatedProduct.barcode) updatedProduct else it }
         filterProducts(_searchQuery.value ?: "")
+    }
+
+    fun loadUpdatedProducts() {
+        //_products.value = fetchProductsFromDatabase()
     }
 
     fun filterProducts(query: String) {

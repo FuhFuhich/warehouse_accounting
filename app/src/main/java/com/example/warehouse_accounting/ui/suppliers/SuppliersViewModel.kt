@@ -23,6 +23,10 @@ class SuppliersViewModel : ViewModel() {
         filterSuppliers(_searchQuery.value ?: "")
     }
 
+    fun loadUpdatedSuppliers() {
+        //_suppliers.value = fetchSuppliersFromDatabase()
+    }
+
     fun filterSuppliers(query: String) {
         if (query.isEmpty()) {
             _suppliers.value = _allSuppliers.toMutableList()
