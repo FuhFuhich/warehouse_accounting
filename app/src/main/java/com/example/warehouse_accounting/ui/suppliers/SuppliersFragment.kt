@@ -89,6 +89,8 @@ class SuppliersFragment : Fragment() {
         inflater.inflate(R.menu.suppliers_menu_action_bar, menu)
         val searchItem = menu.findItem(R.id.action_search)
         searchItem.icon?.setTint(Color.WHITE)
+        val updateItem = menu.findItem(R.id.action_update)
+        updateItem.icon?.setTint(Color.WHITE)
 
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
 

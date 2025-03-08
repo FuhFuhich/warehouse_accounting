@@ -137,4 +137,5 @@ class BuyersFragment : Fragment() {
     private fun updateBuyersList() {
         viewModel.loadUpdatedBuyers()
     }
+
 }
