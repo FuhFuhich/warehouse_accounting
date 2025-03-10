@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.warehouse_accounting.models.Product
+import kotlinx.coroutines.*
 
 class ProductsViewModel : ViewModel() {
     private val _allProducts = mutableListOf<Product>()
@@ -12,6 +13,26 @@ class ProductsViewModel : ViewModel() {
 
     private val _searchQuery = MutableLiveData<String>("")
     val searchQuery: LiveData<String> = _searchQuery
+
+    private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
+
+    init {
+        startUpdatingProducts()
+    }
+
+    private fun startUpdatingProducts() {
+        viewModelScope.launch {
+            while (isActive) {
+                loadUpdatedProducts()
+                delay(5000)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
+    }
 
     fun addProducts(product: Product) {
         _allProducts.add(product)

@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.warehouse_accounting.databinding.FragmentSettingsBinding
+import com.example.warehouse_accounting.databinding.FragmentMistralBinding
 
 class MistralFragment : Fragment() {
 
-    private var _binding: FragmentSettingsBinding? = null
+    private var _binding: FragmentMistralBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -25,7 +23,7 @@ class MistralFragment : Fragment() {
         val mistralViewModel =
             ViewModelProvider(this).get(MistralViewModel::class.java)
 
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentMistralBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textSettings

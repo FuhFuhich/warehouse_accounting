@@ -76,6 +76,4 @@
         android:name="com.example.warehouse_accounting.ui.mistral.MistralFragment"
         android:label="@string/menu_mistral"
         tools:layout="@layout/fragment_mistral" />
-
-
 </navigation>

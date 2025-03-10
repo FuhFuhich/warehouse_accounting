@@ -2,6 +2,13 @@ package com.example.warehouse_accounting.ui.buyers
 
 import androidx.lifecycle.*
 import com.example.warehouse_accounting.models.Buyers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class BuyersViewModel(state: SavedStateHandle) : ViewModel() {
     private val _allBuyers = mutableListOf<Buyers>()
@@ -10,6 +17,26 @@ class BuyersViewModel(state: SavedStateHandle) : ViewModel() {
 
     private val savedStateHandle = state
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
+
+    private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
+
+    init {
+        startUpdatingProducts()
+    }
+
+    private fun startUpdatingProducts() {
+        viewModelScope.launch {
+            while (isActive) {
+                loadUpdatedBuyers()
+                delay(5000)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
+    }
 
     fun addBuyers(buyers: Buyers) {
         _allBuyers.add(buyers)
