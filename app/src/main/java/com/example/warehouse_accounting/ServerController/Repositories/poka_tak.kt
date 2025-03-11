@@ -1,4 +1,4 @@
-package com.example.warehouse_accounting.NetServerController.Repositories
+package com.example.warehouse_accounting.ServerController.Repositories
 
 class poka_tak {
     // Чисто для себя.

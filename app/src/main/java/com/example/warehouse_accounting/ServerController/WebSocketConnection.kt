@@ -1,4 +1,4 @@
-package com.example.warehouse_accounting.NetServerController
+package com.example.warehouse_accounting.ServerController
 
 import okhttp3.*
 import okio.ByteString

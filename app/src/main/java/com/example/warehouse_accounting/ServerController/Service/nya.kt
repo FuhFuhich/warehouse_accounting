@@ -1,4 +1,4 @@
-package com.example.warehouse_accounting.NetServerController.Service
+package com.example.warehouse_accounting.ServerController.Service
 
 class nya {
     // Здесь будет передача данных из репозитория во ViewModel

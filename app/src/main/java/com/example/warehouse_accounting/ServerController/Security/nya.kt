@@ -1,4 +1,4 @@
-package com.example.warehouse_accounting.NetServerController.Security
+package com.example.warehouse_accounting.ServerController.Security
 
 class nya {
     // Здесь происходит вызов методов, связанных с шифрованием
