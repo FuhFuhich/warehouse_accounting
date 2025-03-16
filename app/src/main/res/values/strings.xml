@@ -65,4 +65,10 @@
     <string name="products_dialog_description">Описание</string>
     <string name="products_dialog_barcode">Штрих код</string>
     <string name="products_dialog_quantity">Количество</string>
+    <string name="buyers_item_note">Note</string>
+    <string name="buyers_item_email">Email</string>
+    <string name="buyers_item_phone">Phone</string>
+    <string name="suppliers_item_phone">Номер телефона</string>
+    <string name="suppliers_item_email">Почта</string>
+    <string name="suppliers_item_note">Заметки</string>
 </resources>

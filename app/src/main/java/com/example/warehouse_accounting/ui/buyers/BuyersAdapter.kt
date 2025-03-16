@@ -16,6 +16,9 @@ class BuyersAdapter(
 
     inner class BuyersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tv_buyers_name)
+        val tvPhone: TextView = itemView.findViewById(R.id.tv_buyers_phone)
+        val tvEmail: TextView = itemView.findViewById(R.id.tv_buyers_email)
+        val tvNote: TextView = itemView.findViewById(R.id.tv_buyers_note)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BuyersViewHolder {
@@ -27,6 +30,9 @@ class BuyersAdapter(
     override fun onBindViewHolder(holder: BuyersViewHolder, position: Int) {
         val buyers = buyers[position]
         holder.tvName.text = buyers.name
+        holder.tvPhone.text = buyers.phone
+        holder.tvEmail.text = buyers.email
+        holder.tvNote.text = buyers.note
 
         holder.itemView.setOnClickListener {
             editBuyersCallback(buyers)
