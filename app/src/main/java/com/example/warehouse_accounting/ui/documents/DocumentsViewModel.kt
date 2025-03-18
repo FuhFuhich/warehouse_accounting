@@ -1,13 +1,63 @@
 package com.example.warehouse_accounting.ui.documents
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.warehouse_accounting.models.Documents
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
-class DocumentsViewModel : ViewModel() {
+class DocumentsViewModel(state: SavedStateHandle) : ViewModel() {
+    private val _allDocuments = mutableListOf<Documents>()
+    private val _documents = MutableLiveData<MutableList<Documents>>(mutableListOf())
+    val documents: LiveData<MutableList<Documents>> = _documents
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+    private val savedStateHandle = state
+    val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
+
+    private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
+
+    init {
+        startUpdatingDocuments()
     }
-    val text: LiveData<String> = _text
+
+    private fun startUpdatingDocuments() {
+        viewModelScope.launch {
+            while (isActive) {
+                loadUpdatedDocuments()
+                delay(5000)
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
+    }
+
+    fun addDocuments(suppliers: Documents) {
+        _allDocuments.add(suppliers)
+        filterDocuments(searchQuery.value ?: "")
+    }
+
+    fun updateDocuments(updatedDocuments: Documents) {
+        _allDocuments.replaceAll { if (it.documentsNumber == updatedDocuments.documentsNumber) updatedDocuments else it }
+        filterDocuments(searchQuery.value ?: "")
+    }
+
+    fun loadUpdatedDocuments() {
+        //_documents.value = fetchDocumentsFromDatabase()
+    }
+
+    fun filterDocuments(query: String) {
+        searchQuery.value = query
+        _documents.value = if (query.isEmpty()) {
+            _allDocuments.toMutableList()
+        } else {
+            _allDocuments.filter { it.documents.contains(query, ignoreCase = true) }.toMutableList()
+        }
+    }
 }
