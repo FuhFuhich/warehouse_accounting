@@ -59,19 +59,23 @@ class DocumentsFabHelper(
         dialog.show()
     }
 
+    // кароооооооч, мне нужно сделать выбор документов, т.е. documents(
+    // это тип документа) он может быть призод, расход, перемещение и инвентаризация
+    // На выбор у меня один из 4 пунктов. Мне нужно переделать здесь вместо EditText на
+    // Выбор пункта одного из этих документов
+
     fun showEditDocumentsDialog(documents: Documents, onDocumentsUpdated: (Documents) -> Unit) {
         val dialogView = LayoutInflater.from(context)
-            .inflate(R.layout.fragment_documents_dialog_add_documents, null)
-        val documentsEditText: EditText = dialogView.findViewById(R.id.et_documents)
-        val documentsNumberEditText: EditText = dialogView.findViewById(R.id.et_documents_number)
-        val creationDateEditText: EditText = dialogView.findViewById(R.id.et_creation_date)
-        val nameOfWarehouseEditText: EditText = dialogView.findViewById(R.id.et_name_of_warehouse)
-        val quantityOfGoodsEditText: EditText = dialogView.findViewById(R.id.et_quantity_of_goods)
+            .inflate(R.layout.fragment_documents_dialog_add_document, null)
+        val incomeEditText: EditText = dialogView.findViewById(R.id.et_documents_income)
+        val expenseEditText: EditText = dialogView.findViewById(R.id.et_documents_expense)
+        val movementEditText: EditText = dialogView.findViewById(R.id.et_documents_movement)
+        val inventoryEditText: EditText = dialogView.findViewById(R.id.et_documents_inventory)
 
-        documentsEditText.setText(documents.documents)
-        documentsNumberEditText.setText(documents.documentsNumber)
-        creationDateEditText.setText(documents.creationDate)
-        nameOfWarehouseEditText.setText(documents.nameOfWarehouse)
+        incomeEditText.setText(documents.documents)
+        expenseEditText.setText(documents.documentsNumber)
+        movementEditText.setText(documents.creationDate)
+        inventoryEditText.setText(documents.nameOfWarehouse)
         quantityOfGoodsEditText.setText(documents.quantityOfGoods)
 
         val dialog = AlertDialog.Builder(context)

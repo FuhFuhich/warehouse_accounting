@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_documents_income"
+        android:title="@string/documents_fab_income" />
+    <item
+        android:id="@+id/menu_documents_expense"
+        android:title="@string/documents_fab_expense" />
+    <item
+        android:id="@+id/menu_documents_movement"
+        android:title="@string/documents_fab_movement" />
+    <item
+        android:id="@+id/menu_documents_inventory"
+        android:title="@string/documents_fab_inventory" />
+</menu>

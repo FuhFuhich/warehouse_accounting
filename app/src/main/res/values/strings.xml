@@ -71,4 +71,12 @@
     <string name="suppliers_item_phone">Номер телефона</string>
     <string name="suppliers_item_email">Почта</string>
     <string name="suppliers_item_note">Заметки</string>
+    <string name="documents_fab_income">Приход</string>
+    <string name="documents_fab_expense">Расход</string>
+    <string name="documents_fab_movement">Перемещение</string>
+    <string name="documents_fab_inventory">Инвентаризация</string>
+    <string name="documents_item_quantity_of_goods">Количество товара</string>
+    <string name="documents_item_name_of_warehouse">Название склада</string>
+    <string name="documents_item_creation_date">Дата создания документа</string>
+    <string name="documents_item_document">Название и номер документа</string>
 </resources>

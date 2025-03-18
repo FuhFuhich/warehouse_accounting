@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/white"
+    android:orientation="vertical"
+    android:background="#222222"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/et_documents_income"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/documents_fab_income"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
+
+    <EditText
+        android:id="@+id/et_documents_expense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/documents_fab_expense"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/et_documents_movement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/documents_fab_movement"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
+    <EditText
+        android:id="@+id/et_documents_inventory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/documents_fab_inventory"
+        android:inputType="number"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        tools:ignore="TextFields" />
+</LinearLayout>
