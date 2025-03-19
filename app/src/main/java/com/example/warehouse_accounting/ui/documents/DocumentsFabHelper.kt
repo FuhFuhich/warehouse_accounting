@@ -1,132 +1,76 @@
 package com.example.warehouse_accounting.ui.documents
 
-import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.view.LayoutInflater
-import android.widget.EditText
+import android.view.MenuItem
+import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
-import com.example.warehouse_accounting.models.Documents
-import java.time.format.DateTimeFormatter
 
 class DocumentsFabHelper(
     private val context: Context,
     private val activityResultLauncher: ActivityResultLauncher<Intent>,
-    private val onDocumentsAdded: (Documents) -> Unit,
-    private val formatter: DateTimeFormatter? = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    private val onDocumentTypeSelectedListener: OnDocumentTypeSelectedListener
 ) {
-
-    fun showAddDocumentsDialog() {
-        val dialogView = LayoutInflater.from(context)
-            .inflate(R.layout.fragment_documents_dialog_add_document, null)
-        val documentsEditText: EditText = dialogView.findViewById(R.id.et_documents)
-        val documentsNumberEditText: EditText = dialogView.findViewById(R.id.et_documents_number)
-        val creationDateEditText: EditText = dialogView.findViewById(R.id.et_creation_date)
-        val nameOfWarehouseEditText: EditText = dialogView.findViewById(R.id.et_name_of_warehouse)
-        val quantityOfGoodsEditText: EditText = dialogView.findViewById(R.id.et_quantity_of_goods)
-
-        val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
-            .setTitle("Добавить нового поставщика")
-            .setView(dialogView)
-            .setPositiveButton("Добавить") { _, _ ->
-                val documents = documentsEditText.text.toString()
-                val documentsNumber = documentsNumberEditText.text.toString()
-                val creationDate = creationDateEditText.text.toString()
-                val nameOfWarehouse = nameOfWarehouseEditText.text.toString()
-                val quantityOfGoods = quantityOfGoodsEditText.text.toString()
-
-                if (documents.isNotEmpty())
-                {
-                    val supplier = Documents(
-                        documents = documents,
-                        documentsNumber = documentsNumber,
-                        creationDate = creationDate,
-                        nameOfWarehouse = nameOfWarehouse,
-                        quantityOfGoods = quantityOfGoods.toInt()
-                    )
-                    onDocumentsAdded(supplier)
-                    Toast.makeText(context, "Поставщик добавлен", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Отмена", null)
-            .create()
-
-        dialog.show()
+    interface OnDocumentTypeSelectedListener {
+        fun onDocumentTypeSelected(documentType: String?)
     }
 
-    // кароооооооч, мне нужно сделать выбор документов, т.е. documents(
-    // это тип документа) он может быть призод, расход, перемещение и инвентаризация
-    // На выбор у меня один из 4 пунктов. Мне нужно переделать здесь вместо EditText на
-    // Выбор пункта одного из этих документов
-
-    fun showEditDocumentsDialog(documents: Documents, onDocumentsUpdated: (Documents) -> Unit) {
+    fun showDocumentTypeSelectionDialog() {
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_documents_dialog_add_document, null)
-        val incomeEditText: EditText = dialogView.findViewById(R.id.et_documents_income)
-        val expenseEditText: EditText = dialogView.findViewById(R.id.et_documents_expense)
-        val movementEditText: EditText = dialogView.findViewById(R.id.et_documents_movement)
-        val inventoryEditText: EditText = dialogView.findViewById(R.id.et_documents_inventory)
 
-        incomeEditText.setText(documents.documents)
-        expenseEditText.setText(documents.documentsNumber)
-        movementEditText.setText(documents.creationDate)
-        inventoryEditText.setText(documents.nameOfWarehouse)
-        quantityOfGoodsEditText.setText(documents.quantityOfGoods)
-
-        val dialog = AlertDialog.Builder(context)
-            .setTitle("Редактировать поставщика")
+        val dialog = AlertDialog.Builder(
+            context, R.style.MyAlertDialogTheme
+        )
+            .setTitle("Выберите тип документа")
             .setView(dialogView)
-            .setPositiveButton("Сохранить") { _, _ ->
-                val documents = documentsEditText.text.toString()
-                val documentsNumber = documentsNumberEditText.text.toString()
-                val creationDate = creationDateEditText.text.toString()
-                val nameOfWarehouse = nameOfWarehouseEditText.text.toString()
-                val quantityOfGoods = quantityOfGoodsEditText.text.toString()
-
-                if (documents.isNotEmpty())
-                {
-                    val updatedDocuments = Documents(
-                        documents = documents,
-                        documentsNumber = documentsNumber,
-                        creationDate = creationDate,
-                        nameOfWarehouse = nameOfWarehouse,
-                        quantityOfGoods = quantityOfGoods.toInt()
-                    )
-                    onDocumentsUpdated(updatedDocuments)
-                    Toast.makeText(context, "Поставщик обновлён", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Отмена", null)
+            .setPositiveButton("Выбрать", null)
+            .setNegativeButton(
+                "Отмена"
+            ) { d: DialogInterface, which: Int -> d.dismiss() }
             .create()
 
-        dialog.show()
-    }
-
-    fun handleActivityResult(resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            val documentsDocuments = data.getStringExtra("document_document") ?: return
-            val documentsDocumentsNumber = data.getStringExtra("document_documents_number") ?: return
-            val documentsCreationDate = data.getStringExtra("document_creation_date") ?: return
-            val documentsNameOfWarehouse = data.getStringExtra("document_name_of_warehouse") ?: return
-            val documentsQuantityOfGoods = data.getStringExtra("document_quantity_of_goods") ?: return
-
-            val newDocuments = Documents(
-                documents = documentsDocuments,
-                documentsNumber = documentsDocumentsNumber,
-                creationDate = documentsCreationDate,
-                nameOfWarehouse = documentsNameOfWarehouse,
-                quantityOfGoods = documentsQuantityOfGoods.toInt()
-            )
-
-            onDocumentsAdded(newDocuments)
-            Toast.makeText(context, "Данные документов обновлены", Toast.LENGTH_SHORT).show()
+        dialog.setOnShowListener { d: DialogInterface? ->
+            val button: View =
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            button.setOnClickListener { v: View? ->
+                showPopupMenu(
+                    button
+                )
+            }
         }
+
+        dialog.show()
+    }
+
+    private fun showPopupMenu(anchor: View) {
+        val popupMenu = PopupMenu(context, anchor)
+        popupMenu.menuInflater.inflate(R.menu.documents_fab_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
+            this.onMenuItemSelected(
+                item
+            )
+        }
+        popupMenu.show()
+    }
+
+    private fun onMenuItemSelected(item: MenuItem): Boolean {
+        var documentType = ""
+        documentType = when (item.itemId) {
+            R.id.menu_documents_income -> "Приход"
+            R.id.menu_documents_expense -> "Расход"
+            R.id.menu_documents_movement -> "Перемещение"
+            R.id.menu_documents_inventory -> "Инвентаризация"
+            else -> return false
+        }
+        Toast.makeText(context, "Выбран документ: $documentType", Toast.LENGTH_SHORT).show()
+        onDocumentTypeSelectedListener.onDocumentTypeSelected(documentType)
+        return true
     }
 }
