@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="6dp">
@@ -35,8 +36,8 @@
 
     <TextView
         android:id="@+id/tv_documents_quantity_of_goods"
-        android:layout_width="126dp"
-        android:layout_height="58dp"
+        android:layout_width="22dp"
+        android:layout_height="56dp"
         android:text="@string/documents_item_quantity_of_goods"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

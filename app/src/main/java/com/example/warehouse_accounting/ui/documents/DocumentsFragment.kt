@@ -1,6 +1,6 @@
+// File: ui/documents/DocumentsFragment.kt
 package com.example.warehouse_accounting.ui.documents
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,11 +29,6 @@ class DocumentsFragment : Fragment() {
     private lateinit var documentsLongClickHelper: DocumentsLongClickHelper
     private lateinit var adapter: DocumentsAdapter
 
-    private val activityResultLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            documentsFabHelper.handleActivityResult(result.resultCode, result.data)
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -49,44 +44,40 @@ class DocumentsFragment : Fragment() {
         val root: View = binding.root
 
         documentsLongClickHelper = DocumentsLongClickHelper(requireContext())
-        documentsFabHelper = DocumentsFabHelper(requireContext(), activityResultLauncher) { documents ->
-            viewModel.addDocuments(documents)
-        }
 
-        adapter = DocumentsAdapter(mutableListOf(), documentsLongClickHelper) { documents ->
-            documentsFabHelper.showEditDocumentsDialog(documents) { updatedDocuments ->
-                viewModel.updateDocuments(updatedDocuments)
+        documentsFabHelper = DocumentsFabHelper(requireContext(),
+            object : DocumentsFabHelper.OnDocumentsTypeSelectedListener {
+                override fun onDocumentsTypeSelected(documentType: String) {
+                    viewModel.addDocumentByType(documentType)
+                }
             }
+        )
+
+        adapter = DocumentsAdapter(
+            mutableListOf(),
+            documentsLongClickHelper
+        ) { document ->
+            documentsLongClickHelper.showToast("Редактирование пока не реализовано")
         }
         binding.rvDocuments.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDocuments.adapter = adapter
 
-        viewModel.documents.observe(viewLifecycleOwner) { documents ->
-            adapter.updateDocuments(documents)
+        viewModel.documents.observe(viewLifecycleOwner) { docs ->
+            adapter.updateDocuments(docs)
+            binding.tvNoDocuments.isVisible = docs.isEmpty()
+            binding.rvDocuments.isVisible = docs.isNotEmpty()
         }
 
         val fab: FloatingActionButton = binding.fabDocuments
         fab.setOnClickListener {
-            documentsFabHelper.showAddDocumentsDialog()
-        }
-
-        viewModel.documents.observe(viewLifecycleOwner) { documents ->
-            adapter.updateDocuments(documents)
-
-            if (documents.isEmpty()) {
-                binding.tvNoDocuments.visibility = View.VISIBLE
-                binding.rvDocuments.visibility = View.GONE
-            } else {
-                binding.tvNoDocuments.visibility = View.GONE
-                binding.rvDocuments.visibility = View.VISIBLE
-            }
+            documentsFabHelper.showDocumentTypeSelectionDialog()
         }
 
         return root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.documents_menu_action_bar, menu)
+        inflater.inflate(R.menu.products_menu_action_bar, menu)
         val searchItem = menu.findItem(R.id.action_search)
         searchItem.icon?.setTint(Color.WHITE)
         val updateItem = menu.findItem(R.id.action_update)
@@ -123,19 +114,14 @@ class DocumentsFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
             R.id.action_update -> {
-                updateDocumentsList()
+                viewModel.loadUpdatedDocuments()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun updateDocumentsList() {
-        viewModel.loadUpdatedDocuments()
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

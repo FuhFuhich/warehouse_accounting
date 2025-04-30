@@ -12,9 +12,7 @@ class DocumentsLongClickHelper(private val context: Context) {
             .setTitle("Выберите действие")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> onOptionSelected("Наличие на складах")
-                    1 -> onOptionSelected("Движение товаров")
-                    2 -> onOptionSelected("Удалить")
+                    0 -> onOptionSelected("Удалить")
                 }
             }
             .create()

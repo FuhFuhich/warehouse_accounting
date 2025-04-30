@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Documents
-import java.util.Date
 
 class DocumentsAdapter(
     private var documents: MutableList<Documents>,
@@ -16,11 +15,10 @@ class DocumentsAdapter(
 ) : RecyclerView.Adapter<DocumentsAdapter.DocumentsViewHolder>() {
 
     inner class DocumentsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvDocuments: TextView = itemView.findViewById(R.id.tv_documents)
-        val tvDocumentsNumber: TextView = itemView.findViewById(R.id.tv_documents_number)
-        val tvCreationDate: TextView = itemView.findViewById(R.id.tv_creation_date)
-        val tvNameOfWarehouse: TextView = itemView.findViewById(R.id.tv_name_of_warehouse)
-        val tvQuantityOfGoods: TextView = itemView.findViewById(R.id.tv_quantity_of_goods)
+        val tvDocuments: TextView = itemView.findViewById(R.id.tv_documents_document)
+        val tvDocumentsCreationDate: TextView = itemView.findViewById(R.id.tv_documents_creation_date)
+        val tvDocumentsNameOfWarehouse: TextView = itemView.findViewById(R.id.tv_documents_name_of_warehouse)
+        val tvDocumentsQuantityOfGoods: TextView = itemView.findViewById(R.id.tv_documents_quantity_of_goods)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentsViewHolder {
@@ -31,12 +29,10 @@ class DocumentsAdapter(
 
     override fun onBindViewHolder(holder: DocumentsViewHolder, position: Int) {
         val documents = documents[position]
-        holder.tvDocuments.text = documents.documents
-        holder.tvDocumentsNumber.text = documents.documentsNumber
-        holder.tvCreationDate.text = documents.creationDate
-        holder.tvCreationDate.text = documents.creationDate
-        holder.tvNameOfWarehouse.text = documents.nameOfWarehouse
-        holder.tvQuantityOfGoods.text = documents.quantityOfGoods.toString()
+        holder.tvDocuments.text = documents.documentsNumber
+        holder.tvDocumentsCreationDate.text = documents.creationDate
+        holder.tvDocumentsNameOfWarehouse.text = documents.nameOfWarehouse
+        holder.tvDocumentsQuantityOfGoods.text = documents.quantityOfGoods.toString()
 
         holder.itemView.setOnClickListener {
             editDocumentsCallback(documents)

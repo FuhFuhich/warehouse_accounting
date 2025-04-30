@@ -2,13 +2,8 @@ package com.example.warehouse_accounting.ui.documents
 
 import androidx.lifecycle.*
 import com.example.warehouse_accounting.models.Documents
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import java.util.Date
 
 class DocumentsViewModel(state: SavedStateHandle) : ViewModel() {
     private val _allDocuments = mutableListOf<Documents>()
@@ -18,7 +13,8 @@ class DocumentsViewModel(state: SavedStateHandle) : ViewModel() {
     private val savedStateHandle = state
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
 
-    private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
+    private val viewModelJob = Job()
+    private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     init {
         startUpdatingDocuments()
@@ -35,21 +31,28 @@ class DocumentsViewModel(state: SavedStateHandle) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        viewModelScope.cancel()
+        viewModelJob.cancel()
     }
 
-    fun addDocuments(suppliers: Documents) {
-        _allDocuments.add(suppliers)
+    fun addDocumentByType(documentType: String) {
+        val newDocument = Documents(
+            documents = documentType,
+            documentsNumber = System.currentTimeMillis().toString(),
+            creationDate = Date().toString(),
+            nameOfWarehouse = "Main Warehouse",
+            quantityOfGoods = 0
+        )
+        _allDocuments.add(newDocument)
         filterDocuments(searchQuery.value ?: "")
     }
 
-    fun updateDocuments(updatedDocuments: Documents) {
-        _allDocuments.replaceAll { if (it.documentsNumber == updatedDocuments.documentsNumber) updatedDocuments else it }
+    fun updateDocuments(updatedDocument: Documents) {
+        _allDocuments.replaceAll { if (it.documentsNumber == updatedDocument.documentsNumber) updatedDocument else it }
         filterDocuments(searchQuery.value ?: "")
     }
 
     fun loadUpdatedDocuments() {
-        //_documents.value = fetchDocumentsFromDatabase()
+        _documents.value = _allDocuments.toMutableList()
     }
 
     fun filterDocuments(query: String) {

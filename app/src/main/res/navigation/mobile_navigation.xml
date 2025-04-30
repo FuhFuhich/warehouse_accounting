@@ -60,12 +60,6 @@
         tools:layout="@layout/fragment_help" />
 
     <fragment
-        android:id="@+id/nav_what_new"
-        android:name="com.example.warehouse_accounting.ui.what_new.WhatNewFragment"
-        android:label="@string/menu_what_new"
-        tools:layout="@layout/fragment_what_new" />
-
-    <fragment
         android:id="@+id/nav_need_help"
         android:name="com.example.warehouse_accounting.ui.need_help.NeedHelpFragment"
         android:label="@string/menu_need_help"

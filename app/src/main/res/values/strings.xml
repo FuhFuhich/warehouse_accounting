@@ -79,4 +79,5 @@
     <string name="documents_item_name_of_warehouse">Название склада</string>
     <string name="documents_item_creation_date">Дата создания документа</string>
     <string name="documents_item_document">Название и номер документа</string>
+    <string name="noDocuments">Документы отсутствуют</string>
 </resources>

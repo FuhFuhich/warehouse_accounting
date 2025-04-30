@@ -41,10 +41,6 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_help" />
         <item
-            android:id="@+id/nav_what_new"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_what_new" />
-        <item
             android:id="@+id/nav_need_help"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_need_help" />
