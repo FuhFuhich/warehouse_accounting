@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_warehouses_name"
+        android:title="@string/suppliers_fab_name" />
+    <item
+        android:id="@+id/menu_warehouses_address"
+        android:title="@string/suppliers_fab_address" />
+    <item
+        android:id="@+id/menu_warehouses_email"
+        android:title="@string/suppliers_fab_email" />
+    <item
+        android:id="@+id/menu_warehouses_phone"
+        android:title="@string/suppliers_fab_phone" />
+    <item
+        android:id="@+id/menu_warehouses_TIN"
+        android:title="@string/suppliers_fab_TIN" />
+    <item
+        android:id="@+id/menu_warehouses_bank_details"
+        android:title="@string/suppliers_fab_bank_details" />
+    <item
+        android:id="@+id/menu_warehouses_note"
+        android:title="@string/suppliers_fab_note" />
+</menu>

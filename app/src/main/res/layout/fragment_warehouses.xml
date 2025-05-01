@@ -7,18 +7,38 @@
     tools:context=".ui.warehouses.WarehousesFragment">
 
     <TextView
-        android:id="@+id/text_warehouse"
+        android:id="@+id/tv_no_warehouses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_no_buyers"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_warehouses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvWarehouses"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_warehouses"
@@ -26,6 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
+        android:tint="@color/white"
+        app:backgroundTint="#222222"
         app:srcCompat="@android:drawable/ic_menu_edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

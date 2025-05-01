@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/tv_warehouses_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buyers_item_description"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_warehouses_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buyers_item_phone"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_warehouses_name" />
+
+    <TextView
+        android:id="@+id/tv_warehouses_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buyers_item_email"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_warehouses_phone" />
+
+    <TextView
+        android:id="@+id/tv_warehouses_note"
+        android:layout_width="126dp"
+        android:layout_height="58dp"
+        android:text="@string/buyers_item_note"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

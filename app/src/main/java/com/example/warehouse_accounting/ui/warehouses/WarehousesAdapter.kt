@@ -1,0 +1,55 @@
+package com.example.warehouse_accounting.ui.warehouses
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.warehouse_accounting.R
+import com.example.warehouse_accounting.models.Warehouses
+
+class WarehousesAdapter(
+    private var warehouses: MutableList<Warehouses>,
+    private val longClickHelper: WarehousesLongClickHelper,
+    private val editWarehousesCallback: (Warehouses) -> Unit
+) : RecyclerView.Adapter<WarehousesAdapter.WarehousesViewHolder>() {
+
+    inner class WarehousesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvName: TextView = itemView.findViewById(R.id.tv_warehouses_name)
+        val tvPhone: TextView = itemView.findViewById(R.id.tv_warehouses_phone)
+        val tvEmail: TextView = itemView.findViewById(R.id.tv_warehouses_email)
+        val tvNote: TextView = itemView.findViewById(R.id.tv_warehouses_note)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WarehousesViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.fragment_warehouses_item, parent, false)
+        return WarehousesViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: WarehousesViewHolder, position: Int) {
+        val warehouses = warehouses[position]
+        holder.tvName.text = warehouses.name
+        holder.tvPhone.text = warehouses.phone
+        holder.tvEmail.text = warehouses.email
+        holder.tvNote.text = warehouses.note
+
+        holder.itemView.setOnClickListener {
+            editWarehousesCallback(warehouses)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            longClickHelper.showOptionsDialog { selectedOption ->
+                longClickHelper.showToast(selectedOption)
+            }
+            true
+        }
+    }
+
+    override fun getItemCount(): Int = warehouses.size
+
+    fun updateWarehouses(newWarehouses: MutableList<Warehouses>) {
+        warehouses = newWarehouses
+        notifyDataSetChanged()
+    }
+}
