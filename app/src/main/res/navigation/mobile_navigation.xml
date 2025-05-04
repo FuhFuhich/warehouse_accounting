@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_profile">
+    app:startDestination="@id/welcomeFragment">
 
     <fragment
         android:id="@+id/nav_profile"
@@ -70,4 +70,29 @@
         android:name="com.example.warehouse_accounting.ui.mistral.MistralFragment"
         android:label="@string/menu_mistral"
         tools:layout="@layout/fragment_mistral" />
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.warehouse_accounting.ui.welcome_window.WelcomeFragment"
+        android:label="Welcome">
+
+        <action
+            android:id="@+id/action_welcomeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+        <action
+            android:id="@+id/action_welcomeFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.warehouse_accounting.ui.login.LoginFragment"
+        android:label="Login" />
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.warehouse_accounting.ui.registration.RegisterFragment"
+        android:label="Register" />
+
 </navigation>

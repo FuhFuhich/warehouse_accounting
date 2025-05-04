@@ -1,6 +1,7 @@
 package com.example.warehouse_accounting
 
 import android.os.Bundle
+import android.view.View
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -41,6 +42,23 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
         navView.post {
             (navView.getChildAt(0) as? RecyclerView)?.scrollToPosition(0)
+        }
+
+        // 👇 Скрываем UI на экранах входа и регистрации
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val hideUI = destination.id == R.id.welcomeFragment ||
+                    destination.id == R.id.loginFragment ||
+                    destination.id == R.id.registerFragment
+
+            if (hideUI) {
+                binding.appBarMain.toolbar.visibility = View.GONE
+                binding.navView.visibility = View.GONE
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            } else {
+                binding.appBarMain.toolbar.visibility = View.VISIBLE
+                binding.navView.visibility = View.VISIBLE
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            }
         }
     }
 
