@@ -52,6 +52,11 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
         //_warehouses.value = fetchWarehousesFromDatabase()
     }
 
+    fun getId() : Int {
+        //_warehouses.value = fetchWarehousesFromDatabase()
+        return 0
+    }
+
     fun filterWarehouses(query: String) {
         searchQuery.value = query
         _warehouses.value = if (query.isEmpty()) {

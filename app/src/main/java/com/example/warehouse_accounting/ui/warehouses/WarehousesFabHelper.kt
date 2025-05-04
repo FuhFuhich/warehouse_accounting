@@ -10,12 +10,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Warehouses
-import com.example.warehouse_accounting.utils.generateUniqueId
 
 class WarehousesFabHelper(
     private val context: Context,
     private val activityResultLauncher: ActivityResultLauncher<Intent>,
-    private val onWarehousesAdded: (Warehouses) -> Unit
+    private val onWarehousesAdded: (Warehouses) -> Unit,
+    private val viewModel: WarehousesViewModel
 ) {
 
     fun showAddWarehousesDialog() {
@@ -31,12 +31,13 @@ class WarehousesFabHelper(
 
                 if (warehousesName.isNotEmpty())
                 {
-                    // Сначала отправляем в бд запрос на добавление склада.
-                    // После этого мы возвращаем из бд айдишник созданного склада
-                    // Мы будем возвращать в generateUniqueId из папки utils.
+                    // Никакого generateUniqueId, удалить к чертовой матери
+                    // Я буду брать айдишник сразу из ServerController.
+                    // Я отправляю запрос на добавление склада
+                    // Там же я возвращаю сгенерированный айдишник
 
                     val warehouses = Warehouses(
-                        id = generateUniqueId(),
+                        id = viewModel.getId(),
                         warehousesName = warehousesName,
                     )
                     onWarehousesAdded(warehouses)
@@ -87,7 +88,7 @@ class WarehousesFabHelper(
             val warehousesName = data.getStringExtra("warehouses_name") ?: return
 
             val newWarehouses = Warehouses(
-                id = generateUniqueId(),
+                id = viewModel.getId(),
                 warehousesName = warehousesName,
             )
 

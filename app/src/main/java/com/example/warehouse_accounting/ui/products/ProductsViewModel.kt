@@ -48,6 +48,11 @@ class ProductsViewModel : ViewModel() {
         //_products.value = fetchProductsFromDatabase()
     }
 
+    fun getId() : Int {
+        //_warehouses.value = fetchWarehousesFromDatabase()
+        return 0
+    }
+
     fun filterProducts(query: String) {
         _searchQuery.value = query
         _products.value = if (query.isEmpty()) {

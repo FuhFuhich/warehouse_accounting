@@ -10,12 +10,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Suppliers
-import com.example.warehouse_accounting.utils.generateUniqueId
+import com.example.warehouse_accounting.ui.suppliers.SuppliersViewModel
 
 class SuppliersFabHelper(
     private val context: Context,
     private val activityResultLauncher: ActivityResultLauncher<Intent>,
-    private val onSuppliersAdded: (Suppliers) -> Unit
+    private val onSuppliersAdded: (Suppliers) -> Unit,
+    private val viewModel: SuppliersViewModel
 ) {
 
     fun showAddSuppliersDialog() {
@@ -44,7 +45,7 @@ class SuppliersFabHelper(
                 if (name.isNotEmpty())
                 {
                     val supplier = Suppliers(
-                        id = generateUniqueId(),
+                        id = viewModel.getId(),
                         name = name,
                         address = address,
                         email = email,
@@ -99,7 +100,7 @@ class SuppliersFabHelper(
                 if (newName.isNotEmpty())
                 {
                     val updatedSuppliers = Suppliers(
-                        id = generateUniqueId(),
+                        id = viewModel.getId(),
                         name = newName,
                         address = newAddress,
                         email = newEmail,
@@ -131,7 +132,7 @@ class SuppliersFabHelper(
             val supplierNote = data.getStringExtra("supplier_note") ?: return
 
             val newSupplier = Suppliers(
-                id = generateUniqueId(),
+                id = viewModel.getId(),
                 name = supplierName,
                 address = supplierAddress,
                 email = supplierEmail,

@@ -11,11 +11,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
-import com.example.warehouse_accounting.utils.generateUniqueId
+import com.example.warehouse_accounting.ui.products.ProductsViewModel
 
 class ProductsFabHelper(
     private val context: Context,
-    private val onProductAdded: (Product) -> Unit
+    private val onProductAdded: (Product) -> Unit,
+    private val viewModel: ProductsViewModel
 ) {
     private var productImageUri: Uri? = null
     private val IMAGE_PICK_CODE = 1000
@@ -40,7 +41,7 @@ class ProductsFabHelper(
 
                 if (productName.isNotEmpty() && barcode.isNotEmpty() && quantity.isNotEmpty()) {
                     val product = Product(
-                        id = generateUniqueId(),
+                        id = viewModel.getId(),
                         name = productName,
                         description = description,
                         barcode = barcode,
@@ -89,7 +90,7 @@ class ProductsFabHelper(
 
                 if (newName.isNotEmpty() && newBarcode.isNotEmpty() && newQuantity.isNotEmpty()) {
                     val updatedProduct = product.copy(
-                        id = generateUniqueId(),
+                        id = product.id,
                         name = newName,
                         barcode = newBarcode,
                         description = newDescription,

@@ -10,12 +10,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Buyers
-import com.example.warehouse_accounting.utils.generateUniqueId
+import com.example.warehouse_accounting.ui.buyers.BuyersViewModel
 
 class BuyersFabHelper(
     private val context: Context,
     private val activityResultLauncher: ActivityResultLauncher<Intent>,
-    private val onBuyersAdded: (Buyers) -> Unit
+    private val onBuyersAdded: (Buyers) -> Unit,
+    private val viewModel: BuyersViewModel
 ) {
 
     fun showAddBuyersDialog() {
@@ -44,7 +45,7 @@ class BuyersFabHelper(
                 if (name.isNotEmpty())
                 {
                     val buyers = Buyers(
-                        id = generateUniqueId(),
+                        id = viewModel.getId(),
                         name = name,
                         address = address,
                         email = email,
@@ -99,7 +100,7 @@ class BuyersFabHelper(
                 if (newName.isNotEmpty())
                 {
                     val updatedBuyers = Buyers(
-                        id = generateUniqueId(),
+                        id = buyers.id,
                         name = newName,
                         address = newAddress,
                         email = newEmail,
@@ -131,7 +132,7 @@ class BuyersFabHelper(
             val buyersNote = data.getStringExtra("buyers_note") ?: return
 
             val newBuyers = Buyers(
-                id = generateUniqueId(),
+                id = viewModel.getId(),
                 name = buyersName,
                 address = buyersAddress,
                 email = buyersEmail,

@@ -52,6 +52,11 @@ class SuppliersViewModel(state: SavedStateHandle) : ViewModel() {
         //_suppliers.value = fetchSuppliersFromDatabase()
     }
 
+    fun getId() : Int {
+        //_warehouses.value = fetchWarehousesFromDatabase()
+        return 0
+    }
+
     fun filterSuppliers(query: String) {
         searchQuery.value = query
         _suppliers.value = if (query.isEmpty()) {
