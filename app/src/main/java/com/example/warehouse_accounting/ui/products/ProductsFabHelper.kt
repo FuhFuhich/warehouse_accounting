@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
-import com.example.warehouse_accounting.ui.products.ProductsViewModel
 
 class ProductsFabHelper(
     private val context: Context,

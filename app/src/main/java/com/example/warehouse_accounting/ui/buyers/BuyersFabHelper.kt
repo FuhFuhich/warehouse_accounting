@@ -10,7 +10,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Buyers
-import com.example.warehouse_accounting.ui.buyers.BuyersViewModel
 
 class BuyersFabHelper(
     private val context: Context,
