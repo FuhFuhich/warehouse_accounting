@@ -58,6 +58,8 @@
 
     <string name="suppliers_item_description">Описание</string>
 
+    <string name="warehouses_fab_name">Наименование склада</string>
+
     <string name="buyers_item_description">Описание</string>
 
     <string name="products_dialog_product_image">Изображение товара</string>

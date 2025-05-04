@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Warehouses
+import com.example.warehouse_accounting.utils.generateUniqueId
 
 class WarehousesFabHelper(
     private val context: Context,
@@ -21,38 +22,25 @@ class WarehousesFabHelper(
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_warehouses_dialog_add_warehouses, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.et_warehouses_name)
-        val addressEditText: EditText = dialogView.findViewById(R.id.et_warehouses_address)
-        val emailEditText: EditText = dialogView.findViewById(R.id.et_warehouses_email)
-        val phoneEditText: EditText = dialogView.findViewById(R.id.et_warehouses_phone)
-        val tinEditText: EditText = dialogView.findViewById(R.id.et_warehouses_TIN)
-        val bankDetailsEditText: EditText = dialogView.findViewById(R.id.et_warehouses_bank_details)
-        val noteEditText: EditText = dialogView.findViewById(R.id.et_warehouses_note)
 
         val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
-            .setTitle("Добавить нового поставщика")
+            .setTitle("Добавить новый склад")
             .setView(dialogView)
             .setPositiveButton("Добавить") { _, _ ->
-                val name = nameEditText.text.toString()
-                val address = addressEditText.text.toString()
-                val email = emailEditText.text.toString()
-                val phone = phoneEditText.text.toString()
-                val tin = tinEditText.text.toString()
-                val bankDetails = bankDetailsEditText.text.toString()
-                val note = noteEditText.text.toString()
+                val warehousesName = nameEditText.text.toString()
 
-                if (name.isNotEmpty())
+                if (warehousesName.isNotEmpty())
                 {
+                    // Сначала отправляем в бд запрос на добавление склада.
+                    // После этого мы возвращаем из бд айдишник созданного склада
+                    // Мы будем возвращать в generateUniqueId из папки utils.
+
                     val warehouses = Warehouses(
-                        name = name,
-                        address = address,
-                        email = email,
-                        phone = phone,
-                        tin = tin,
-                        bankDetails = bankDetails,
-                        note = note
+                        id = generateUniqueId(),
+                        warehousesName = warehousesName,
                     )
                     onWarehousesAdded(warehouses)
-                    Toast.makeText(context, "Поставщик добавлен", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Склад добавлен", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
                 }
@@ -67,46 +55,22 @@ class WarehousesFabHelper(
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_warehouses_dialog_add_warehouses, null)
         val nameEditText: EditText = dialogView.findViewById(R.id.et_warehouses_name)
-        val addressEditText: EditText = dialogView.findViewById(R.id.et_warehouses_address)
-        val emailEditText: EditText = dialogView.findViewById(R.id.et_warehouses_email)
-        val phoneEditText: EditText = dialogView.findViewById(R.id.et_warehouses_phone)
-        val tinEditText: EditText = dialogView.findViewById(R.id.et_warehouses_TIN)
-        val bankDetailsEditText: EditText = dialogView.findViewById(R.id.et_warehouses_bank_details)
-        val noteEditText: EditText = dialogView.findViewById(R.id.et_warehouses_note)
 
-        nameEditText.setText(warehouses.name)
-        addressEditText.setText(warehouses.address)
-        emailEditText.setText(warehouses.email)
-        phoneEditText.setText(warehouses.phone)
-        tinEditText.setText(warehouses.tin)
-        bankDetailsEditText.setText(warehouses.bankDetails)
-        noteEditText.setText(warehouses.note)
+        nameEditText.setText(warehouses.warehousesName)
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
             .setTitle("Редактировать склад")
             .setView(dialogView)
             .setPositiveButton("Сохранить") { _, _ ->
                 val newName = nameEditText.text.toString()
-                val newAddress = addressEditText.text.toString()
-                val newEmail = emailEditText.text.toString()
-                val newPhone = phoneEditText.text.toString()
-                val newTin = tinEditText.text.toString()
-                val newBankDetails = bankDetailsEditText.text.toString()
-                val newNote = noteEditText.text.toString()
 
-                if (newName.isNotEmpty())
-                {
+                if (newName.isNotEmpty()) {
                     val updatedWarehouses = Warehouses(
-                        name = newName,
-                        address = newAddress,
-                        email = newEmail,
-                        phone = newPhone,
-                        tin = newTin,
-                        bankDetails = newBankDetails,
-                        note = newNote
+                        id = warehouses.id,
+                        warehousesName = newName,
                     )
                     onWarehousesUpdated(updatedWarehouses)
-                    Toast.makeText(context, "Warehouses обновлён", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Склад обновлён", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
                 }
@@ -117,24 +81,14 @@ class WarehousesFabHelper(
         dialog.show()
     }
 
+
     fun handleActivityResult(resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             val warehousesName = data.getStringExtra("warehouses_name") ?: return
-            val warehousesAddress = data.getStringExtra("warehouses_address") ?: return
-            val warehousesEmail = data.getStringExtra("warehouses_email") ?: return
-            val warehousesPhone = data.getStringExtra("warehouses_phone") ?: return
-            val warehousesTIN = data.getStringExtra("warehouses_tin") ?: return
-            val warehousesBankDetails = data.getStringExtra("warehouses_bank_details") ?: return
-            val warehousesNote = data.getStringExtra("warehouses_note") ?: return
 
             val newWarehouses = Warehouses(
-                name = warehousesName,
-                address = warehousesAddress,
-                email = warehousesEmail,
-                phone = warehousesPhone,
-                tin = warehousesTIN,
-                bankDetails = warehousesBankDetails,
-                note = warehousesNote
+                id = generateUniqueId(),
+                warehousesName = warehousesName,
             )
 
             onWarehousesAdded(newWarehouses)

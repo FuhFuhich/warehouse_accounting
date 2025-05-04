@@ -44,7 +44,7 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
     }
 
     fun updateWarehouses(updatedWarehouses: Warehouses) {
-        _allWarehouses.replaceAll { if (it.tin == updatedWarehouses.tin) updatedWarehouses else it }
+        _allWarehouses.replaceAll { if (it.id == updatedWarehouses.id) updatedWarehouses else it }
         filterWarehouses(searchQuery.value ?: "")
     }
 
@@ -57,7 +57,11 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
         _warehouses.value = if (query.isEmpty()) {
             _allWarehouses.toMutableList()
         } else {
-            _allWarehouses.filter { it.name.contains(query, ignoreCase = true) }.toMutableList()
+            _allWarehouses.filter { it.warehousesName.contains(query, ignoreCase = true) }.toMutableList()
         }
+    }
+
+    fun generateUniqueId() : Int {
+        return 0
     }
 }

@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Suppliers
+import com.example.warehouse_accounting.utils.generateUniqueId
 
 class SuppliersFabHelper(
     private val context: Context,
@@ -43,6 +44,7 @@ class SuppliersFabHelper(
                 if (name.isNotEmpty())
                 {
                     val supplier = Suppliers(
+                        id = generateUniqueId(),
                         name = name,
                         address = address,
                         email = email,
@@ -82,7 +84,7 @@ class SuppliersFabHelper(
         bankDetailsEditText.setText(suppliers.bankDetails)
         noteEditText.setText(suppliers.note)
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
             .setTitle("Редактировать поставщика")
             .setView(dialogView)
             .setPositiveButton("Сохранить") { _, _ ->
@@ -97,6 +99,7 @@ class SuppliersFabHelper(
                 if (newName.isNotEmpty())
                 {
                     val updatedSuppliers = Suppliers(
+                        id = generateUniqueId(),
                         name = newName,
                         address = newAddress,
                         email = newEmail,
@@ -128,6 +131,7 @@ class SuppliersFabHelper(
             val supplierNote = data.getStringExtra("supplier_note") ?: return
 
             val newSupplier = Suppliers(
+                id = generateUniqueId(),
                 name = supplierName,
                 address = supplierAddress,
                 email = supplierEmail,

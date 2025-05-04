@@ -16,9 +16,6 @@ class WarehousesAdapter(
 
     inner class WarehousesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tv_warehouses_name)
-        val tvPhone: TextView = itemView.findViewById(R.id.tv_warehouses_phone)
-        val tvEmail: TextView = itemView.findViewById(R.id.tv_warehouses_email)
-        val tvNote: TextView = itemView.findViewById(R.id.tv_warehouses_note)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WarehousesViewHolder {
@@ -29,10 +26,7 @@ class WarehousesAdapter(
 
     override fun onBindViewHolder(holder: WarehousesViewHolder, position: Int) {
         val warehouses = warehouses[position]
-        holder.tvName.text = warehouses.name
-        holder.tvPhone.text = warehouses.phone
-        holder.tvEmail.text = warehouses.email
-        holder.tvNote.text = warehouses.note
+        holder.tvName.text = warehouses.warehousesName
 
         holder.itemView.setOnClickListener {
             editWarehousesCallback(warehouses)

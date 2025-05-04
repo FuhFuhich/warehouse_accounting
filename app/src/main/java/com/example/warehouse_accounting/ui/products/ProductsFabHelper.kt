@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
+import com.example.warehouse_accounting.utils.generateUniqueId
 
 class ProductsFabHelper(
     private val context: Context,
@@ -39,6 +40,7 @@ class ProductsFabHelper(
 
                 if (productName.isNotEmpty() && barcode.isNotEmpty() && quantity.isNotEmpty()) {
                     val product = Product(
+                        id = generateUniqueId(),
                         name = productName,
                         description = description,
                         barcode = barcode,
@@ -76,7 +78,7 @@ class ProductsFabHelper(
         quantityEditText.setText(product.quantity.toString())
         productImageUri = product.imageUri
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
             .setTitle("Редактировать товар")
             .setView(dialogView)
             .setPositiveButton("Сохранить") { _, _ ->
@@ -87,6 +89,7 @@ class ProductsFabHelper(
 
                 if (newName.isNotEmpty() && newBarcode.isNotEmpty() && newQuantity.isNotEmpty()) {
                     val updatedProduct = product.copy(
+                        id = generateUniqueId(),
                         name = newName,
                         barcode = newBarcode,
                         description = newDescription,

@@ -1,6 +1,7 @@
 package com.example.warehouse_accounting.models
 
 data class Buyers(
+    val id: Int,
     val name: String,
     val address: String,
     val email: String,
