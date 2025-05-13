@@ -32,8 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_profile, R.id.nav_products, R.id.nav_documents,
-                R.id.nav_costs, R.id.nav_reports, R.id.nav_suppliers,
+                R.id.nav_profile, R.id.nav_products, R.id.nav_suppliers,
                 R.id.nav_buyers, R.id.nav_warehouses, R.id.nav_settings,
                 R.id.nav_help, R.id.nav_need_help
             ), drawerLayout
@@ -44,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             (navView.getChildAt(0) as? RecyclerView)?.scrollToPosition(0)
         }
 
-        // 👇 Скрываем UI на экранах входа и регистрации
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val hideUI = destination.id == R.id.welcomeFragment ||
                     destination.id == R.id.loginFragment ||

@@ -24,16 +24,10 @@
         tools:layout="@layout/fragment_documents" />
 
     <fragment
-        android:id="@+id/nav_costs"
-        android:name="com.example.warehouse_accounting.ui.costs.CostsFragment"
-        android:label="@string/menu_costs"
-        tools:layout="@layout/fragment_costs" />
-
-    <fragment
-        android:id="@+id/nav_reports"
-        android:name="com.example.warehouse_accounting.ui.reports.ReportsFragment"
-        android:label="@string/menu_reports"
-        tools:layout="@layout/fragment_reports" />
+        android:id="@+id/nav_settings"
+        android:name="com.example.warehouse_accounting.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_suppliers"
@@ -64,12 +58,6 @@
         android:name="com.example.warehouse_accounting.ui.need_help.NeedHelpFragment"
         android:label="@string/menu_need_help"
         tools:layout="@layout/fragment_need_help" />
-
-    <fragment
-        android:id="@+id/nav_mistral"
-        android:name="com.example.warehouse_accounting.ui.mistral.MistralFragment"
-        android:label="@string/menu_mistral"
-        tools:layout="@layout/fragment_mistral" />
 
     <fragment
         android:id="@+id/welcomeFragment"
