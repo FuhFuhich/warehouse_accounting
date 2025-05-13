@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.databinding.FragmentSuppliersBinding
+import com.example.warehouse_accounting.ui.products.ProductsFabHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SuppliersFragment : Fragment() {
@@ -49,9 +50,11 @@ class SuppliersFragment : Fragment() {
         val root: View = binding.root
 
         suppliersLongClickHelper = SuppliersLongClickHelper(requireContext())
-        suppliersFabHelper = SuppliersFabHelper(requireContext(), activityResultLauncher) { suppliers ->
-            viewModel.addSuppliers(suppliers)
-        }
+        suppliersFabHelper = SuppliersFabHelper(
+            requireContext(),
+            { suppliers -> viewModel.addSuppliers(suppliers) },
+            viewModel
+        )
 
         adapter = SuppliersAdapter(mutableListOf(), suppliersLongClickHelper) { suppliers ->
             suppliersFabHelper.showEditSuppliersDialog(suppliers) { updatedSuppliers ->

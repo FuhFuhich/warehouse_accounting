@@ -50,9 +50,12 @@ class BuyersFragment : Fragment() {
         val root: View = binding.root
 
         buyersLongClickHelper = BuyersLongClickHelper(requireContext())
-        buyersFabHelper = BuyersFabHelper(requireContext(), activityResultLauncher) { buyers ->
-            viewModel.addBuyers(buyers)
-        }
+        buyersFabHelper = BuyersFabHelper(
+            requireContext(),
+            { buyers -> viewModel.addBuyers(buyers) },
+            viewModel
+        )
+
 
         adapter = BuyersAdapter(mutableListOf(), buyersLongClickHelper) { buyers ->
             buyersFabHelper.showEditBuyersDialog(buyers) { updatedBuyers ->

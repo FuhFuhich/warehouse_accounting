@@ -43,9 +43,12 @@ class ProductsFragment : Fragment() {
         val root: View = binding.root
 
         productsLongClickHelper = ProductsLongClickHelper(requireContext())
-        productsFabHelper = ProductsFabHelper(requireContext()) { product ->
-            viewModel.addProducts(product)
-        }
+        productsFabHelper = ProductsFabHelper(
+            requireContext(),
+            { product -> viewModel.addProducts(product) },
+            viewModel
+        )
+
 
         adapter = ProductsAdapter(mutableListOf(), productsLongClickHelper) { product ->
             productsFabHelper.showEditProductDialog(product) { updatedProduct ->

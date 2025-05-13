@@ -13,7 +13,6 @@ import com.example.warehouse_accounting.models.Suppliers
 
 class SuppliersFabHelper(
     private val context: Context,
-    private val activityResultLauncher: ActivityResultLauncher<Intent>,
     private val onSuppliersAdded: (Suppliers) -> Unit,
     private val viewModel: SuppliersViewModel
 ) {
