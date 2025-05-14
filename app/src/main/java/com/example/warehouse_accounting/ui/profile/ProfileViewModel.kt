@@ -8,15 +8,14 @@ import com.example.warehouse_accounting.models.Profile
 
 class ProfileViewModel : ViewModel() {
 
-    private val _profile = MutableLiveData<Profile>().apply {
-        value = Profile(
-            firstName = "...",
-            lastName = "...",
-            login = "...",
+    private val _profile = MutableLiveData(
+        Profile(
+            firstName = "John",
+            lastName = "Doe",
+            login = "johndoe",
             photoUri = null
         )
-    }
-
+    )
     val profile: LiveData<Profile> = _profile
 
     fun updateFirstName(newName: String) {
