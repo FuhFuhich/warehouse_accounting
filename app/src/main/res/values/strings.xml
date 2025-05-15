@@ -91,4 +91,5 @@
     <string name="menu_settings">Настройки</string>
     <string name="send_message">Отправить</string>
     <string name="text_message">Введите сообщение</string>
+    <string name="btnRegistration">Registration</string>
 </resources>

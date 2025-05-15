@@ -3,18 +3,14 @@ package com.example.warehouse_accounting.ui.products
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.databinding.FragmentProductsBinding
+import com.example.warehouse_accounting.utils.NotificationUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ProductsFragment : Fragment() {
@@ -45,7 +41,6 @@ class ProductsFragment : Fragment() {
         productsLongClickHelper = ProductsLongClickHelper(requireContext())
         productsFabHelper = ProductsFabHelper(requireContext(), viewModel)
 
-
         adapter = ProductsAdapter(mutableListOf(), productsLongClickHelper) { product ->
             productsFabHelper.showEditProductDialog(product) { updatedProduct ->
                 viewModel.updateProducts(updatedProduct)
@@ -56,16 +51,6 @@ class ProductsFragment : Fragment() {
 
         viewModel.products.observe(viewLifecycleOwner) { products ->
             adapter.updateProducts(products)
-        }
-
-        val fab: FloatingActionButton = binding.fabProducts
-        fab.setOnClickListener {
-            productsFabHelper.showAddProductDialog()
-        }
-
-        viewModel.products.observe(viewLifecycleOwner) { products ->
-            adapter.updateProducts(products)
-
             if (products.isEmpty()) {
                 binding.tvNoProducts.visibility = View.VISIBLE
                 binding.rvProducts.visibility = View.GONE
@@ -73,6 +58,15 @@ class ProductsFragment : Fragment() {
                 binding.tvNoProducts.visibility = View.GONE
                 binding.rvProducts.visibility = View.VISIBLE
             }
+        }
+
+        viewModel.notificationEvent.observe(viewLifecycleOwner) { (title, message) ->
+            NotificationUtils.showNotification(requireContext(), title, message)
+        }
+
+        val fab: FloatingActionButton = binding.fabProducts
+        fab.setOnClickListener {
+            productsFabHelper.showAddProductDialog()
         }
 
         return root
@@ -85,7 +79,7 @@ class ProductsFragment : Fragment() {
         val updateItem = menu.findItem(R.id.action_update)
         updateItem.icon?.setTint(Color.WHITE)
 
-        val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
+        val searchView = searchItem.actionView as SearchView
 
         val isLandscape = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
         searchView.maxWidth = if (isLandscape) Integer.MAX_VALUE else 800

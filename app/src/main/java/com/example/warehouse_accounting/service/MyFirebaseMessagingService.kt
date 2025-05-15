@@ -1,3 +1,5 @@
+package com.example.warehouse_accounting.service
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -18,15 +20,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "default_channel"
 
-        val channel = NotificationChannel(
-            channelId,
-            "Основной канал",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(channel)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Основной канал",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
 
         val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle(title ?: "")
+            .setContentTitle(title ?: "Уведомление")
             .setContentText(message ?: "")
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setAutoCancel(true)

@@ -14,6 +14,9 @@ class ProductsViewModel : ViewModel() {
     private val _searchQuery = MutableLiveData<String>("")
     val searchQuery: LiveData<String> = _searchQuery
 
+    private val _notificationEvent = MutableLiveData<Pair<String, String>>()
+    val notificationEvent: LiveData<Pair<String, String>> = _notificationEvent
+
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
     init {
@@ -37,18 +40,20 @@ class ProductsViewModel : ViewModel() {
     fun addProducts(product: Product) {
         _allProducts.add(product)
         filterProducts(_searchQuery.value ?: "")
+        _notificationEvent.value = "Добавлен товар" to "Товар \"${product.name}\" успешно добавлен."
     }
 
     fun updateProducts(updatedProduct: Product) {
         _allProducts.replaceAll { if (it.barcode == updatedProduct.barcode) updatedProduct else it }
         filterProducts(_searchQuery.value ?: "")
+        _notificationEvent.value = "Товар обновлён" to "Товар \"${updatedProduct.name}\" успешно обновлён."
     }
 
     fun loadUpdatedProducts() {
         //_products.value = fetchProductsFromDatabase()
     }
 
-    fun getId() : Int {
+    fun getId(): Int {
         //_warehouses.value = fetchWarehousesFromDatabase()
         return 0
     }

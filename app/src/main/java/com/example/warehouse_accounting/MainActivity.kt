@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        window.statusBarColor = android.graphics.Color.parseColor("#222222")
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
