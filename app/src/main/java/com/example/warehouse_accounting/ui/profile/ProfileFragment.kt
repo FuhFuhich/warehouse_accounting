@@ -130,7 +130,21 @@ class ProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val selectedImageUri: Uri? = data.data
+
+            val takeFlags = data.flags and
+                    (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+
+            try {
+                selectedImageUri?.let { uri ->
+                    requireContext().contentResolver.takePersistableUriPermission(uri, takeFlags)
+                }
+            } catch (e: SecurityException) {
+                // Тут если что будет обработка ошибки, если не в падлу будет делать
+            }
+
             viewModel.updatePhoto(selectedImageUri)
         }
     }
+
+
 }
