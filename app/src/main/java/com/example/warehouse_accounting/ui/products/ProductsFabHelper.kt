@@ -14,7 +14,6 @@ import com.example.warehouse_accounting.models.Product
 
 class ProductsFabHelper(
     private val context: Context,
-    private val onProductAdded: (Product) -> Unit,
     private val viewModel: ProductsViewModel
 ) {
     private var productImageUri: Uri? = null
@@ -47,7 +46,7 @@ class ProductsFabHelper(
                         imageUri = productImageUri,
                         quantity = quantity.toInt()
                     )
-                    onProductAdded(product)
+                    viewModel.addProducts(product)
                     Toast.makeText(context, "Товар добавлен", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
@@ -97,6 +96,7 @@ class ProductsFabHelper(
                         quantity = newQuantity.toInt()
                     )
                     onProductUpdated(updatedProduct)
+                    viewModel.updateProducts(updatedProduct)
                     Toast.makeText(context, "Товар обновлён", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
