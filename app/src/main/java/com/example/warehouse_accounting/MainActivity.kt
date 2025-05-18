@@ -12,11 +12,14 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.warehouse_accounting.databinding.ActivityMainBinding
+import com.example.warehouse_accounting.ServerController.WebSocketConnection
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private var webSocketConnection: WebSocketConnection? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,10 +62,19 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             }
         }
+
+        val wsUrl = "ws://192.168.8.104:5400"
+        webSocketConnection = WebSocketConnection(wsUrl)
+        webSocketConnection?.connect()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        webSocketConnection?.close()
     }
 }
