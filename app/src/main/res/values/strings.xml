@@ -92,4 +92,14 @@
     <string name="send_message">Отправить</string>
     <string name="text_message">Введите сообщение</string>
     <string name="btnRegistration">Registration</string>
+    <string name="name_profile">Имя</string>
+    <string name="second_name_profile">Фамилия</string>
+    <string name="login_profile">Логин</string>
+    <string name="telephone_profile">Телефон</string>
+    <string name="email_profile">E-mail</string>
+    <string name="change_photo_profile">Изменить фотографию</string>
+    <string name="save_profile">Сохранить</string>
+    <string name="push_settings">Push-уведомления</string>
+    <string name="dark_theme_settings">Тёмная тема</string>
+    <string name="version_settings">Версия: 1.0.0</string>
 </resources>
