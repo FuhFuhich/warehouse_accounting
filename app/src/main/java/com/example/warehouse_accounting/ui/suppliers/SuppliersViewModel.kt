@@ -18,6 +18,9 @@ class SuppliersViewModel(state: SavedStateHandle) : ViewModel() {
     private val savedStateHandle = state
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
 
+    private val _notificationEvent = MutableLiveData<Pair<String, String>>()
+    val notificationEvent: LiveData<Pair<String, String>> = _notificationEvent
+
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
     init {
@@ -41,11 +44,13 @@ class SuppliersViewModel(state: SavedStateHandle) : ViewModel() {
     fun addSuppliers(suppliers: Suppliers) {
         _allSuppliers.add(suppliers)
         filterSuppliers(searchQuery.value ?: "")
+        _notificationEvent.value = "Добавлен поставщик" to "Поставщик \"${suppliers.name}\" успешно добавлен."
     }
 
     fun updateSuppliers(updatedSuppliers: Suppliers) {
         _allSuppliers.replaceAll { if (it.tin == updatedSuppliers.tin) updatedSuppliers else it }
         filterSuppliers(searchQuery.value ?: "")
+        _notificationEvent.value = "Поставщик обновлён" to "Поставщик \"${updatedSuppliers.name}\" успешно обновлён."
     }
 
     fun loadUpdatedSuppliers() {

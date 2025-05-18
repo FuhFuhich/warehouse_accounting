@@ -18,6 +18,9 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
     private val savedStateHandle = state
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
 
+    private val _notificationEvent = MutableLiveData<Pair<String, String>>()
+    val notificationEvent: LiveData<Pair<String, String>> = _notificationEvent
+
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
     init {
@@ -41,11 +44,13 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
     fun addWarehouses(warehouses: Warehouses) {
         _allWarehouses.add(warehouses)
         filterWarehouses(searchQuery.value ?: "")
+        _notificationEvent.value = "Добавлен склад" to "Склад \"${warehouses.warehousesName}\" успешно добавлен."
     }
 
     fun updateWarehouses(updatedWarehouses: Warehouses) {
         _allWarehouses.replaceAll { if (it.id == updatedWarehouses.id) updatedWarehouses else it }
         filterWarehouses(searchQuery.value ?: "")
+        _notificationEvent.value = "Склад обновлён" to "Склад \"${updatedWarehouses.warehousesName}\" успешно обновлён."
     }
 
     fun loadUpdatedWarehouses() {

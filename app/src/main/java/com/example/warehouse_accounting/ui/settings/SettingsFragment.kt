@@ -14,8 +14,6 @@ import com.example.warehouse_accounting.R
 class SettingsFragment : Fragment() {
 
     private lateinit var switchPushNotifications: SwitchCompat
-    private lateinit var switchEmailNotifications: SwitchCompat
-    private lateinit var switchLowStockNotifications: SwitchCompat
     private lateinit var switchTheme: SwitchCompat
     private lateinit var textViewVersion: TextView
 
@@ -26,26 +24,16 @@ class SettingsFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_settings, container, false)
 
         switchPushNotifications = root.findViewById(R.id.switchPushNotifications)
-        switchEmailNotifications = root.findViewById(R.id.switchEmailNotifications)
-        switchLowStockNotifications = root.findViewById(R.id.switchLowStockNotifications)
         switchTheme = root.findViewById(R.id.switchTheme)
         textViewVersion = root.findViewById(R.id.textViewVersion)
 
         val prefs = requireContext().getSharedPreferences("settings_prefs", Context.MODE_PRIVATE)
 
         switchPushNotifications.isChecked = prefs.getBoolean("push_notifications", true)
-        switchEmailNotifications.isChecked = prefs.getBoolean("email_notifications", true)
-        switchLowStockNotifications.isChecked = prefs.getBoolean("low_stock_notifications", true)
         switchTheme.isChecked = prefs.getBoolean("dark_theme", false)
 
         switchPushNotifications.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("push_notifications", isChecked).apply()
-        }
-        switchEmailNotifications.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("email_notifications", isChecked).apply()
-        }
-        switchLowStockNotifications.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("low_stock_notifications", isChecked).apply()
         }
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("dark_theme", isChecked).apply()

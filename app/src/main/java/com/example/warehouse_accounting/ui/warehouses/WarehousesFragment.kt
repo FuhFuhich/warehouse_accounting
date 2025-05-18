@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.databinding.FragmentWarehousesBinding
 import com.example.warehouse_accounting.ui.buyers.BuyersFabHelper
+import com.example.warehouse_accounting.utils.NotificationUtils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class WarehousesFragment : Fragment() {
@@ -72,6 +73,10 @@ class WarehousesFragment : Fragment() {
         val fab: FloatingActionButton = binding.fabWarehouses
         fab.setOnClickListener {
             warehousesFabHelper.showAddWarehousesDialog()
+        }
+
+        viewModel.notificationEvent.observe(viewLifecycleOwner) { (title, message) ->
+            NotificationUtils.showNotification(requireContext(), title, message)
         }
 
         viewModel.warehouses.observe(viewLifecycleOwner) { warehouses ->

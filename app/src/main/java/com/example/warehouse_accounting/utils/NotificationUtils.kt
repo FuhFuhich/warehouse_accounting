@@ -9,6 +9,9 @@ import com.example.warehouse_accounting.R
 
 object NotificationUtils {
     fun showNotification(context: Context, title: String, message: String) {
+        val prefs = context.getSharedPreferences("settings_prefs", Context.MODE_PRIVATE)
+        if (!prefs.getBoolean("push_notifications", true)) return
+
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "default_channel"
 
@@ -29,3 +32,4 @@ object NotificationUtils {
         notificationManager.notify(System.currentTimeMillis().toInt(), notification)
     }
 }
+
