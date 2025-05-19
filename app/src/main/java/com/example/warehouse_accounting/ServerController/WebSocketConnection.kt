@@ -21,7 +21,7 @@ class WebSocketConnection(private val url: String) {
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 println("WebSocket подключён")
-                webSocket.send("Йоу!")
+                webSocket.send("")
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
