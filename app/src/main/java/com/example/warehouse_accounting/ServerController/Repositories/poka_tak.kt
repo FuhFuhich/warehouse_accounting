@@ -3,6 +3,7 @@ package com.example.warehouse_accounting.ServerController.Repositories
 import com.example.warehouse_accounting.ServerController.WebSocketConnection
 
 class poka_tak(private val webSocketConnection: WebSocketConnection) {
+
     fun send_request(type: String, order: String) {
         webSocketConnection.sendMessage("$type $order")
     }

@@ -1,5 +1,6 @@
 package com.example.warehouse_accounting.models
 
+@Serializable
 data class Buyers(
     val id: Int,
     val name: String,
