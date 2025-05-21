@@ -35,7 +35,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         _profile.value = _profile.value?.copy(email = newEmail)
     }
 
-    fun updatePhoto(newPhotoUri: Uri?) {
+    fun updatePhoto(newPhotoUri: String?) {
         _profile.value = _profile.value?.copy(photoUri = newPhotoUri)
     }
 
@@ -59,7 +59,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             login = prefs.getString("login", "johndoe") ?: "johndoe",
             phone = prefs.getString("phone", "+7 999 123-45-67") ?: "+7 999 123-45-67",
             email = prefs.getString("email", "john.doe@example.com") ?: "john.doe@example.com",
-            photoUri = prefs.getString("photoUri", null)?.let { Uri.parse(it) }
+            photoUri = prefs.getString("photoUri", null)
         )
     }
 }

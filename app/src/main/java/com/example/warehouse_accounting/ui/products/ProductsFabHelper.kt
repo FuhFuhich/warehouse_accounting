@@ -16,7 +16,7 @@ class ProductsFabHelper(
     private val context: Context,
     private val viewModel: ProductsViewModel
 ) {
-    private var productImageUri: Uri? = null
+    private var productImageUri: String? = null
     private val IMAGE_PICK_CODE = 1000
 
     fun showAddProductDialog() {
@@ -120,7 +120,7 @@ class ProductsFabHelper(
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            productImageUri = data?.data
+            productImageUri = data?.data.toString()
             Toast.makeText(context, "Изображение выбрано", Toast.LENGTH_SHORT).show()
         }
     }

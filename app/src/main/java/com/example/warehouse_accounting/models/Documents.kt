@@ -1,5 +1,8 @@
 package com.example.warehouse_accounting.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Documents(
     val documents: String,
     val documentsNumber: String,

@@ -71,7 +71,7 @@ class ProfileFragment : Fragment() {
                 editTextEmail.setText(profile.email)
             }
             if (profile.photoUri != null) {
-                imageViewPhoto.setImageURI(profile.photoUri)
+                imageViewPhoto.setImageURI(Uri.parse(profile.photoUri))
             } else {
                 imageViewPhoto.setImageResource(android.R.drawable.sym_def_app_icon)
             }
@@ -131,8 +131,7 @@ class ProfileFragment : Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val selectedImageUri: Uri? = data.data
 
-            val takeFlags = data.flags and
-                    (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
 
             try {
                 selectedImageUri?.let { uri ->
@@ -142,9 +141,10 @@ class ProfileFragment : Fragment() {
                 // Тут если что будет обработка ошибки, если не в падлу будет делать
             }
 
-            viewModel.updatePhoto(selectedImageUri)
+            viewModel.updatePhoto(selectedImageUri?.toString())
         }
     }
+
 
 
 }
