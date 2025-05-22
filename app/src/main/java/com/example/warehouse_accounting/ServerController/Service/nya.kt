@@ -2,6 +2,7 @@ package com.example.warehouse_accounting.ServerController.Service
 
 import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
 import com.example.warehouse_accounting.models.Buyers
+import com.example.warehouse_accounting.models.Suppliers
 import kotlinx.serialization.json.Json
 
 class nya(private val repository: poka_tak) {
@@ -12,17 +13,15 @@ class nya(private val repository: poka_tak) {
     // Потом вызов метода sendMessage из WebSocketConnection
 
 
+    // Buyers
     fun getBuyersLiveData() = repository.buyersLiveData
-
-    fun addNewBuyer(buyer: Buyers) {
-        repository.send_request("buyersAdd", buyer)
-    }
-
-    fun requestAllBuyers() {
-        repository.send_request<Buyers>("buyersGet")
-    }
+    fun addNewBuyer(buyer: Buyers) = repository.send_request("buyersAdd", buyer)
+    fun requestAllBuyers() = repository.send_request<Buyers>("buyersGet")
 
     // Suppliers
+    fun getSuppliersLiveData() = repository.suppliersLiveData
+    fun addNewSupplier(supplier: Suppliers) = repository.send_request("suppliersAdd", supplier)
+    fun requestAllSuppliers() = repository.send_request<Suppliers>("suppliersGet")
 
 
     // Profile

@@ -1,21 +1,18 @@
 package com.example.warehouse_accounting.ui.suppliers
 
 import androidx.lifecycle.*
+import com.example.warehouse_accounting.ServerController.Service.nya
 import com.example.warehouse_accounting.models.Suppliers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-class SuppliersViewModel(state: SavedStateHandle) : ViewModel() {
+class SuppliersViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val nyaService: nya
+) : ViewModel() {
     private val _allSuppliers = mutableListOf<Suppliers>()
     private val _suppliers = MutableLiveData<MutableList<Suppliers>>(mutableListOf())
     val suppliers: LiveData<MutableList<Suppliers>> = _suppliers
 
-    private val savedStateHandle = state
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
 
     private val _notificationEvent = MutableLiveData<Pair<String, String>>()
@@ -23,11 +20,18 @@ class SuppliersViewModel(state: SavedStateHandle) : ViewModel() {
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
-    init {
-        startUpdatingProducts()
+    private val suppliersObserver = Observer<MutableList<Suppliers>> { list ->
+        _allSuppliers.clear()
+        _allSuppliers.addAll(list)
+        filterSuppliers(searchQuery.value ?: "")
     }
 
-    private fun startUpdatingProducts() {
+    init {
+        nyaService.getSuppliersLiveData().observeForever(suppliersObserver)
+        startUpdatingSuppliers()
+    }
+
+    private fun startUpdatingSuppliers() {
         viewModelScope.launch {
             while (isActive) {
                 loadUpdatedSuppliers()
@@ -39,6 +43,7 @@ class SuppliersViewModel(state: SavedStateHandle) : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
+        nyaService.getSuppliersLiveData().removeObserver(suppliersObserver)
     }
 
     fun addSuppliers(suppliers: Suppliers) {
@@ -54,13 +59,10 @@ class SuppliersViewModel(state: SavedStateHandle) : ViewModel() {
     }
 
     fun loadUpdatedSuppliers() {
-        //_suppliers.value = fetchSuppliersFromDatabase()
+        nyaService.requestAllSuppliers()
     }
 
-    fun getId() : Int {
-        //_warehouses.value = fetchWarehousesFromDatabase()
-        return 0
-    }
+    fun getId(): Int = 0
 
     fun filterSuppliers(query: String) {
         searchQuery.value = query

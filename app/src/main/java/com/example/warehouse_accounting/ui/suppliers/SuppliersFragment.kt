@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.warehouse_accounting.R
@@ -26,7 +27,9 @@ class SuppliersFragment : Fragment() {
     private var _binding: FragmentSuppliersBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: SuppliersViewModel
+    private val viewModel: SuppliersViewModel by viewModels {
+        SuppliersViewModelFactory(ServiceLocator.nyaService, this)
+    }
     private lateinit var suppliersFabHelper: SuppliersFabHelper
     private lateinit var suppliersLongClickHelper: SuppliersLongClickHelper
     private lateinit var adapter: SuppliersAdapter
@@ -46,7 +49,6 @@ class SuppliersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(SuppliersViewModel::class.java)
         _binding = FragmentSuppliersBinding.inflate(inflater, container, false)
         val root: View = binding.root
 

@@ -1,4 +1,4 @@
-package com.example.warehouse_accounting.ui.buyers
+package com.example.warehouse_accounting.ui.suppliers
 
 import android.os.Bundle
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.example.warehouse_accounting.ServerController.Service.nya
 
-class BuyersViewModelFactory(
+class SuppliersViewModelFactory(
     private val nyaService: nya,
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null
@@ -17,8 +17,8 @@ class BuyersViewModelFactory(
         modelClass: Class<T>,
         handle: SavedStateHandle
     ): T {
-        if (modelClass.isAssignableFrom(BuyersViewModel::class.java)) {
-            return BuyersViewModel(handle, nyaService) as T
+        if (modelClass.isAssignableFrom(SuppliersViewModel::class.java)) {
+            return SuppliersViewModel(handle, nyaService) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
