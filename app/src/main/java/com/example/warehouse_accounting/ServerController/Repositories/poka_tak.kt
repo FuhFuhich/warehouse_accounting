@@ -1,11 +1,18 @@
 package com.example.warehouse_accounting.ServerController.Repositories
 
 import com.example.warehouse_accounting.ServerController.WebSocketConnection
+import kotlinx.serialization.json.Json
 
 class poka_tak(private val webSocketConnection: WebSocketConnection) {
 
-    fun send_request(type: String, order: String) {
-        webSocketConnection.sendMessage("$type $order")
+    private inline fun <reified T : Any> send_request(type: String, data: T? = null) {
+        val message = if (data != null) {
+            val json = Json.encodeToString(data)
+            "$type $json"
+        } else {
+            type // только тип, без данных
+        }
+        webSocketConnection.sendMessage(message)
     }
 
     fun handle_request(message: String) {
