@@ -4,6 +4,7 @@ import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
 import com.example.warehouse_accounting.models.Buyers
 import com.example.warehouse_accounting.models.Profile
 import com.example.warehouse_accounting.models.Suppliers
+import com.example.warehouse_accounting.models.Warehouses
 import kotlinx.serialization.json.Json
 
 class nya(private val repository: poka_tak) {
@@ -32,6 +33,9 @@ class nya(private val repository: poka_tak) {
 
 
     // Warehouses
+    fun getWarehousesLiveData() = repository.warehousesLiveData
+    fun addNewWarehouse(warehouse: Warehouses) = repository.send_request("warehousesAdd", warehouse)
+    fun requestAllWarehouses() = repository.send_request<Warehouses>("warehousesGet")
 
 
     // Documents

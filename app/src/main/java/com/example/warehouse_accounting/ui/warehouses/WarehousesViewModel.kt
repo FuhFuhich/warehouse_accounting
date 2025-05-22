@@ -1,21 +1,18 @@
 package com.example.warehouse_accounting.ui.warehouses
 
 import androidx.lifecycle.*
+import com.example.warehouse_accounting.ServerController.Service.nya
 import com.example.warehouse_accounting.models.Warehouses
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
+class WarehousesViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val nyaService: nya
+) : ViewModel() {
     private val _allWarehouses = mutableListOf<Warehouses>()
     private val _warehouses = MutableLiveData<MutableList<Warehouses>>(mutableListOf())
     val warehouses: LiveData<MutableList<Warehouses>> = _warehouses
 
-    private val savedStateHandle = state
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
 
     private val _notificationEvent = MutableLiveData<Pair<String, String>>()
@@ -23,11 +20,18 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
-    init {
-        startUpdatingProducts()
+    private val warehousesObserver = Observer<MutableList<Warehouses>> { list ->
+        _allWarehouses.clear()
+        _allWarehouses.addAll(list)
+        filterWarehouses(searchQuery.value ?: "")
     }
 
-    private fun startUpdatingProducts() {
+    init {
+        nyaService.getWarehousesLiveData().observeForever(warehousesObserver)
+        startUpdatingWarehouses()
+    }
+
+    private fun startUpdatingWarehouses() {
         viewModelScope.launch {
             while (isActive) {
                 loadUpdatedWarehouses()
@@ -39,6 +43,7 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
+        nyaService.getWarehousesLiveData().removeObserver(warehousesObserver)
     }
 
     fun addWarehouses(warehouses: Warehouses) {
@@ -54,13 +59,10 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
     }
 
     fun loadUpdatedWarehouses() {
-        //_warehouses.value = fetchWarehousesFromDatabase()
+        nyaService.requestAllWarehouses()
     }
 
-    fun getId() : Int {
-        //_warehouses.value = fetchWarehousesFromDatabase()
-        return 0
-    }
+    fun getId(): Int = 0
 
     fun filterWarehouses(query: String) {
         searchQuery.value = query
@@ -69,9 +71,5 @@ class WarehousesViewModel(state: SavedStateHandle) : ViewModel() {
         } else {
             _allWarehouses.filter { it.warehousesName.contains(query, ignoreCase = true) }.toMutableList()
         }
-    }
-
-    fun generateUniqueId() : Int {
-        return 0
     }
 }
