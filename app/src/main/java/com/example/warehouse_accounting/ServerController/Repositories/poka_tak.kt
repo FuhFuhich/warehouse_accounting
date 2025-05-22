@@ -10,7 +10,7 @@ class poka_tak(private val webSocketConnection: WebSocketConnection) {
             val json = Json.encodeToString(data)
             "$type $json"
         } else {
-            type // только тип, без данных
+            type
         }
         webSocketConnection.sendMessage(message)
     }
@@ -28,7 +28,7 @@ class poka_tak(private val webSocketConnection: WebSocketConnection) {
     }
 
     private fun handleBuyers(data: String) {
-        println("Обработка buyers: $data")
+        println("Обработка buyers:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n $data")
         // здесь логика с покупателем
     }
 
