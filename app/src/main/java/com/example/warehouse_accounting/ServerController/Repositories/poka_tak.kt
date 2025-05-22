@@ -1,11 +1,32 @@
 package com.example.warehouse_accounting.ServerController.Repositories
 
+import androidx.lifecycle.MutableLiveData
 import com.example.warehouse_accounting.ServerController.WebSocketConnection
+import com.example.warehouse_accounting.models.Buyers
+import com.example.warehouse_accounting.models.Product
+import com.example.warehouse_accounting.models.Profile
+import com.example.warehouse_accounting.models.Warehouses
+import com.example.warehouse_accounting.models.Documents
+import com.example.warehouse_accounting.models.Suppliers
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-class poka_tak(private val webSocketConnection: WebSocketConnection) {
+class poka_tak(val webSocketConnection: WebSocketConnection) {
 
-    private inline fun <reified T : Any> send_request(type: String, data: T? = null) {
+    val buyersLiveData = MutableLiveData<MutableList<Buyers>>()
+    val suppliersLiveData = MutableLiveData<MutableList<Suppliers>>()
+    val profileLiveData = MutableLiveData<Profile?>()
+    val warehousesLiveData = MutableLiveData<MutableList<Warehouses>>()
+    val documentsLiveData = MutableLiveData<MutableList<Documents>>()
+    val productsLiveData = MutableLiveData<MutableList<Product>>()
+
+    init {
+        webSocketConnection.onTextMessage = { message ->
+            handle_request(message)
+        }
+    }
+
+    inline fun <reified T : Any> send_request(type: String, data: T? = null) {
         val message = if (data != null) {
             val json = Json.encodeToString(data)
             "$type $json"
@@ -17,48 +38,77 @@ class poka_tak(private val webSocketConnection: WebSocketConnection) {
 
     fun handle_request(message: String) {
         when {
-            message.startsWith("buyers") -> handleBuyers(message.removePrefix("buyers ").trim())
-            message.startsWith("suppliers") -> handleSuppliers(message.removePrefix("suppliers ").trim())
-            message.startsWith("profile") -> handleProfile(message.removePrefix("profile ").trim())
-            message.startsWith("warehouses") -> handleWarehouses(message.removePrefix("warehouses ").trim())
-            message.startsWith("documents") -> handleDocuments(message.removePrefix("documents ").trim())
-            message.startsWith("products") -> handleProducts(message.removePrefix("products ").trim())
-            else -> handleUnknown(message)
+            message.startsWith("buyersGet")      -> handleBuyers(message.removePrefix("buyersGet").trim())
+            message.startsWith("suppliersGet")   -> handleSuppliers(message.removePrefix("suppliersGet").trim())
+            message.startsWith("profileGet")     -> handleProfile(message.removePrefix("profileGet").trim())
+            message.startsWith("warehousesGet")  -> handleWarehouses(message.removePrefix("warehousesGet").trim())
+            message.startsWith("documentsGet")   -> handleDocuments(message.removePrefix("documentsGet").trim())
+            message.startsWith("productsGet")    -> handleProducts(message.removePrefix("productsGet").trim())
+            else                                -> handleUnknown(message)
         }
     }
 
     private fun handleBuyers(data: String) {
         println("Обработка buyers: $data")
-        // здесь логика с покупателем
+        try {
+            val buyersList = Json.decodeFromString<List<Buyers>>(data)
+            buyersLiveData.postValue(buyersList.toMutableList())
+        } catch (e: Exception) {
+            println("Ошибка парсинга покупателей: ${e.message}")
+        }
     }
 
     private fun handleSuppliers(data: String) {
         println("Обработка suppliers: $data")
-        // и тд
+        try {
+            val suppliersList = Json.decodeFromString<List<Suppliers>>(data)
+            suppliersLiveData.postValue(suppliersList.toMutableList())
+        } catch (e: Exception) {
+            println("Ошибка парсинга поставщиков: ${e.message}")
+        }
     }
 
     private fun handleProfile(data: String) {
         println("Обработка profile: $data")
-
+        try {
+            val profile = Json.decodeFromString<Profile>(data)
+            profileLiveData.postValue(profile)
+        } catch (e: Exception) {
+            println("Ошибка парсинга профиля: ${e.message}")
+        }
     }
 
     private fun handleWarehouses(data: String) {
         println("Обработка warehouses: $data")
-
+        try {
+            val warehousesList = Json.decodeFromString<List<Warehouses>>(data)
+            warehousesLiveData.postValue(warehousesList.toMutableList())
+        } catch (e: Exception) {
+            println("Ошибка парсинга складов: ${e.message}")
+        }
     }
 
     private fun handleDocuments(data: String) {
         println("Обработка documents: $data")
-
+        try {
+            val documentsList = Json.decodeFromString<List<Documents>>(data)
+            documentsLiveData.postValue(documentsList.toMutableList())
+        } catch (e: Exception) {
+            println("Ошибка парсинга документов: ${e.message}")
+        }
     }
 
     private fun handleProducts(data: String) {
         println("Обработка products: $data")
-
+        try {
+            val productsList = Json.decodeFromString<List<Product>>(data)
+            productsLiveData.postValue(productsList.toMutableList())
+        } catch (e: Exception) {
+            println("Ошибка парсинга товаров: ${e.message}")
+        }
     }
 
     private fun handleUnknown(data: String) {
         println("Неизвестная команда: $data")
-
     }
 }

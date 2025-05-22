@@ -12,6 +12,9 @@ class WebSocketConnection(private val url: String) {
         .build()
 
     private var webSocket: WebSocket? = null
+    private var isConnected = false
+
+    var onTextMessage: ((String) -> Unit)? = null
 
     fun connect() {
         val request = Request.Builder()
@@ -20,12 +23,13 @@ class WebSocketConnection(private val url: String) {
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
+                isConnected = true
                 println("WebSocket подключён")
-                webSocket.send("")
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
                 println("Получено сообщение: $text")
+                onTextMessage?.invoke(text)
             }
 
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -33,25 +37,33 @@ class WebSocketConnection(private val url: String) {
             }
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+                isConnected = false
                 println("WebSocket закрывается: $code $reason")
                 webSocket.close(1000, null)
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                isConnected = false
                 println("WebSocket закрыт: $code $reason")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                isConnected = false
                 println("Ошибка WebSocket: ${t.message}")
             }
         })
     }
 
     fun sendMessage(message: String) {
-        webSocket?.send(message)
+        if (isConnected && webSocket != null) {
+            webSocket?.send(message)
+        } else {
+            println("WebSocket не подключён, сообщение не отправлено: $message")
+        }
     }
 
     fun close() {
+        isConnected = false
         webSocket?.close(1000, "Закрыто клиентом")
     }
 }
