@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.warehouse_accounting.R
@@ -25,7 +26,10 @@ class BuyersFragment : Fragment() {
     private var _binding: FragmentBuyersBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: BuyersViewModel
+    private val viewModel: BuyersViewModel by viewModels {
+        BuyersViewModelFactory(ServiceLocator.nyaService, this)
+    }
+
     private lateinit var buyersFabHelper: BuyersFabHelper
     private lateinit var buyersLongClickHelper: BuyersLongClickHelper
     private lateinit var adapter: BuyersAdapter
@@ -46,7 +50,6 @@ class BuyersFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(BuyersViewModel::class.java)
         _binding = FragmentBuyersBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -56,7 +59,6 @@ class BuyersFragment : Fragment() {
             { buyers -> viewModel.addBuyers(buyers) },
             viewModel
         )
-
 
         adapter = BuyersAdapter(mutableListOf(), buyersLongClickHelper) { buyers ->
             buyersFabHelper.showEditBuyersDialog(buyers) { updatedBuyers ->
@@ -68,20 +70,6 @@ class BuyersFragment : Fragment() {
 
         viewModel.buyers.observe(viewLifecycleOwner) { buyers ->
             adapter.updateBuyers(buyers)
-        }
-
-        val fab: FloatingActionButton = binding.fabBuyers
-        fab.setOnClickListener {
-            buyersFabHelper.showAddBuyersDialog()
-        }
-
-        viewModel.notificationEvent.observe(viewLifecycleOwner) { (title, message) ->
-            NotificationUtils.showNotification(requireContext(), title, message)
-        }
-
-        viewModel.buyers.observe(viewLifecycleOwner) { buyers ->
-            adapter.updateBuyers(buyers)
-
             if (buyers.isEmpty()) {
                 binding.tvNoBuyers.visibility = View.VISIBLE
                 binding.rvBuyers.visibility = View.GONE
@@ -91,8 +79,18 @@ class BuyersFragment : Fragment() {
             }
         }
 
+        val fab: FloatingActionButton = binding.fabBuyers
+        fab.setOnClickListener {
+            buyersFabHelper.showAddBuyersDialog()
+        }
+
+        viewModel.notificationEvent.observe(viewLifecycleOwner) { (title, message) ->
+            com.example.warehouse_accounting.utils.NotificationUtils.showNotification(requireContext(), title, message)
+        }
+
         return root
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.buyers_menu_action_bar, menu)

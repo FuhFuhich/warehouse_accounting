@@ -1,21 +1,18 @@
 package com.example.warehouse_accounting.ui.buyers
 
 import androidx.lifecycle.*
+import com.example.warehouse_accounting.ServerController.Service.nya
 import com.example.warehouse_accounting.models.Buyers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-class BuyersViewModel(state: SavedStateHandle) : ViewModel() {
+class BuyersViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val nyaService: nya
+) : ViewModel() {
     private val _allBuyers = mutableListOf<Buyers>()
     private val _buyers = MutableLiveData<MutableList<Buyers>>(mutableListOf())
     val buyers: LiveData<MutableList<Buyers>> = _buyers
 
-    private val savedStateHandle = state
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
 
     private val _notificationEvent = MutableLiveData<Pair<String, String>>()
@@ -23,7 +20,14 @@ class BuyersViewModel(state: SavedStateHandle) : ViewModel() {
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
+    private val buyersObserver = Observer<MutableList<Buyers>> { list ->
+        _allBuyers.clear()
+        _allBuyers.addAll(list)
+        filterBuyers(searchQuery.value ?: "")
+    }
+
     init {
+        nyaService.getBuyersLiveData().observeForever(buyersObserver)
         startUpdatingProducts()
     }
 
@@ -31,7 +35,7 @@ class BuyersViewModel(state: SavedStateHandle) : ViewModel() {
         viewModelScope.launch {
             while (isActive) {
                 loadUpdatedBuyers()
-                delay(5000)
+                delay(10000)
             }
         }
     }
@@ -39,6 +43,7 @@ class BuyersViewModel(state: SavedStateHandle) : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
+        nyaService.getBuyersLiveData().removeObserver(buyersObserver)
     }
 
     fun addBuyers(buyers: Buyers) {
@@ -54,11 +59,10 @@ class BuyersViewModel(state: SavedStateHandle) : ViewModel() {
     }
 
     fun loadUpdatedBuyers() {
-        //_buyers.value = fetchSuppliersFromDatabase()
+        nyaService.requestAllBuyers()
     }
 
-    fun getId() : Int {
-        //_warehouses.value = fetchWarehousesFromDatabase()
+    fun getId(): Int {
         return 0
     }
 
