@@ -2,6 +2,7 @@ package com.example.warehouse_accounting.ServerController.Service
 
 import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
 import com.example.warehouse_accounting.models.Buyers
+import com.example.warehouse_accounting.models.Product
 import com.example.warehouse_accounting.models.Profile
 import com.example.warehouse_accounting.models.Suppliers
 import com.example.warehouse_accounting.models.Warehouses
@@ -42,5 +43,8 @@ class nya(private val repository: poka_tak) {
 
 
     // Products
+    fun getProductsLiveData() = repository.productsLiveData
+    fun addNewProduct(product: Product) = repository.send_request("productsAdd", product)
+    fun requestAllProducts() = repository.send_request<Product>("productsGet")
 
 }

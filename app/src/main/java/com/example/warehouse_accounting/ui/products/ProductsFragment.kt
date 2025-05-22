@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.warehouse_accounting.R
@@ -18,7 +19,9 @@ class ProductsFragment : Fragment() {
     private var _binding: FragmentProductsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: ProductsViewModel
+    private val viewModel: ProductsViewModel by viewModels {
+        ProductsViewModelFactory(ServiceLocator.nyaService, this)
+    }
 
     private lateinit var productsFabHelper: ProductsFabHelper
     private lateinit var productsLongClickHelper: ProductsLongClickHelper
@@ -34,7 +37,6 @@ class ProductsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this).get(ProductsViewModel::class.java)
         _binding = FragmentProductsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
