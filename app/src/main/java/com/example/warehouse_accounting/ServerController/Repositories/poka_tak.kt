@@ -28,7 +28,7 @@ class poka_tak(private val webSocketConnection: WebSocketConnection) {
     }
 
     private fun handleBuyers(data: String) {
-        println("Обработка buyers:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n $data")
+        println("Обработка buyers: $data")
         // здесь логика с покупателем
     }
 
