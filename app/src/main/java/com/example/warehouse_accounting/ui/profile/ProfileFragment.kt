@@ -23,7 +23,7 @@ import com.example.warehouse_accounting.R
 class ProfileFragment : Fragment() {
 
     private val viewModel: ProfileViewModel by viewModels {
-        ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        ProfileViewModelFactory(requireActivity().application, ServiceLocator.nyaService)
     }
 
     private lateinit var imageViewPhoto: ImageView

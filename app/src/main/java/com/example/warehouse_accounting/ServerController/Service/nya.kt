@@ -2,6 +2,7 @@ package com.example.warehouse_accounting.ServerController.Service
 
 import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
 import com.example.warehouse_accounting.models.Buyers
+import com.example.warehouse_accounting.models.Profile
 import com.example.warehouse_accounting.models.Suppliers
 import kotlinx.serialization.json.Json
 
@@ -25,6 +26,9 @@ class nya(private val repository: poka_tak) {
 
 
     // Profile
+    fun getProfileLiveData() = repository.profileLiveData
+    fun requestProfile() = repository.send_request<Profile>("profileGet")
+    fun updateProfile(profile: Profile) = repository.send_request("profileUpdate", profile)
 
 
     // Warehouses

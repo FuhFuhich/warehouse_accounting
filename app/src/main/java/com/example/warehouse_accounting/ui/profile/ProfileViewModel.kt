@@ -2,19 +2,25 @@ package com.example.warehouse_accounting.ui.profile
 
 import android.app.Application
 import android.content.Context
-import android.net.Uri
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
+import com.example.warehouse_accounting.ServerController.Service.nya
 import com.example.warehouse_accounting.models.Profile
 
-class ProfileViewModel(application: Application) : AndroidViewModel(application) {
+class ProfileViewModel(
+    application: Application,
+    private val nyaService: nya
+) : AndroidViewModel(application) {
 
     private val prefs = application.getSharedPreferences("profile_prefs", Context.MODE_PRIVATE)
 
+    // Локальное LiveData для редактирования
     private val _profile = MutableLiveData(loadProfile())
     val profile: LiveData<Profile> = _profile
 
+    // LiveData с сервера (можно наблюдать параллельно)
+    val serverProfile: LiveData<Profile?> = nyaService.getProfileLiveData()
+
+    // --- Методы локального изменения ---
     fun updateFirstName(newName: String) {
         _profile.value = _profile.value?.copy(firstName = newName)
     }
@@ -50,6 +56,8 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
                 .putString("photoUri", profile.photoUri?.toString())
                 .apply()
         }
+        // Можно сразу отправить профиль на сервер:
+        _profile.value?.let { nyaService.updateProfile(it) }
     }
 
     private fun loadProfile(): Profile {
@@ -61,5 +69,14 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             email = prefs.getString("email", "john.doe@example.com") ?: "john.doe@example.com",
             photoUri = prefs.getString("photoUri", null)
         )
+    }
+
+    fun requestProfileFromServer() {
+        nyaService.requestProfile()
+    }
+
+    fun setProfileFromServer(profile: Profile) {
+        _profile.value = profile
+        saveProfile()
     }
 }
