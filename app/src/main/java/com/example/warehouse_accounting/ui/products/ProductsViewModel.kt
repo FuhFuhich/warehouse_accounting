@@ -48,6 +48,7 @@ class ProductsViewModel(
 
     fun addProducts(product: Product) {
         _allProducts.add(product)
+        nyaService.addNewProduct(product)
         filterProducts(searchQuery.value ?: "")
         _notificationEvent.value = "Добавлен товар" to "Товар \"${product.name}\" успешно добавлен."
     }

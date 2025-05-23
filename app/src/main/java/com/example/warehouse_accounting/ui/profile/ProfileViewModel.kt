@@ -13,14 +13,11 @@ class ProfileViewModel(
 
     private val prefs = application.getSharedPreferences("profile_prefs", Context.MODE_PRIVATE)
 
-    // Локальное LiveData для редактирования
     private val _profile = MutableLiveData(loadProfile())
     val profile: LiveData<Profile> = _profile
 
-    // LiveData с сервера (можно наблюдать параллельно)
     val serverProfile: LiveData<Profile?> = nyaService.getProfileLiveData()
 
-    // --- Методы локального изменения ---
     fun updateFirstName(newName: String) {
         _profile.value = _profile.value?.copy(firstName = newName)
     }
@@ -56,7 +53,6 @@ class ProfileViewModel(
                 .putString("photoUri", profile.photoUri?.toString())
                 .apply()
         }
-        // Можно сразу отправить профиль на сервер:
         _profile.value?.let { nyaService.updateProfile(it) }
     }
 

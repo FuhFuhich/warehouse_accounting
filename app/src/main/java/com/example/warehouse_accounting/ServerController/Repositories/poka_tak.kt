@@ -14,6 +14,10 @@ import kotlinx.serialization.json.Json
 
 class poka_tak {
 
+    companion object {
+        val json = Json { ignoreUnknownKeys = true }
+    }
+
     val webSocketConnection = GlobalWebSocket.instance
     val buyersLiveData = MutableLiveData<MutableList<Buyers>>()
     val suppliersLiveData = MutableLiveData<MutableList<Suppliers>>()
@@ -30,8 +34,8 @@ class poka_tak {
 
     inline fun <reified T : Any> send_request(type: String, data: T? = null) {
         val message = if (data != null) {
-            val json = Json.encodeToString(data)
-            "$type $json"
+            val jsonStr = Companion.json.encodeToString(data)
+            "$type $jsonStr"
         } else {
             type
         }

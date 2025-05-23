@@ -48,6 +48,7 @@ class BuyersViewModel(
 
     fun addBuyers(buyers: Buyers) {
         _allBuyers.add(buyers)
+        nyaService.addNewBuyer(buyers)
         filterBuyers(searchQuery.value ?: "")
         _notificationEvent.value = "Добавлен покупатель" to "Покупатель \"${buyers.name}\" успешно добавлен."
     }

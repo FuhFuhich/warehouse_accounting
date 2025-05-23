@@ -48,6 +48,7 @@ class SuppliersViewModel(
 
     fun addSuppliers(suppliers: Suppliers) {
         _allSuppliers.add(suppliers)
+        nyaService.addNewSupplier(suppliers)
         filterSuppliers(searchQuery.value ?: "")
         _notificationEvent.value = "Добавлен поставщик" to "Поставщик \"${suppliers.name}\" успешно добавлен."
     }

@@ -48,6 +48,7 @@ class WarehousesViewModel(
 
     fun addWarehouses(warehouses: Warehouses) {
         _allWarehouses.add(warehouses)
+        nyaService.addNewWarehouse(warehouses)
         filterWarehouses(searchQuery.value ?: "")
         _notificationEvent.value = "Добавлен склад" to "Склад \"${warehouses.warehousesName}\" успешно добавлен."
     }
