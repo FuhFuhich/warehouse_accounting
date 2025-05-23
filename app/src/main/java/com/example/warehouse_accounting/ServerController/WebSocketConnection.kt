@@ -12,7 +12,8 @@ class WebSocketConnection(private val url: String) {
         .build()
 
     private var webSocket: WebSocket? = null
-    private var isConnected = false
+    private var isOpen: Boolean = false
+    private val messageQueue = mutableListOf<String>()
 
     var onTextMessage: ((String) -> Unit)? = null
 
@@ -23,47 +24,60 @@ class WebSocketConnection(private val url: String) {
 
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
-                isConnected = true
-                println("WebSocket подключён")
+                println("Websocket is connected")
+                isOpen = true
+                synchronized(messageQueue) {
+                    for (msg in messageQueue) {
+                        val sent = webSocket.send(msg)
+                        println("send from queue: $msg, result: $sent")
+                    }
+                    messageQueue.clear()
+                }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                println("Получено сообщение: $text")
+                println("message will be come: $text")
                 onTextMessage?.invoke(text)
             }
 
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-                println("Получены бинарные данные: ${bytes.hex()}")
+                println("binary message will be come: ${bytes.hex()}")
             }
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-                isConnected = false
-                println("WebSocket закрывается: $code $reason")
+                println("WebSocket is closing: $code $reason")
+                isOpen = false
                 webSocket.close(1000, null)
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                isConnected = false
-                println("WebSocket закрыт: $code $reason")
+                println("WebSocket is closed: $code $reason")
+                isOpen = false
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-                isConnected = false
-                println("Ошибка WebSocket: ${t.message}")
+                println("fail WebSocket: ${t.message}")
+                isOpen = false
             }
         })
+        println("WebSocket object will be created: $webSocket")
     }
 
     fun sendMessage(message: String) {
-        if (isConnected && webSocket != null) {
-            webSocket?.send(message)
+        println("I'm trying to send a message: $message")
+        if (isOpen && webSocket != null) {
+            val result = webSocket!!.send(message)
+            println("Sending result: $result")
         } else {
-            println("WebSocket не подключён, сообщение не отправлено: $message")
+            println("WebSocket is not ready, message is queued: $message")
+            synchronized(messageQueue) {
+                messageQueue.add(message)
+            }
         }
     }
 
     fun close() {
-        isConnected = false
+        isOpen = false
         webSocket?.close(1000, "Закрыто клиентом")
     }
 }

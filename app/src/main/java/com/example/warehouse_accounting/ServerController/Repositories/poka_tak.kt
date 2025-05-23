@@ -1,6 +1,7 @@
 package com.example.warehouse_accounting.ServerController.Repositories
 
 import androidx.lifecycle.MutableLiveData
+import com.example.warehouse_accounting.ServerController.GlobalWebSocket
 import com.example.warehouse_accounting.ServerController.WebSocketConnection
 import com.example.warehouse_accounting.models.Buyers
 import com.example.warehouse_accounting.models.Product
@@ -11,8 +12,9 @@ import com.example.warehouse_accounting.models.Suppliers
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-class poka_tak(val webSocketConnection: WebSocketConnection) {
+class poka_tak {
 
+    val webSocketConnection = GlobalWebSocket.instance
     val buyersLiveData = MutableLiveData<MutableList<Buyers>>()
     val suppliersLiveData = MutableLiveData<MutableList<Suppliers>>()
     val profileLiveData = MutableLiveData<Profile?>()

@@ -12,14 +12,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.warehouse_accounting.databinding.ActivityMainBinding
-import com.example.warehouse_accounting.ServerController.WebSocketConnection
+import com.example.warehouse_accounting.ServerController.GlobalWebSocket
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-
-    private var webSocketConnection: WebSocketConnection? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,9 +61,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val wsUrl = "ws://192.168.8.104:5400"
-        webSocketConnection = WebSocketConnection(wsUrl)
-        webSocketConnection?.connect()
+        // Используем singleton
+        GlobalWebSocket.instance.connect()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -75,6 +72,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        webSocketConnection?.close()
+        GlobalWebSocket.instance.close()
     }
 }
