@@ -12,7 +12,6 @@ class WebSocketConnection(private val url: String) {
         .build()
 
     private var webSocket: WebSocket? = null
-    private var isOpen: Boolean = false
     private val messageQueue = mutableListOf<String>()
 
     var onTextMessage: ((String) -> Unit)? = null
@@ -25,7 +24,6 @@ class WebSocketConnection(private val url: String) {
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 println("Websocket is connected")
-                isOpen = true
                 synchronized(messageQueue) {
                     for (msg in messageQueue) {
                         val sent = webSocket.send(msg)
@@ -46,18 +44,15 @@ class WebSocketConnection(private val url: String) {
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 println("WebSocket is closing: $code $reason")
-                isOpen = false
                 webSocket.close(1000, null)
             }
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 println("WebSocket is closed: $code $reason")
-                isOpen = false
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 println("fail WebSocket: ${t.message}")
-                isOpen = false
             }
         })
         println("WebSocket object will be created: $webSocket")
@@ -65,7 +60,7 @@ class WebSocketConnection(private val url: String) {
 
     fun sendMessage(message: String) {
         println("I'm trying to send a message: $message")
-        if (isOpen && webSocket != null) {
+        if (webSocket != null) {
             val result = webSocket!!.send(message)
             println("Sending result: $result")
         } else {
@@ -77,7 +72,6 @@ class WebSocketConnection(private val url: String) {
     }
 
     fun close() {
-        isOpen = false
         webSocket?.close(1000, "Закрыто клиентом")
     }
 }
