@@ -54,7 +54,7 @@ class WarehousesViewModel(
     }
 
     fun updateWarehouses(updatedWarehouses: Warehouses) {
-        _allWarehouses.replaceAll { if (it.id == updatedWarehouses.id) updatedWarehouses else it }
+        _allWarehouses.replaceAll { updatedWarehouses }
         filterWarehouses(searchQuery.value ?: "")
         _notificationEvent.value = "Склад обновлён" to "Склад \"${updatedWarehouses.warehousesName}\" успешно обновлён."
     }

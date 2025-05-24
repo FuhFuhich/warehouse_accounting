@@ -6,7 +6,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Suppliers
@@ -43,7 +42,6 @@ class SuppliersFabHelper(
                 if (name.isNotEmpty())
                 {
                     val supplier = Suppliers(
-                        id = viewModel.getId(),
                         name = name,
                         address = address,
                         email = email,
@@ -98,7 +96,6 @@ class SuppliersFabHelper(
                 if (newName.isNotEmpty())
                 {
                     val updatedSuppliers = Suppliers(
-                        id = viewModel.getId(),
                         name = newName,
                         address = newAddress,
                         email = newEmail,
@@ -130,7 +127,6 @@ class SuppliersFabHelper(
             val supplierNote = data.getStringExtra("supplier_note") ?: return
 
             val newSupplier = Suppliers(
-                id = viewModel.getId(),
                 name = supplierName,
                 address = supplierAddress,
                 email = supplierEmail,

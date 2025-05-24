@@ -36,7 +36,6 @@ class WarehousesFabHelper(
                     // Там же я возвращаю сгенерированный айдишник
 
                     val warehouses = Warehouses(
-                        id = viewModel.getId(),
                         warehousesName = warehousesName,
                     )
                     onWarehousesAdded(warehouses)
@@ -66,7 +65,6 @@ class WarehousesFabHelper(
 
                 if (newName.isNotEmpty()) {
                     val updatedWarehouses = Warehouses(
-                        id = warehouses.id,
                         warehousesName = newName,
                     )
                     onWarehousesUpdated(updatedWarehouses)
@@ -87,7 +85,6 @@ class WarehousesFabHelper(
             val warehousesName = data.getStringExtra("warehouses_name") ?: return
 
             val newWarehouses = Warehouses(
-                id = viewModel.getId(),
                 warehousesName = warehousesName,
             )
 

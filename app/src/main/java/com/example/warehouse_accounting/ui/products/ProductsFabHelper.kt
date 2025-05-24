@@ -39,7 +39,6 @@ class ProductsFabHelper(
 
                 if (productName.isNotEmpty() && barcode.isNotEmpty() && quantity.isNotEmpty()) {
                     val product = Product(
-                        id = viewModel.getId(),
                         name = productName,
                         description = description,
                         barcode = barcode,
@@ -88,7 +87,6 @@ class ProductsFabHelper(
 
                 if (newName.isNotEmpty() && newBarcode.isNotEmpty() && newQuantity.isNotEmpty()) {
                     val updatedProduct = product.copy(
-                        id = product.id,
                         name = newName,
                         barcode = newBarcode,
                         description = newDescription,
