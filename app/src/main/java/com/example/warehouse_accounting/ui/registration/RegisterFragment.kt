@@ -8,14 +8,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.warehouse_accounting.R
-import com.example.warehouse_accounting.models.Profile
+import com.example.warehouse_accounting.ServerController.PokaRepository
 import com.example.warehouse_accounting.ui.auth.AuthViewModel
+import com.example.warehouse_accounting.ui.auth.AuthViewModelFactory
 
 class RegisterFragment : Fragment() {
-    private val vm: AuthViewModel by viewModels()
+    private val vm: AuthViewModel by activityViewModels {
+        AuthViewModelFactory(PokaRepository)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +43,7 @@ class RegisterFragment : Fragment() {
                     "Registered id=${prof.id_user}",
                     Toast.LENGTH_SHORT
                 ).show()
-                findNavController().navigate(R.id.nav_profile)
+                findNavController().navigate(R.id.action_registerFragment_to_nav_profile)
             }
         }
         return view

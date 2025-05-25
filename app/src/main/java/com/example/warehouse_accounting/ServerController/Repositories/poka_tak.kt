@@ -17,7 +17,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class AuthRequest(val login: String, val password: String)
 
-class poka_tak {
+open class poka_tak {
 
     companion object {
         val json = Json { ignoreUnknownKeys = true }

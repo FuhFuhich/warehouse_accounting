@@ -76,11 +76,22 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.warehouse_accounting.ui.login.LoginFragment"
-        android:label="Login" />
+        android:label="Login">
+        <action
+            android:id="@+id/action_loginFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.warehouse_accounting.ui.registration.RegisterFragment"
-        android:label="Register" />
-
+        android:label="Register">
+        <action
+            android:id="@+id/action_registerFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>
