@@ -58,14 +58,14 @@ class ProfileViewModel(
 
     private fun loadProfile(): Profile {
         return Profile(
-            id_user = prefs.getString("nya", null),
+            id_user   = prefs.getString("nya", "") ?: "",
             firstName = prefs.getString("firstName", "John") ?: "John",
-            lastName = prefs.getString("lastName", "Doe") ?: "Doe",
-            login = prefs.getString("login", "johndoe") ?: "johndoe",
-            phone = prefs.getString("phone", "+7 999 123-45-67") ?: "+7 999 123-45-67",
-            email = prefs.getString("email", "john.doe@example.com") ?: "john.doe@example.com",
-            photoUri = prefs.getString("photoUri", null),
-            password = prefs.getString("nya", null)
+            lastName  = prefs.getString("lastName", "Doe") ?: "Doe",
+            login     = prefs.getString("login", "johndoe") ?: "johndoe",
+            phone     = prefs.getString("phone", "+7 999 123-45-67") ?: "+7 999 123-45-67",
+            email     = prefs.getString("email", "john.doe@example.com") ?: "john.doe@example.com",
+            photoUri  = prefs.getString("photoUri", null),
+            password  = prefs.getString("nya", "") ?: ""
         )
     }
 

@@ -24,8 +24,11 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+    ): View = inflater.inflate(R.layout.fragment_login, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val etLogin    = view.findViewById<EditText>(R.id.et_register_login)
         val etPassword = view.findViewById<EditText>(R.id.et_register_password)
         val btnLogin   = view.findViewById<Button>(R.id.btnLogin)
@@ -34,24 +37,9 @@ class LoginFragment : Fragment() {
             val login = etLogin.text.toString().trim()
             val pass  = etPassword.text.toString().trim()
             vm.login(login, pass)
+            findNavController()
+                .navigate(R.id.action_loginFragment_to_nav_profile)
         }
-
-        vm.profileLiveData.observe(viewLifecycleOwner) { prof ->
-            if (prof != null) {
-                Toast.makeText(
-                    requireContext(),
-                    "Logged in id=${prof.id_user}",
-                    Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigate(R.id.action_loginFragment_to_nav_profile)
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Invalid credentials",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-        return view
     }
 }
+

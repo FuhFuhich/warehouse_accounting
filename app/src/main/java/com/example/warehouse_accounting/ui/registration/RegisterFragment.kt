@@ -24,28 +24,22 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val view = inflater.inflate(R.layout.fragment_register, container, false)
-        val etLogin    = view.findViewById<EditText>(R.id.et_login_login)
-        val etPassword = view.findViewById<EditText>(R.id.et_login_password)
+    ): View = inflater.inflate(R.layout.fragment_register, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val etLogin     = view.findViewById<EditText>(R.id.et_login_login)
+        val etPassword  = view.findViewById<EditText>(R.id.et_login_password)
         val btnRegister = view.findViewById<Button>(R.id.btnRegister)
 
         btnRegister.setOnClickListener {
             val login = etLogin.text.toString().trim()
             val pass  = etPassword.text.toString().trim()
             vm.register(login, pass)
+            findNavController()
+                .navigate(R.id.action_registerFragment_to_nav_profile)
         }
-
-        vm.profileLiveData.observe(viewLifecycleOwner) { prof ->
-            if (prof != null) {
-                Toast.makeText(
-                    requireContext(),
-                    "Registered id=${prof.id_user}",
-                    Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigate(R.id.action_registerFragment_to_nav_profile)
-            }
-        }
-        return view
     }
 }
+

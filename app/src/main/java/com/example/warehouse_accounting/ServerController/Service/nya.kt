@@ -46,5 +46,4 @@ class nya(private val repository: poka_tak) {
     fun getProductsLiveData() = repository.productsLiveData
     fun addNewProduct(product: Product) = repository.send_request("productsAdd", product)
     fun requestAllProducts() = repository.send_request<Product>("productsGet")
-
 }

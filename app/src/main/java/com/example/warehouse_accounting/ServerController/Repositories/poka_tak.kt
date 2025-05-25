@@ -41,12 +41,12 @@ open class poka_tak {
     }
 
     inline fun <reified T : Any> send_request(type: String, data: T? = null) {
-        val prefix = currentProfile?.id_user?.toString()?.let { "$it " } ?: ""
-        val message = if (data != null) {
-            val jsonStr = Companion.json.encodeToString(data)
-            "$type $prefix$jsonStr"
+        val prefix = currentProfile?.id_user?.toString() ?: "-1"
+        val body   = data?.let { json.encodeToString(it) } ?: ""
+        val message = if (body.isNotEmpty()) {
+            "$type $prefix $body"
         } else {
-            (type + " " + prefix).trim()
+            "$type $prefix"
         }
         webSocketConnection.sendMessage(message)
     }
