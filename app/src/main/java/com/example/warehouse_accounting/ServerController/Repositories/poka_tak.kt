@@ -9,8 +9,13 @@ import com.example.warehouse_accounting.models.Profile
 import com.example.warehouse_accounting.models.Warehouses
 import com.example.warehouse_accounting.models.Documents
 import com.example.warehouse_accounting.models.Suppliers
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+
+@Serializable
+data class AuthRequest(val login: String, val password: String)
 
 class poka_tak {
 
@@ -19,6 +24,9 @@ class poka_tak {
     }
 
     val webSocketConnection = GlobalWebSocket.instance
+    var currentProfile: Profile? = null
+        private set
+
     val buyersLiveData = MutableLiveData<MutableList<Buyers>>()
     val suppliersLiveData = MutableLiveData<MutableList<Suppliers>>()
     val profileLiveData = MutableLiveData<Profile?>()
@@ -33,11 +41,12 @@ class poka_tak {
     }
 
     inline fun <reified T : Any> send_request(type: String, data: T? = null) {
+        val prefix = currentProfile?.id_user?.toString()?.let { "$it " } ?: ""
         val message = if (data != null) {
             val jsonStr = Companion.json.encodeToString(data)
-            "$type $jsonStr"
+            "$type $prefix$jsonStr"
         } else {
-            type
+            (type + " " + prefix).trim()
         }
         webSocketConnection.sendMessage(message)
     }
@@ -50,7 +59,9 @@ class poka_tak {
             message.startsWith("warehousesGet")  -> handleWarehouses(message.removePrefix("warehousesGet").trim())
             message.startsWith("documentsGet")   -> handleDocuments(message.removePrefix("documentsGet").trim())
             message.startsWith("productsGet")    -> handleProducts(message.removePrefix("productsGet").trim())
-            else                                -> handleUnknown(message)
+            message.startsWith("registration")   -> handleProfile(message.removePrefix("registration").trim())
+            message.startsWith("login")          -> handleProfile(message.removePrefix("login").trim())
+            else                                 -> handleUnknown(message)
         }
     }
 
@@ -78,6 +89,7 @@ class poka_tak {
         println("Обработка profile: $data")
         try {
             val profile = Json.decodeFromString<Profile>(data)
+            currentProfile = profile
             profileLiveData.postValue(profile)
         } catch (e: Exception) {
             println("Ошибка парсинга профиля: ${e.message}")
@@ -116,5 +128,13 @@ class poka_tak {
 
     private fun handleUnknown(data: String) {
         println("Неизвестная команда: $data")
+    }
+
+    fun register(login: String, password: String) {
+        send_request("registration", AuthRequest(login, password))
+    }
+
+    fun login(login: String, password: String) {
+        send_request("login", AuthRequest(login, password))
     }
 }
