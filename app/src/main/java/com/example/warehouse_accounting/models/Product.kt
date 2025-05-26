@@ -8,5 +8,6 @@ data class Product(
     val description: String,
     val barcode: String,
     val imageUri: String?,
-    val quantity: Int
+    val quantity: Int,
+    val warehouse: String
 )

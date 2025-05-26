@@ -102,4 +102,6 @@
     <string name="push_settings">Push-уведомления</string>
     <string name="dark_theme_settings">Тёмная тема</string>
     <string name="version_settings">Версия: 1.0.0</string>
+    <string name="products_dialog_warehouse">Склад</string>
+    <string name="products_item_warehouse">Склад</string>
 </resources>

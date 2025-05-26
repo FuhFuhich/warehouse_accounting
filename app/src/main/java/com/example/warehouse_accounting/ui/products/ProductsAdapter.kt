@@ -21,6 +21,7 @@ class ProductsAdapter(
         val tvBarcode: TextView = itemView.findViewById(R.id.tv_barcode)
         val tvQuantity: TextView = itemView.findViewById(R.id.tv_quantity)
         val ivProduct: ImageView = itemView.findViewById(R.id.iv_product_image)
+        val tvWarehouse: TextView = itemView.findViewById(R.id.tv_warehouse)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -35,6 +36,7 @@ class ProductsAdapter(
         holder.tvDescription.text = product.description
         holder.tvBarcode.text = product.barcode
         holder.tvQuantity.text = product.quantity.toString()
+        holder.tvWarehouse.text = product.warehouse.toString()
 
         holder.itemView.setOnClickListener {
             editProductCallback(product)

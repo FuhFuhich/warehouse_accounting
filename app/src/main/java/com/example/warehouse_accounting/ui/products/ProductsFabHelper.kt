@@ -27,6 +27,7 @@ class ProductsFabHelper(
         val descriptionEditText: EditText = dialogView.findViewById(R.id.et_product_description)
         val quantityEditText: EditText = dialogView.findViewById(R.id.et_product_quantity)
         val productImageView: ImageView = dialogView.findViewById(R.id.iv_product_image)
+        val warehouseEditText: EditText = dialogView.findViewById(R.id.et_product_warehouse)
 
         val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
             .setTitle("Добавить новый товар")
@@ -36,6 +37,7 @@ class ProductsFabHelper(
                 val barcode = barcodeEditText.text.toString()
                 val description = descriptionEditText.text.toString()
                 val quantity = quantityEditText.text.toString()
+                val warehouse = warehouseEditText.text.toString()
 
                 if (productName.isNotEmpty() && barcode.isNotEmpty() && quantity.isNotEmpty()) {
                     val product = Product(
@@ -43,7 +45,8 @@ class ProductsFabHelper(
                         description = description,
                         barcode = barcode,
                         imageUri = productImageUri,
-                        quantity = quantity.toInt()
+                        quantity = quantity.toInt(),
+                        warehouse = warehouse
                     )
                     viewModel.addProducts(product)
                     Toast.makeText(context, "Товар добавлен", Toast.LENGTH_SHORT).show()
