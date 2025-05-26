@@ -43,39 +43,47 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val root = inflater.inflate(R.layout.fragment_profile, container, false)
+        return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
 
-        imageViewPhoto = root.findViewById(R.id.imageViewPhoto)
-        editTextFirstName = root.findViewById(R.id.editTextFirstName)
-        editTextLastName = root.findViewById(R.id.editTextLastName)
-        editTextLogin = root.findViewById(R.id.editTextLogin)
-        editTextPhone = root.findViewById(R.id.editTextPhone)
-        editTextEmail = root.findViewById(R.id.editTextEmail)
-        buttonChangePhoto = root.findViewById(R.id.buttonChangePhoto)
-        buttonSave = root.findViewById(R.id.buttonSave)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        imageViewPhoto = view.findViewById(R.id.imageViewPhoto)
+        editTextFirstName = view.findViewById(R.id.editTextFirstName)
+        editTextLastName = view.findViewById(R.id.editTextLastName)
+        editTextLogin = view.findViewById(R.id.editTextLogin)
+        editTextPhone = view.findViewById(R.id.editTextPhone)
+        editTextEmail = view.findViewById(R.id.editTextEmail)
+        buttonChangePhoto = view.findViewById(R.id.buttonChangePhoto)
+        buttonSave = view.findViewById(R.id.buttonSave)
 
         viewModel.profile.observe(viewLifecycleOwner, Observer { profile ->
-            if (editTextFirstName.text.toString() != profile.firstName) {
-                editTextFirstName.setText(profile.firstName)
-            }
-            if (editTextLastName.text.toString() != profile.lastName) {
-                editTextLastName.setText(profile.lastName)
-            }
-            if (editTextLogin.text.toString() != profile.login) {
-                editTextLogin.setText(profile.login)
-            }
-            if (editTextPhone.text.toString() != profile.phone) {
-                editTextPhone.setText(profile.phone)
-            }
-            if (editTextEmail.text.toString() != profile.email) {
-                editTextEmail.setText(profile.email)
-            }
-            if (profile.photoUri != null) {
-                imageViewPhoto.setImageURI(Uri.parse(profile.photoUri))
-            } else {
-                imageViewPhoto.setImageResource(android.R.drawable.sym_def_app_icon)
+            profile?.let {
+                if (editTextFirstName.text.toString() != it.firstName) {
+                    editTextFirstName.setText(it.firstName ?: "")
+                }
+                if (editTextLastName.text.toString() != it.lastName) {
+                    editTextLastName.setText(it.lastName ?: "")
+                }
+                if (editTextLogin.text.toString() != it.login) {
+                    editTextLogin.setText(it.login)
+                }
+                if (editTextPhone.text.toString() != it.phone) {
+                    editTextPhone.setText(it.phone ?: "")
+                }
+                if (editTextEmail.text.toString() != it.email) {
+                    editTextEmail.setText(it.email ?: "")
+                }
+                if (it.photoUri != null) {
+                    imageViewPhoto.setImageURI(Uri.parse(it.photoUri))
+                } else {
+                    imageViewPhoto.setImageResource(android.R.drawable.sym_def_app_icon)
+                }
             }
         })
+
+        viewModel.requestProfileFromServer()
 
         editTextFirstName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -122,8 +130,6 @@ class ProfileFragment : Fragment() {
             viewModel.saveProfile()
             Toast.makeText(requireContext(), "Профиль сохранён!", Toast.LENGTH_SHORT).show()
         }
-
-        return root
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -144,7 +150,4 @@ class ProfileFragment : Fragment() {
             viewModel.updatePhoto(selectedImageUri?.toString())
         }
     }
-
-
-
 }

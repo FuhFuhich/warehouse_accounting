@@ -18,6 +18,15 @@ class ProfileViewModel(
 
     val serverProfile: LiveData<Profile?> = nyaService.getProfileLiveData()
 
+    init {
+        serverProfile.observeForever { serverProfile ->
+            serverProfile?.let { profile ->
+                _profile.value = profile
+                saveProfileToPrefs(profile)
+            }
+        }
+    }
+
     fun updateFirstName(newName: String) {
         _profile.value = _profile.value?.copy(firstName = newName)
     }
@@ -44,28 +53,33 @@ class ProfileViewModel(
 
     fun saveProfile() {
         _profile.value?.let { profile ->
-            prefs.edit()
-                .putString("firstName", profile.firstName)
-                .putString("lastName", profile.lastName)
-                .putString("login", profile.login)
-                .putString("phone", profile.phone)
-                .putString("email", profile.email)
-                .putString("photoUri", profile.photoUri?.toString())
-                .apply()
+            saveProfileToPrefs(profile)
+            nyaService.updateProfile(profile)
         }
-        _profile.value?.let { nyaService.updateProfile(it) }
+    }
+
+    private fun saveProfileToPrefs(profile: Profile) {
+        prefs.edit()
+            .putInt("id_user", profile.id_user)
+            .putString("firstName", profile.firstName)
+            .putString("lastName", profile.lastName)
+            .putString("login", profile.login)
+            .putString("phone", profile.phone)
+            .putString("email", profile.email)
+            .putString("photoUri", profile.photoUri)
+            .apply()
     }
 
     private fun loadProfile(): Profile {
         return Profile(
-            id_user   = prefs.getString("nya", "") ?: "",
-            firstName = prefs.getString("firstName", "John") ?: "John",
-            lastName  = prefs.getString("lastName", "Doe") ?: "Doe",
-            login     = prefs.getString("login", "johndoe") ?: "johndoe",
-            phone     = prefs.getString("phone", "+7 999 123-45-67") ?: "+7 999 123-45-67",
-            email     = prefs.getString("email", "john.doe@example.com") ?: "john.doe@example.com",
+            id_user   = prefs.getInt("id_user", -1),
+            firstName = prefs.getString("firstName", ""),
+            lastName  = prefs.getString("lastName", ""),
+            login     = prefs.getString("login", ""),
+            phone     = prefs.getString("phone", ""),
+            email     = prefs.getString("email", ""),
             photoUri  = prefs.getString("photoUri", null),
-            password  = prefs.getString("nya", "") ?: ""
+            password  = ""
         )
     }
 
@@ -73,8 +87,9 @@ class ProfileViewModel(
         nyaService.requestProfile()
     }
 
-    fun setProfileFromServer(profile: Profile) {
-        _profile.value = profile
-        saveProfile()
+    override fun onCleared() {
+        super.onCleared()
+        serverProfile.removeObserver { }
     }
 }
+
