@@ -33,13 +33,16 @@ class RegisterFragment : Fragment() {
         val etPassword  = view.findViewById<EditText>(R.id.et_login_password)
         val btnRegister = view.findViewById<Button>(R.id.btnRegister)
 
+        vm.profileLiveData.observe(viewLifecycleOwner) { profile ->
+            if (profile != null) {
+                findNavController().navigate(R.id.action_registerFragment_to_nav_profile)
+            }
+        }
+
         btnRegister.setOnClickListener {
             val login = etLogin.text.toString().trim()
             val pass  = etPassword.text.toString().trim()
             vm.register(login, pass)
-            findNavController()
-                .navigate(R.id.action_registerFragment_to_nav_profile)
         }
     }
 }
-

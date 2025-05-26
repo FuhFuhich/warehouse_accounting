@@ -34,7 +34,9 @@ class WebSocketConnection(private val url: String) {
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                println("message will be come: $text")
+                println("=== MESSAGE WILL BE COME ===: $text")
+                println("Raw message: '$text'")
+                println("Length: ${text.length}")
                 onTextMessage?.invoke(text)
             }
 

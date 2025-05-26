@@ -88,11 +88,19 @@ open class poka_tak {
     private fun handleProfile(data: String) {
         println("Обработка profile: $data")
         try {
+            if (data.contains("error") || data.isEmpty()) {
+                println("Ошибка авторизации")
+                profileLiveData.postValue(null)
+                return
+            }
+
             val profile = Json.decodeFromString<Profile>(data)
             currentProfile = profile
             profileLiveData.postValue(profile)
+            println("Профиль успешно обработан: $profile")
         } catch (e: Exception) {
             println("Ошибка парсинга профиля: ${e.message}")
+            profileLiveData.postValue(null)
         }
     }
 
