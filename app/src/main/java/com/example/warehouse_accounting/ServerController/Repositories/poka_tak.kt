@@ -48,7 +48,6 @@ class poka_tak private constructor() {
     val errorLiveData = MutableLiveData<String?>()
 
     init {
-        println("=== СОЗДАН SINGLETON ЭКЗЕМПЛЯР poka_tak ===")
         webSocketConnection.onTextMessage = { message ->
             handle_request(message)
         }
