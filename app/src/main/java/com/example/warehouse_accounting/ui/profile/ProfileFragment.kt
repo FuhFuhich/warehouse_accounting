@@ -83,8 +83,6 @@ class ProfileFragment : Fragment() {
             }
         })
 
-        viewModel.requestProfileFromServer()
-
         editTextFirstName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.updateFirstName(s.toString())

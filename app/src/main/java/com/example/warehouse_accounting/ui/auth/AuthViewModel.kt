@@ -9,6 +9,7 @@ class AuthViewModel(
     private val repo: poka_tak
 ) : ViewModel() {
     val profileLiveData: LiveData<Profile?> = repo.profileLiveData
+    val errorLiveData: LiveData<String?> = repo.errorLiveData
 
     fun register(login: String, password: String) {
         repo.register(login, password)

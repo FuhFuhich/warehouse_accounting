@@ -17,7 +17,7 @@ import com.example.warehouse_accounting.ui.auth.AuthViewModelFactory
 
 class RegisterFragment : Fragment() {
     private val vm: AuthViewModel by activityViewModels {
-        AuthViewModelFactory(PokaRepository)
+        AuthViewModelFactory(PokaRepository.instance)
     }
 
     override fun onCreateView(

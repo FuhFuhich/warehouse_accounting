@@ -17,7 +17,7 @@ import com.example.warehouse_accounting.ui.auth.AuthViewModelFactory
 
 class LoginFragment : Fragment() {
     private val vm: AuthViewModel by activityViewModels {
-        AuthViewModelFactory(PokaRepository)
+        AuthViewModelFactory(PokaRepository.instance)
     }
 
     override fun onCreateView(
@@ -39,9 +39,21 @@ class LoginFragment : Fragment() {
             }
         }
 
+        vm.errorLiveData.observe(viewLifecycleOwner) { errorMessage ->
+            if (!errorMessage.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+
         btnLogin.setOnClickListener {
             val login = etLogin.text.toString().trim()
             val pass = etPassword.text.toString().trim()
+
+            if (login.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             vm.login(login, pass)
         }
     }

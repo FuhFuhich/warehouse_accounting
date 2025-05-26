@@ -17,15 +17,27 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class AuthRequest(val login: String, val password: String)
 
-open class poka_tak {
+class poka_tak private constructor() {
 
     companion object {
         val json = Json { ignoreUnknownKeys = true }
+
+        @Volatile
+        private var INSTANCE: poka_tak? = null
+
+        fun getInstance(): poka_tak {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: poka_tak().also { INSTANCE = it }
+            }
+        }
     }
 
     val webSocketConnection = GlobalWebSocket.instance
     var currentProfile: Profile? = null
         private set
+
+    val isProfileLoaded: Boolean
+        get() = currentProfile != null
 
     val buyersLiveData = MutableLiveData<MutableList<Buyers>>()
     val suppliersLiveData = MutableLiveData<MutableList<Suppliers>>()
@@ -33,8 +45,10 @@ open class poka_tak {
     val warehousesLiveData = MutableLiveData<MutableList<Warehouses>>()
     val documentsLiveData = MutableLiveData<MutableList<Documents>>()
     val productsLiveData = MutableLiveData<MutableList<Product>>()
+    val errorLiveData = MutableLiveData<String?>()
 
     init {
+        println("=== СОЗДАН SINGLETON ЭКЗЕМПЛЯР poka_tak ===")
         webSocketConnection.onTextMessage = { message ->
             handle_request(message)
         }
@@ -48,6 +62,11 @@ open class poka_tak {
         } else {
             "$type $prefix"
         }
+
+        println("=== SEND_REQUEST ===")
+        println("CurrentProfile: $currentProfile")
+        println("CurrentProfile ID: ${currentProfile?.id_user}")
+        println("Отправляем запрос с ID: $prefix, сообщение: $message")
         webSocketConnection.sendMessage(message)
     }
 
@@ -86,20 +105,39 @@ open class poka_tak {
     }
 
     private fun handleProfile(data: String) {
+        println("=== HANDLE_PROFILE ===")
         println("Обработка profile: $data")
+        println("Текущий currentProfile ДО обновления: $currentProfile")
+
         try {
             if (data.contains("error") || data.isEmpty()) {
                 println("Ошибка авторизации")
+
+                // Определяем тип ошибки
+                val errorMessage = when {
+                    data.contains("Invalid credentials") -> "Неправильный логин или пароль"
+                    data.contains("Database error") -> "Ошибка базы данных"
+                    data.contains("Query error") -> "Ошибка запроса"
+                    else -> "Ошибка авторизации"
+                }
+
+                errorLiveData.postValue(errorMessage)
                 profileLiveData.postValue(null)
                 return
             }
 
+            errorLiveData.postValue(null)
+
             val profile = Json.decodeFromString<Profile>(data)
             currentProfile = profile
+            println("=== CURRENTPROFILE ОБНОВЛЕН ===")
+            println("Новый currentProfile: $currentProfile")
+            println("Установлен currentProfile с ID: ${profile.id_user}")
             profileLiveData.postValue(profile)
             println("Профиль успешно обработан: $profile")
         } catch (e: Exception) {
             println("Ошибка парсинга профиля: ${e.message}")
+            errorLiveData.postValue("Ошибка обработки данных")
             profileLiveData.postValue(null)
         }
     }
