@@ -43,7 +43,7 @@ class BuyersViewModel(
         viewModelScope.launch {
             while (isActive) {
                 loadUpdatedBuyers()
-                delay(5000)
+                delay(15000)
             }
         }
     }

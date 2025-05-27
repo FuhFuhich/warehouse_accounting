@@ -44,7 +44,7 @@ class WarehousesViewModel(
         viewModelScope.launch {
             while (isActive) {
                 loadUpdatedWarehouses()
-                delay(5000)
+                delay(15000)
             }
         }
     }
