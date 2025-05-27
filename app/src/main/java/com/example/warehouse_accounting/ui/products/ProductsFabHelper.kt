@@ -72,11 +72,13 @@ class ProductsFabHelper(
         val descriptionEditText: EditText = dialogView.findViewById(R.id.et_product_description)
         val quantityEditText: EditText = dialogView.findViewById(R.id.et_product_quantity)
         val productImageView: ImageView = dialogView.findViewById(R.id.iv_product_image)
+        val warehouseEditText: EditText = dialogView.findViewById(R.id.et_product_warehouse)
 
         nameEditText.setText(product.name)
         barcodeEditText.setText(product.barcode)
         descriptionEditText.setText(product.description)
         quantityEditText.setText(product.quantity.toString())
+        warehouseEditText.setText(product.warehouse ?: "")
         productImageUri = product.imageUri
 
         val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
@@ -87,14 +89,17 @@ class ProductsFabHelper(
                 val newBarcode = barcodeEditText.text.toString()
                 val newDescription = descriptionEditText.text.toString()
                 val newQuantity = quantityEditText.text.toString()
+                val newWarehouse = warehouseEditText.text.toString()
 
                 if (newName.isNotEmpty() && newBarcode.isNotEmpty() && newQuantity.isNotEmpty()) {
                     val updatedProduct = product.copy(
+                        id = product.id,
                         name = newName,
                         barcode = newBarcode,
                         description = newDescription,
                         imageUri = productImageUri,
-                        quantity = newQuantity.toInt()
+                        quantity = newQuantity.toInt(),
+                        warehouse = newWarehouse
                     )
                     onProductUpdated(updatedProduct)
                     viewModel.updateProducts(updatedProduct)

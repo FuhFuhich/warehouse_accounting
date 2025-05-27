@@ -162,14 +162,32 @@ class poka_tak private constructor() {
     }
 
     private fun handleProducts(data: String) {
+        println("=== HANDLE_PRODUCTS ===")
         println("Обработка products: $data")
         try {
+            if (data.isEmpty() || data == "[]") {
+                println("Получен пустой список продуктов")
+                productsLiveData.postValue(mutableListOf())
+                return
+            }
+
             val productsList = Json.decodeFromString<List<Product>>(data)
+            println("Успешно разобран JSON, получено ${productsList.size} продуктов:")
+            productsList.forEach { product ->
+                println("  - Product: id=${product.id}, name=${product.name}, warehouse=${product.warehouse}")
+            }
+
             productsLiveData.postValue(productsList.toMutableList())
+            println("productsLiveData обновлен")
         } catch (e: Exception) {
             println("Ошибка парсинга товаров: ${e.message}")
+            println("JSON input: $data")
+            e.printStackTrace()
+
+            productsLiveData.postValue(mutableListOf())
         }
     }
+
 
     private fun handleUnknown(data: String) {
         println("Неизвестная команда: $data")
