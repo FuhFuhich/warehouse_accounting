@@ -21,9 +21,17 @@ class SuppliersViewModel(
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
     private val suppliersObserver = Observer<MutableList<Suppliers>> { list ->
+        println("=== SUPPLIERS OBSERVER ===")
+        println("Получены поставщики с сервера: ${list.size}")
+        list.forEach { supplier ->
+            println("Supplier: id=${supplier.id}, name=${supplier.name}")
+        }
+
         _allSuppliers.clear()
         _allSuppliers.addAll(list)
         filterSuppliers(searchQuery.value ?: "")
+
+        println("_allSuppliers обновлен, размер: ${_allSuppliers.size}")
     }
 
     init {
@@ -47,19 +55,45 @@ class SuppliersViewModel(
     }
 
     fun addSuppliers(suppliers: Suppliers) {
+        println("=== ДОБАВЛЕНИЕ ПОСТАВЩИКА ===")
+        println("Добавляем: $suppliers")
+
         _allSuppliers.add(suppliers)
-        nyaService.addNewSupplier(suppliers)
         filterSuppliers(searchQuery.value ?: "")
+
+        nyaService.addNewSupplier(suppliers)
         _notificationEvent.value = "Добавлен поставщик" to "Поставщик \"${suppliers.name}\" успешно добавлен."
     }
 
     fun updateSuppliers(updatedSuppliers: Suppliers) {
-        _allSuppliers.replaceAll { if (it.tin == updatedSuppliers.tin) updatedSuppliers else it }
+        println("=== ОБНОВЛЕНИЕ ПОСТАВЩИКА ===")
+        println("Обновляем: $updatedSuppliers")
+
+        if (updatedSuppliers.id != 0) {
+            _allSuppliers.replaceAll { if (it.id == updatedSuppliers.id) updatedSuppliers else it }
+        } else {
+            _allSuppliers.replaceAll { if (it.name == updatedSuppliers.name) updatedSuppliers else it }
+        }
+
         filterSuppliers(searchQuery.value ?: "")
+
+        nyaService.updateSupplier(updatedSuppliers)
         _notificationEvent.value = "Поставщик обновлён" to "Поставщик \"${updatedSuppliers.name}\" успешно обновлён."
     }
 
+    fun deleteSupplier(supplier: Suppliers) {
+        println("=== УДАЛЕНИЕ ПОСТАВЩИКА ===")
+        println("Удаляем: $supplier")
+
+        _allSuppliers.removeAll { it.id == supplier.id }
+        filterSuppliers(searchQuery.value ?: "")
+
+        nyaService.deleteSupplier(supplier)
+        _notificationEvent.value = "Поставщик удалён" to "Поставщик \"${supplier.name}\" успешно удалён."
+    }
+
     fun loadUpdatedSuppliers() {
+        println("=== ЗАПРОС ОБНОВЛЕНИЯ ПОСТАВЩИКОВ ===")
         nyaService.requestAllSuppliers()
     }
 
@@ -72,5 +106,7 @@ class SuppliersViewModel(
         } else {
             _allSuppliers.filter { it.name.contains(query, ignoreCase = true) }.toMutableList()
         }
+
+        println("Фильтрация: запрос='$query', результат=${_suppliers.value?.size} поставщиков")
     }
 }

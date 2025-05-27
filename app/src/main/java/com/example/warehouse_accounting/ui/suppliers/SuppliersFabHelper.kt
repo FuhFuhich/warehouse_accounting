@@ -39,9 +39,9 @@ class SuppliersFabHelper(
                 val bankDetails = bankDetailsEditText.text.toString()
                 val note = noteEditText.text.toString()
 
-                if (name.isNotEmpty())
-                {
+                if (name.isNotEmpty()) {
                     val supplier = Suppliers(
+                        id = 0,
                         name = name,
                         address = address,
                         email = email,
@@ -53,7 +53,7 @@ class SuppliersFabHelper(
                     onSuppliersAdded(supplier)
                     Toast.makeText(context, "Поставщик добавлен", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Отмена", null)
@@ -74,12 +74,12 @@ class SuppliersFabHelper(
         val noteEditText: EditText = dialogView.findViewById(R.id.et_suppliers_note)
 
         nameEditText.setText(suppliers.name)
-        addressEditText.setText(suppliers.address)
-        emailEditText.setText(suppliers.email)
-        phoneEditText.setText(suppliers.phone)
-        tinEditText.setText(suppliers.tin)
-        bankDetailsEditText.setText(suppliers.bankDetails)
-        noteEditText.setText(suppliers.note)
+        addressEditText.setText(suppliers.address ?: "")
+        emailEditText.setText(suppliers.email ?: "")
+        phoneEditText.setText(suppliers.phone ?: "")
+        tinEditText.setText(suppliers.tin ?: "")
+        bankDetailsEditText.setText(suppliers.bankDetails ?: "")
+        noteEditText.setText(suppliers.note ?: "")
 
         val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
             .setTitle("Редактировать поставщика")
@@ -93,9 +93,9 @@ class SuppliersFabHelper(
                 val newBankDetails = bankDetailsEditText.text.toString()
                 val newNote = noteEditText.text.toString()
 
-                if (newName.isNotEmpty())
-                {
-                    val updatedSuppliers = Suppliers(
+                if (newName.isNotEmpty()) {
+                    val updatedSuppliers = suppliers.copy(
+                        id = suppliers.id,
                         name = newName,
                         address = newAddress,
                         email = newEmail,
@@ -105,9 +105,10 @@ class SuppliersFabHelper(
                         note = newNote
                     )
                     onSuppliersUpdated(updatedSuppliers)
+                    viewModel.updateSuppliers(updatedSuppliers)
                     Toast.makeText(context, "Поставщик обновлён", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Отмена", null)
@@ -119,14 +120,15 @@ class SuppliersFabHelper(
     fun handleActivityResult(resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             val supplierName = data.getStringExtra("supplier_name") ?: return
-            val supplierAddress = data.getStringExtra("supplier_address") ?: return
-            val supplierEmail = data.getStringExtra("supplier_email") ?: return
-            val supplierPhone = data.getStringExtra("supplier_phone") ?: return
-            val supplierTIN = data.getStringExtra("supplier_tin") ?: return
-            val supplierBankDetails = data.getStringExtra("supplier_bank_details") ?: return
-            val supplierNote = data.getStringExtra("supplier_note") ?: return
+            val supplierAddress = data.getStringExtra("supplier_address") ?: ""
+            val supplierEmail = data.getStringExtra("supplier_email") ?: ""
+            val supplierPhone = data.getStringExtra("supplier_phone") ?: ""
+            val supplierTIN = data.getStringExtra("supplier_tin") ?: ""
+            val supplierBankDetails = data.getStringExtra("supplier_bank_details") ?: ""
+            val supplierNote = data.getStringExtra("supplier_note") ?: ""
 
             val newSupplier = Suppliers(
+                id = 0,
                 name = supplierName,
                 address = supplierAddress,
                 email = supplierEmail,

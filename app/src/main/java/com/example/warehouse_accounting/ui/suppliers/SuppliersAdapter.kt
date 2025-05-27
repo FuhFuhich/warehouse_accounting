@@ -11,7 +11,8 @@ import com.example.warehouse_accounting.models.Suppliers
 class SuppliersAdapter(
     private var suppliers: MutableList<Suppliers>,
     private val longClickHelper: SuppliersLongClickHelper,
-    private val editSuppliersCallback: (Suppliers) -> Unit
+    private val editSuppliersCallback: (Suppliers) -> Unit,
+    private val deleteSuppliersCallback: (Suppliers) -> Unit
 ) : RecyclerView.Adapter<SuppliersAdapter.SuppliersViewHolder>() {
 
     inner class SuppliersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,20 +29,21 @@ class SuppliersAdapter(
     }
 
     override fun onBindViewHolder(holder: SuppliersViewHolder, position: Int) {
-        val suppliers = suppliers[position]
-        holder.tvName.text = suppliers.name
-        holder.tvPhone.text = suppliers.phone
-        holder.tvEmail.text = suppliers.email
-        holder.tvNote.text = suppliers.note
+        val supplier = suppliers[position]
+        holder.tvName.text = supplier.name
+        holder.tvPhone.text = supplier.phone ?: ""
+        holder.tvEmail.text = supplier.email ?: ""
+        holder.tvNote.text = supplier.note ?: ""
 
         holder.itemView.setOnClickListener {
-            editSuppliersCallback(suppliers)
+            editSuppliersCallback(supplier)
         }
 
         holder.itemView.setOnLongClickListener {
-            longClickHelper.showOptionsDialog { selectedOption ->
-                longClickHelper.showToast(selectedOption)
-            }
+            longClickHelper.showOptionsDialog(
+                supplier = supplier,
+                onDelete = { deleteSuppliersCallback(supplier) }
+            )
             true
         }
     }

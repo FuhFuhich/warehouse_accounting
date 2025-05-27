@@ -59,11 +59,19 @@ class SuppliersFragment : Fragment() {
             viewModel
         )
 
-        adapter = SuppliersAdapter(mutableListOf(), suppliersLongClickHelper) { suppliers ->
-            suppliersFabHelper.showEditSuppliersDialog(suppliers) { updatedSuppliers ->
-                viewModel.updateSuppliers(updatedSuppliers)
+        adapter = SuppliersAdapter(
+            mutableListOf(),
+            suppliersLongClickHelper,
+            { supplier ->
+                suppliersFabHelper.showEditSuppliersDialog(supplier) { updatedSupplier ->
+                    viewModel.updateSuppliers(updatedSupplier)
+                }
+            },
+            { supplier ->
+                viewModel.deleteSupplier(supplier)
             }
-        }
+        )
+
         binding.rvSuppliers.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSuppliers.adapter = adapter
 
