@@ -60,11 +60,18 @@ class BuyersFragment : Fragment() {
             viewModel
         )
 
-        adapter = BuyersAdapter(mutableListOf(), buyersLongClickHelper) { buyers ->
-            buyersFabHelper.showEditBuyersDialog(buyers) { updatedBuyers ->
-                viewModel.updateBuyers(updatedBuyers)
+        adapter = BuyersAdapter(
+            mutableListOf(),
+            buyersLongClickHelper,
+            { buyer ->
+                buyersFabHelper.showEditBuyersDialog(buyer) { updatedBuyer ->
+                    viewModel.updateBuyers(updatedBuyer)
+                }
+            },
+            { buyer ->
+                viewModel.deleteBuyer(buyer)
             }
-        }
+        )
         binding.rvBuyers.layoutManager = LinearLayoutManager(requireContext())
         binding.rvBuyers.adapter = adapter
 

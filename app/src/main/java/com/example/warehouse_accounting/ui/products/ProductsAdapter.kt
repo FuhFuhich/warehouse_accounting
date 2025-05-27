@@ -12,7 +12,8 @@ import com.example.warehouse_accounting.models.Product
 class ProductsAdapter(
     private var products: MutableList<Product>,
     private val longClickHelper: ProductsLongClickHelper,
-    private val editProductCallback: (Product) -> Unit
+    private val editProductCallback: (Product) -> Unit,
+    private val deleteProductCallback: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductsAdapter.ProductViewHolder>() {
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,16 +37,17 @@ class ProductsAdapter(
         holder.tvDescription.text = product.description
         holder.tvBarcode.text = product.barcode
         holder.tvQuantity.text = product.quantity.toString()
-        holder.tvWarehouse.text = product.warehouse.toString()
+        holder.tvWarehouse.text = product.warehouse ?: ""
 
         holder.itemView.setOnClickListener {
             editProductCallback(product)
         }
 
         holder.itemView.setOnLongClickListener {
-            longClickHelper.showOptionsDialog { selectedOption ->
-                longClickHelper.showToast(selectedOption)
-            }
+            longClickHelper.showOptionsDialog(
+                product = product,
+                onDelete = { deleteProductCallback(product) }
+            )
             true
         }
     }

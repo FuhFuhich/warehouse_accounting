@@ -43,11 +43,19 @@ class ProductsFragment : Fragment() {
         productsLongClickHelper = ProductsLongClickHelper(requireContext())
         productsFabHelper = ProductsFabHelper(requireContext(), viewModel)
 
-        adapter = ProductsAdapter(mutableListOf(), productsLongClickHelper) { product ->
-            productsFabHelper.showEditProductDialog(product) { updatedProduct ->
-                viewModel.updateProducts(updatedProduct)
+        adapter = ProductsAdapter(
+            mutableListOf(),
+            productsLongClickHelper,
+            { product ->
+                productsFabHelper.showEditProductDialog(product) { updatedProduct ->
+                    viewModel.updateProducts(updatedProduct)
+                }
+            },
+            { product ->
+                viewModel.deleteProduct(product)
             }
-        }
+        )
+
         binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
         binding.rvProducts.adapter = adapter
 

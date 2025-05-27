@@ -84,12 +84,29 @@ class poka_tak private constructor() {
     }
 
     private fun handleBuyers(data: String) {
+        println("=== HANDLE_BUYERS ===")
         println("Обработка buyers: $data")
         try {
+            if (data.isEmpty() || data == "[]") {
+                println("Получен пустой список покупателей")
+                buyersLiveData.postValue(mutableListOf())
+                return
+            }
+
             val buyersList = Json.decodeFromString<List<Buyers>>(data)
+            println("Успешно разобран JSON, получено ${buyersList.size} покупателей:")
+            buyersList.forEach { buyer ->
+                println("  - Buyer: id=${buyer.id}, name=${buyer.name}")
+            }
+
             buyersLiveData.postValue(buyersList.toMutableList())
+            println("buyersLiveData обновлен")
         } catch (e: Exception) {
             println("Ошибка парсинга покупателей: ${e.message}")
+            println("JSON input: $data")
+            e.printStackTrace()
+
+            buyersLiveData.postValue(mutableListOf())
         }
     }
 

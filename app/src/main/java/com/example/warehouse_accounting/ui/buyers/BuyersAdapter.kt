@@ -11,7 +11,8 @@ import com.example.warehouse_accounting.models.Buyers
 class BuyersAdapter(
     private var buyers: MutableList<Buyers>,
     private val longClickHelper: BuyersLongClickHelper,
-    private val editBuyersCallback: (Buyers) -> Unit
+    private val editBuyersCallback: (Buyers) -> Unit,
+    private val deleteBuyersCallback: (Buyers) -> Unit  // Добавили коллбек для удаления
 ) : RecyclerView.Adapter<BuyersAdapter.BuyersViewHolder>() {
 
     inner class BuyersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,20 +29,21 @@ class BuyersAdapter(
     }
 
     override fun onBindViewHolder(holder: BuyersViewHolder, position: Int) {
-        val buyers = buyers[position]
-        holder.tvName.text = buyers.name
-        holder.tvPhone.text = buyers.phone
-        holder.tvEmail.text = buyers.email
-        holder.tvNote.text = buyers.note
+        val buyer = buyers[position]
+        holder.tvName.text = buyer.name
+        holder.tvPhone.text = buyer.phone ?: ""
+        holder.tvEmail.text = buyer.email ?: ""
+        holder.tvNote.text = buyer.note ?: ""
 
         holder.itemView.setOnClickListener {
-            editBuyersCallback(buyers)
+            editBuyersCallback(buyer)
         }
 
         holder.itemView.setOnLongClickListener {
-            longClickHelper.showOptionsDialog { selectedOption ->
-                longClickHelper.showToast(selectedOption)
-            }
+            longClickHelper.showOptionsDialog(
+                buyer = buyer,
+                onDelete = { deleteBuyersCallback(buyer) }
+            )
             true
         }
     }

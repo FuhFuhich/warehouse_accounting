@@ -69,7 +69,7 @@ class RegisterFragment : Fragment() {
             val pass  = etPassword.text.toString().trim()
 
             if (login.isEmpty() || pass.isEmpty()) {
-                Toast.makeText(requireContext(), "✏Заполните все поля", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

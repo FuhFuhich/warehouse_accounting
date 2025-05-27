@@ -15,7 +15,6 @@ class BuyersFabHelper(
     private val onBuyersAdded: (Buyers) -> Unit,
     private val viewModel: BuyersViewModel
 ) {
-
     fun showAddBuyersDialog() {
         val dialogView = LayoutInflater.from(context)
             .inflate(R.layout.fragment_buyers_dialog_add_buyers, null)
@@ -28,7 +27,7 @@ class BuyersFabHelper(
         val noteEditText: EditText = dialogView.findViewById(R.id.et_buyers_note)
 
         val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
-            .setTitle("Добавить нового поставщика")
+            .setTitle("Добавить нового покупателя")
             .setView(dialogView)
             .setPositiveButton("Добавить") { _, _ ->
                 val name = nameEditText.text.toString()
@@ -42,6 +41,7 @@ class BuyersFabHelper(
                 if (name.isNotEmpty())
                 {
                     val buyers = Buyers(
+                        id = 0,
                         name = name,
                         address = address,
                         email = email,
@@ -51,9 +51,9 @@ class BuyersFabHelper(
                         note = note
                     )
                     onBuyersAdded(buyers)
-                    Toast.makeText(context, "Поставщик добавлен", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Покупатель добавлен", Toast.LENGTH_SHORT).show()  // Исправлено
                 } else {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Отмена", null)
@@ -74,15 +74,15 @@ class BuyersFabHelper(
         val noteEditText: EditText = dialogView.findViewById(R.id.et_buyers_note)
 
         nameEditText.setText(buyers.name)
-        addressEditText.setText(buyers.address)
-        emailEditText.setText(buyers.email)
-        phoneEditText.setText(buyers.phone)
-        tinEditText.setText(buyers.tin)
-        bankDetailsEditText.setText(buyers.bankDetails)
-        noteEditText.setText(buyers.note)
+        addressEditText.setText(buyers.address ?: "")
+        emailEditText.setText(buyers.email ?: "")
+        phoneEditText.setText(buyers.phone ?: "")
+        tinEditText.setText(buyers.tin ?: "")
+        bankDetailsEditText.setText(buyers.bankDetails ?: "")
+        noteEditText.setText(buyers.note ?: "")
 
         val dialog = AlertDialog.Builder(context, R.style.MyAlertDialogTheme)
-            .setTitle("Редактировать поставщика")
+            .setTitle("Редактировать покупателя")
             .setView(dialogView)
             .setPositiveButton("Сохранить") { _, _ ->
                 val newName = nameEditText.text.toString()
@@ -95,7 +95,8 @@ class BuyersFabHelper(
 
                 if (newName.isNotEmpty())
                 {
-                    val updatedBuyers = Buyers(
+                    val updatedBuyers = buyers.copy(
+                        id = buyers.id,
                         name = newName,
                         address = newAddress,
                         email = newEmail,
@@ -105,9 +106,10 @@ class BuyersFabHelper(
                         note = newNote
                     )
                     onBuyersUpdated(updatedBuyers)
-                    Toast.makeText(context, "Buyers обновлён", Toast.LENGTH_SHORT).show()
+                    viewModel.updateBuyers(updatedBuyers)
+                    Toast.makeText(context, "Покупатель обновлён", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Отмена", null)
@@ -119,14 +121,15 @@ class BuyersFabHelper(
     fun handleActivityResult(resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             val buyersName = data.getStringExtra("buyers_name") ?: return
-            val buyersAddress = data.getStringExtra("buyers_address") ?: return
-            val buyersEmail = data.getStringExtra("buyers_email") ?: return
-            val buyersPhone = data.getStringExtra("buyers_phone") ?: return
-            val buyersTIN = data.getStringExtra("buyers_tin") ?: return
-            val buyersBankDetails = data.getStringExtra("buyers_bank_details") ?: return
-            val buyersNote = data.getStringExtra("buyers_note") ?: return
+            val buyersAddress = data.getStringExtra("buyers_address") ?: ""
+            val buyersEmail = data.getStringExtra("buyers_email") ?: ""
+            val buyersPhone = data.getStringExtra("buyers_phone") ?: ""
+            val buyersTIN = data.getStringExtra("buyers_tin") ?: ""
+            val buyersBankDetails = data.getStringExtra("buyers_bank_details") ?: ""
+            val buyersNote = data.getStringExtra("buyers_note") ?: ""
 
             val newBuyers = Buyers(
+                id = 0,
                 name = buyersName,
                 address = buyersAddress,
                 email = buyersEmail,
@@ -137,7 +140,7 @@ class BuyersFabHelper(
             )
 
             onBuyersAdded(newBuyers)
-            Toast.makeText(context, "Данные поставщика обновлены", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Данные покупателя обновлены", Toast.LENGTH_SHORT).show()
         }
     }
 }
