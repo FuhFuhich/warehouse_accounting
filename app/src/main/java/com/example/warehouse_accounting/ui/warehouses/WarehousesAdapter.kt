@@ -17,6 +17,7 @@ class WarehousesAdapter(
 
     inner class WarehousesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tv_warehouses_name)
+        val tvQuantity: TextView = itemView.findViewById(R.id.tv_warehouse_quantity) // ДОБАВИЛИ
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WarehousesViewHolder {
@@ -28,6 +29,12 @@ class WarehousesAdapter(
     override fun onBindViewHolder(holder: WarehousesViewHolder, position: Int) {
         val warehouse = warehouses[position]
         holder.tvName.text = warehouse.warehousesName
+
+        holder.tvQuantity.text = if (warehouse.totalQuantity > 0) {
+            warehouse.totalQuantity.toString()
+        } else {
+            "0"
+        }
 
         holder.itemView.setOnClickListener {
             editWarehousesCallback(warehouse)

@@ -71,15 +71,16 @@ class poka_tak private constructor() {
 
     fun handle_request(message: String) {
         when {
-            message.startsWith("buyersGet")      -> handleBuyers(message.removePrefix("buyersGet").trim())
-            message.startsWith("suppliersGet")   -> handleSuppliers(message.removePrefix("suppliersGet").trim())
-            message.startsWith("profileGet")     -> handleProfile(message.removePrefix("profileGet").trim())
-            message.startsWith("warehousesGet")  -> handleWarehouses(message.removePrefix("warehousesGet").trim())
-            message.startsWith("documentsGet")   -> handleDocuments(message.removePrefix("documentsGet").trim())
-            message.startsWith("productsGet")    -> handleProducts(message.removePrefix("productsGet").trim())
-            message.startsWith("registration")   -> handleProfile(message.removePrefix("registration").trim())
-            message.startsWith("login")          -> handleProfile(message.removePrefix("login").trim())
-            else                                 -> handleUnknown(message)
+            message.startsWith("buyersGet")                    -> handleBuyers(message.removePrefix("buyersGet").trim())
+            message.startsWith("suppliersGet")                 -> handleSuppliers(message.removePrefix("suppliersGet").trim())
+            message.startsWith("profileGet")                   -> handleProfile(message.removePrefix("profileGet").trim())
+            message.startsWith("warehousesGetWithQuantity")    -> handleWarehouses(message.removePrefix("warehousesGetWithQuantity").trim()) // НОВЫЙ
+            message.startsWith("warehousesGet")                -> handleWarehouses(message.removePrefix("warehousesGet").trim())
+            message.startsWith("documentsGet")                 -> handleDocuments(message.removePrefix("documentsGet").trim())
+            message.startsWith("productsGet")                  -> handleProducts(message.removePrefix("productsGet").trim())
+            message.startsWith("registration")                 -> handleProfile(message.removePrefix("registration").trim())
+            message.startsWith("login")                        -> handleProfile(message.removePrefix("login").trim())
+            else                                               -> handleUnknown(message)
         }
     }
 

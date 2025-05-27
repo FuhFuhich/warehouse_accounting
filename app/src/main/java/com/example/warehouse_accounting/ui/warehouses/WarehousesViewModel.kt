@@ -37,6 +37,7 @@ class WarehousesViewModel(
     init {
         nyaService.getWarehousesLiveData().observeForever(warehousesObserver)
         startUpdatingWarehouses()
+        loadUpdatedWarehouses()
     }
 
     private fun startUpdatingWarehouses() {
@@ -94,8 +95,8 @@ class WarehousesViewModel(
     }
 
     fun loadUpdatedWarehouses() {
-        println("=== ЗАПРОС ОБНОВЛЕНИЯ СКЛАДОВ ===")
-        nyaService.requestAllWarehouses()
+        println("=== ЗАПРОС ОБНОВЛЕНИЯ СКЛАДОВ С КОЛИЧЕСТВОМ ===")
+        nyaService.requestWarehousesWithQuantity()
     }
 
     fun getId(): Int = 0
