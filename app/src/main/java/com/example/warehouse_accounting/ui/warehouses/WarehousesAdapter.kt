@@ -11,7 +11,8 @@ import com.example.warehouse_accounting.models.Warehouses
 class WarehousesAdapter(
     private var warehouses: MutableList<Warehouses>,
     private val longClickHelper: WarehousesLongClickHelper,
-    private val editWarehousesCallback: (Warehouses) -> Unit
+    private val editWarehousesCallback: (Warehouses) -> Unit,
+    private val deleteWarehousesCallback: (Warehouses) -> Unit
 ) : RecyclerView.Adapter<WarehousesAdapter.WarehousesViewHolder>() {
 
     inner class WarehousesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,17 +26,19 @@ class WarehousesAdapter(
     }
 
     override fun onBindViewHolder(holder: WarehousesViewHolder, position: Int) {
-        val warehouses = warehouses[position]
-        holder.tvName.text = warehouses.warehousesName
+        val warehouse = warehouses[position]
+        holder.tvName.text = warehouse.warehousesName
 
         holder.itemView.setOnClickListener {
-            editWarehousesCallback(warehouses)
+            editWarehousesCallback(warehouse)
         }
 
         holder.itemView.setOnLongClickListener {
-            longClickHelper.showOptionsDialog { selectedOption ->
-                longClickHelper.showToast(selectedOption)
-            }
+            longClickHelper.showOptionsDialog(
+                warehouse = warehouse,
+                onEdit = { editWarehousesCallback(warehouse) },
+                onDelete = { deleteWarehousesCallback(warehouse) }
+            )
             true
         }
     }

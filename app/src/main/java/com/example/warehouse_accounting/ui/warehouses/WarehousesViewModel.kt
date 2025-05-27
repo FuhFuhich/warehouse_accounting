@@ -21,9 +21,17 @@ class WarehousesViewModel(
     private val viewModelScope = CoroutineScope(Dispatchers.Main + Job())
 
     private val warehousesObserver = Observer<MutableList<Warehouses>> { list ->
+        println("=== WAREHOUSES OBSERVER ===")
+        println("Получены склады с сервера: ${list.size}")
+        list.forEach { warehouse ->
+            println("Warehouse: id=${warehouse.id}, name=${warehouse.warehousesName}")
+        }
+
         _allWarehouses.clear()
         _allWarehouses.addAll(list)
         filterWarehouses(searchQuery.value ?: "")
+
+        println("_allWarehouses обновлен, размер: ${_allWarehouses.size}")
     }
 
     init {
@@ -47,19 +55,46 @@ class WarehousesViewModel(
     }
 
     fun addWarehouses(warehouses: Warehouses) {
+        println("=== ДОБАВЛЕНИЕ СКЛАДА ===")
+        println("Добавляем: $warehouses")
+
         _allWarehouses.add(warehouses)
-        nyaService.addNewWarehouse(warehouses)
         filterWarehouses(searchQuery.value ?: "")
+
+        nyaService.addNewWarehouse(warehouses)
         _notificationEvent.value = "Добавлен склад" to "Склад \"${warehouses.warehousesName}\" успешно добавлен."
     }
 
     fun updateWarehouses(updatedWarehouses: Warehouses) {
-        _allWarehouses.replaceAll { updatedWarehouses }
+        println("=== ОБНОВЛЕНИЕ СКЛАДА ===")
+        println("Обновляем: $updatedWarehouses")
+
+        if (updatedWarehouses.id != 0) {
+            _allWarehouses.replaceAll { if (it.id == updatedWarehouses.id) updatedWarehouses else it }
+        } else {
+            _allWarehouses.replaceAll { if (it.warehousesName == updatedWarehouses.warehousesName) updatedWarehouses else it }
+        }
+
         filterWarehouses(searchQuery.value ?: "")
+
+        // Отправляем обновление на сервер
+        nyaService.updateWarehouse(updatedWarehouses)
         _notificationEvent.value = "Склад обновлён" to "Склад \"${updatedWarehouses.warehousesName}\" успешно обновлён."
     }
 
+    fun deleteWarehouse(warehouse: Warehouses) {
+        println("=== УДАЛЕНИЕ СКЛАДА ===")
+        println("Удаляем: $warehouse")
+
+        _allWarehouses.removeAll { it.id == warehouse.id }
+        filterWarehouses(searchQuery.value ?: "")
+
+        nyaService.deleteWarehouse(warehouse)
+        _notificationEvent.value = "Склад удалён" to "Склад \"${warehouse.warehousesName}\" успешно удалён."
+    }
+
     fun loadUpdatedWarehouses() {
+        println("=== ЗАПРОС ОБНОВЛЕНИЯ СКЛАДОВ ===")
         nyaService.requestAllWarehouses()
     }
 
@@ -72,5 +107,7 @@ class WarehousesViewModel(
         } else {
             _allWarehouses.filter { it.warehousesName.contains(query, ignoreCase = true) }.toMutableList()
         }
+
+        println("Фильтрация: запрос='$query', результат=${_warehouses.value?.size} складов")
     }
 }

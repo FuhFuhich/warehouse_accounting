@@ -30,12 +30,8 @@ class WarehousesFabHelper(
 
                 if (warehousesName.isNotEmpty())
                 {
-                    // Никакого generateUniqueId, удалить к чертовой матери
-                    // Я буду брать айдишник сразу из ServerController.
-                    // Я отправляю запрос на добавление склада
-                    // Там же я возвращаю сгенерированный айдишник
-
                     val warehouses = Warehouses(
+                        id = 0,
                         warehousesName = warehousesName,
                     )
                     onWarehousesAdded(warehouses)
@@ -64,10 +60,12 @@ class WarehousesFabHelper(
                 val newName = nameEditText.text.toString()
 
                 if (newName.isNotEmpty()) {
-                    val updatedWarehouses = Warehouses(
+                    val updatedWarehouses = warehouses.copy(
+                        id = warehouses.id,
                         warehousesName = newName,
                     )
                     onWarehousesUpdated(updatedWarehouses)
+                    viewModel.updateWarehouses(updatedWarehouses)
                     Toast.makeText(context, "Склад обновлён", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(context, "Заполните все поля", Toast.LENGTH_SHORT).show()
@@ -79,17 +77,17 @@ class WarehousesFabHelper(
         dialog.show()
     }
 
-
     fun handleActivityResult(resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && data != null) {
             val warehousesName = data.getStringExtra("warehouses_name") ?: return
 
             val newWarehouses = Warehouses(
+                id = 0,
                 warehousesName = warehousesName,
             )
 
             onWarehousesAdded(newWarehouses)
-            Toast.makeText(context, "Данные поставщика обновлены", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Данные склада обновлены", Toast.LENGTH_SHORT).show()
         }
     }
 }

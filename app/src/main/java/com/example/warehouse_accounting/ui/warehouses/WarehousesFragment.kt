@@ -60,11 +60,19 @@ class WarehousesFragment : Fragment() {
             viewModel
         )
 
-        adapter = WarehousesAdapter(mutableListOf(), warehousesLongClickHelper) { warehouses ->
-            warehousesFabHelper.showEditWarehousesDialog(warehouses) { updatedWarehouses ->
-                viewModel.updateWarehouses(updatedWarehouses)
+        adapter = WarehousesAdapter(
+            mutableListOf(),
+            warehousesLongClickHelper,
+            { warehouse ->
+                warehousesFabHelper.showEditWarehousesDialog(warehouse) { updatedWarehouse ->
+                    viewModel.updateWarehouses(updatedWarehouse)
+                }
+            },
+            { warehouse ->
+                viewModel.deleteWarehouse(warehouse)
             }
-        }
+        )
+
         binding.rvWarehouses.layoutManager = LinearLayoutManager(requireContext())
         binding.rvWarehouses.adapter = adapter
 

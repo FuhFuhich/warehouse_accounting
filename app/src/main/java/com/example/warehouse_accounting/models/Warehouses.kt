@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Warehouses(
+    val id: Int = 0,
     val warehousesName: String
 )
