@@ -36,7 +36,6 @@ class WarehousesAdapter(
         holder.itemView.setOnLongClickListener {
             longClickHelper.showOptionsDialog(
                 warehouse = warehouse,
-                onEdit = { editWarehousesCallback(warehouse) },
                 onDelete = { deleteWarehousesCallback(warehouse) }
             )
             true
