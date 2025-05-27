@@ -46,21 +46,7 @@ class RegisterFragment : Fragment() {
         vm.errorLiveData.observe(viewLifecycleOwner) { errorMessage ->
             if (!errorMessage.isNullOrEmpty()) {
                 resetButton()
-
-                when {
-                    errorMessage.contains("уже существует") || errorMessage.contains("already exists") -> {
-                        Toast.makeText(requireContext(), "Этот логин уже занят! Попробуйте другой", Toast.LENGTH_LONG).show()
-                    }
-                    errorMessage.contains("короткий") || errorMessage.contains("минимум") -> {
-                        Toast.makeText(requireContext(), "$errorMessage", Toast.LENGTH_SHORT).show()
-                    }
-                    errorMessage.contains("пустые") || errorMessage.contains("заполните") -> {
-                        Toast.makeText(requireContext(), "$errorMessage", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        Toast.makeText(requireContext(), "$errorMessage", Toast.LENGTH_SHORT).show()
-                    }
-                }
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -73,30 +59,9 @@ class RegisterFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if (login.length < 3) {
-                Toast.makeText(requireContext(), "Логин должен содержать минимум 3 символа", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (pass.length < 3) {
-                Toast.makeText(requireContext(), "Пароль должен содержать минимум 3 символа", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (!isValidLogin(login)) {
-                Toast.makeText(requireContext(), "Логин может содержать только буквы, цифры и символы _ -", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             setLoadingState()
-            Toast.makeText(requireContext(), "Проверяем доступность логина...", Toast.LENGTH_SHORT).show()
-
             vm.register(login, pass)
         }
-    }
-
-    private fun isValidLogin(login: String): Boolean {
-        return login.matches(Regex("^[a-zA-Z0-9_-]+$"))
     }
 
     private fun setLoadingState() {
