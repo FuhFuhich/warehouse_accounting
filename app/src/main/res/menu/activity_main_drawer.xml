@@ -6,35 +6,35 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/ic_menu_myplaces"
             android:title="@string/menu_profile" />
         <item
             android:id="@+id/nav_products"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="@string/menu_products" />
         <item
             android:id="@+id/nav_suppliers"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@android:drawable/ic_menu_send"
             android:title="@string/menu_suppliers" />
         <item
             android:id="@+id/nav_buyers"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/ic_menu_agenda"
             android:title="@string/menu_buyers" />
         <item
             android:id="@+id/nav_warehouses"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@android:drawable/ic_menu_mylocation"
             android:title="@string/menu_warehouses" />
         <item
             android:id="@+id/nav_help"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/ic_menu_help"
             android:title="@string/menu_help" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@android:drawable/ic_menu_preferences"
             android:title="@string/menu_settings" />
         <item
             android:id="@+id/nav_need_help"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@android:drawable/ic_menu_call"
             android:title="@string/menu_need_help" />
     </group>
 </menu>
