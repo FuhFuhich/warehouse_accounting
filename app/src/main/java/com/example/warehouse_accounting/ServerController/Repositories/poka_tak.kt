@@ -138,7 +138,6 @@ class poka_tak private constructor() {
         }
     }
 
-
     private fun handleProfile(data: String) {
         println("=== HANDLE_PROFILE ===")
         println("Обработка profile: $data")
@@ -204,8 +203,6 @@ class poka_tak private constructor() {
         }
     }
 
-
-
     private fun handleDocuments(data: String) {
         println("Обработка documents: $data")
         try {
@@ -242,7 +239,6 @@ class poka_tak private constructor() {
             productsLiveData.postValue(mutableListOf())
         }
     }
-
 
     private fun handleUnknown(data: String) {
         println("Неизвестная команда: $data")
