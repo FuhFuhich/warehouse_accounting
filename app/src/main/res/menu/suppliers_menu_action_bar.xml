@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_update"
-        android:icon="@drawable/ic_documents"
+        android:icon="@android:drawable/ic_popup_sync"
         android:title="@string/update"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/action_search"
+        android:icon="@android:drawable/ic_menu_search"
         android:title="@string/search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />

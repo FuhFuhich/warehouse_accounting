@@ -55,6 +55,8 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        println("=== MAIN: Стартовое назначение: ${navController.graph.startDestinationId} ===")
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_profile, R.id.nav_products, R.id.nav_suppliers,
@@ -69,15 +71,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            println("=== НАВИГАЦИЯ К: ${destination.label} (ID: ${destination.id}) ===")
+
             val hideUI = destination.id == R.id.welcomeFragment ||
                     destination.id == R.id.loginFragment ||
                     destination.id == R.id.registerFragment
 
             if (hideUI) {
+                println("=== СКРЫВАЕМ UI (auth экраны) ===")
                 binding.appBarMain.toolbar.visibility = View.GONE
                 binding.navView.visibility = View.GONE
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             } else {
+                println("=== ПОКАЗЫВАЕМ UI (основные экраны) ===")
                 binding.appBarMain.toolbar.visibility = View.VISIBLE
                 binding.navView.visibility = View.VISIBLE
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
