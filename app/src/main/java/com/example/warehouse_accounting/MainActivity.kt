@@ -2,6 +2,8 @@ package com.example.warehouse_accounting
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,11 +15,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.warehouse_accounting.databinding.ActivityMainBinding
 import com.example.warehouse_accounting.ServerController.GlobalWebSocket
+import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
+import com.example.warehouse_accounting.ServerController.Service.nya
+import com.example.warehouse_accounting.utils.NavigationHeaderHelper
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var nyaService: nya
+
+    private lateinit var profilePicture: ImageView
+    private lateinit var profileName: TextView
+    private lateinit var profileEmail: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +41,19 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        nyaService = nya(poka_tak.getInstance())
+
+        val headerView = navView.getHeaderView(0)
+        profilePicture = headerView.findViewById(R.id.iv_profile_picture)
+        profileName = headerView.findViewById(R.id.tv_profile_name)
+        profileEmail = headerView.findViewById(R.id.tv_profile_email)
+
+        nyaService.getProfileLiveData().observe(this) { profile ->
+            NavigationHeaderHelper.updateNavigationHeader(
+                profile, profilePicture, profileName, profileEmail
+            )
+        }
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
@@ -61,7 +84,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Используем singleton
         GlobalWebSocket.instance.connect()
     }
 
