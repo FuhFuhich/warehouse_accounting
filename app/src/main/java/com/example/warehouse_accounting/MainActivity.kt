@@ -16,14 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.warehouse_accounting.databinding.ActivityMainBinding
 import com.example.warehouse_accounting.ServerController.GlobalWebSocket
 import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
-import com.example.warehouse_accounting.ServerController.Service.nya
+import com.example.warehouse_accounting.ServerController.Service.Serv
 import com.example.warehouse_accounting.utils.NavigationHeaderHelper
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var nyaService: nya
+    private lateinit var nyaService: Serv
 
     private lateinit var profilePicture: ImageView
     private lateinit var profileName: TextView
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        nyaService = nya(poka_tak.getInstance())
+        nyaService = Serv(poka_tak.getInstance())
 
         val headerView = navView.getHeaderView(0)
         profilePicture = headerView.findViewById(R.id.iv_profile_picture)

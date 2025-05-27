@@ -5,10 +5,10 @@ import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.warehouse_accounting.ServerController.Service.nya
+import com.example.warehouse_accounting.ServerController.Service.Serv
 
 class BuyersViewModelFactory(
-    private val nyaService: nya,
+    private val nyaService: Serv,
     owner: SavedStateRegistryOwner,
     defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {

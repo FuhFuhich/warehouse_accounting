@@ -1,10 +1,10 @@
 package com.example.warehouse_accounting.ui.products
 
 import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
-import com.example.warehouse_accounting.ServerController.Service.nya
+import com.example.warehouse_accounting.ServerController.Service.Serv
 
 object ServiceLocator {
-    val nyaService: nya by lazy {
-        nya(poka_tak.getInstance())
+    val nyaService: Serv by lazy {
+        Serv(poka_tak.getInstance())
     }
 }

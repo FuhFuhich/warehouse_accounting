@@ -1,13 +1,13 @@
 package com.example.warehouse_accounting.ui.products
 
 import androidx.lifecycle.*
-import com.example.warehouse_accounting.ServerController.Service.nya
+import com.example.warehouse_accounting.ServerController.Service.Serv
 import com.example.warehouse_accounting.models.Product
 import kotlinx.coroutines.*
 
 class ProductsViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val nyaService: nya
+    private val nyaService: Serv
 ) : ViewModel() {
     private val _allProducts = mutableListOf<Product>()
     private val _products = MutableLiveData<MutableList<Product>>(mutableListOf())

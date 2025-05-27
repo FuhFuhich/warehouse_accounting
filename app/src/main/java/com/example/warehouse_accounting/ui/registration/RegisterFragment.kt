@@ -11,13 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.warehouse_accounting.R
-import com.example.warehouse_accounting.ServerController.PokaRepository
+import com.example.warehouse_accounting.ServerController.ReposRepository
 import com.example.warehouse_accounting.ui.auth.AuthViewModel
 import com.example.warehouse_accounting.ui.auth.AuthViewModelFactory
 
 class RegisterFragment : Fragment() {
     private val vm: AuthViewModel by activityViewModels {
-        AuthViewModelFactory(PokaRepository.instance)
+        AuthViewModelFactory(ReposRepository.instance)
     }
 
     private lateinit var btnRegister: Button

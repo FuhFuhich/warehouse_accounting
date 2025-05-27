@@ -6,9 +6,8 @@ import com.example.warehouse_accounting.models.Product
 import com.example.warehouse_accounting.models.Profile
 import com.example.warehouse_accounting.models.Suppliers
 import com.example.warehouse_accounting.models.Warehouses
-import kotlinx.serialization.json.Json
 
-class nya(private val repository: poka_tak) {
+class Serv(private val repository: poka_tak) {
 
     // Buyers
     fun getBuyersLiveData() = repository.buyersLiveData

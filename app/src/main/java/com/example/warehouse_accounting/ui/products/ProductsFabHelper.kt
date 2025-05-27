@@ -3,7 +3,6 @@ package com.example.warehouse_accounting.ui.products
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageView
@@ -11,13 +10,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.models.Product
+import com.example.warehouse_accounting.utils.BarcodeScannerActivity
 
 class ProductsFabHelper(
     private val context: Context,
     private val viewModel: ProductsViewModel
 ) {
     private var productImageUri: String? = null
-    private val IMAGE_PICK_CODE = 1000
+    private val BARCODE_SCAN_CODE = 2000 // ИЗМЕНИЛИ КОД
+
+    private var currentBarcodeEditText: EditText? = null
 
     fun showAddProductDialog() {
         val dialogView = LayoutInflater.from(context)
@@ -60,7 +62,8 @@ class ProductsFabHelper(
         dialog.show()
 
         productImageView.setOnClickListener {
-            pickImageFromGallery()
+            currentBarcodeEditText = barcodeEditText
+            startBarcodeScanner()
         }
     }
 
@@ -114,20 +117,25 @@ class ProductsFabHelper(
         dialog.show()
 
         productImageView.setOnClickListener {
-            pickImageFromGallery()
+            currentBarcodeEditText = barcodeEditText
+            startBarcodeScanner()
         }
     }
 
-    private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        (context as Activity).startActivityForResult(intent, IMAGE_PICK_CODE)
+    private fun startBarcodeScanner() {
+        val intent = Intent(context, BarcodeScannerActivity::class.java)
+        (context as Activity).startActivityForResult(intent, BARCODE_SCAN_CODE)
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
-            productImageUri = data?.data.toString()
-            Toast.makeText(context, "Изображение выбрано", Toast.LENGTH_SHORT).show()
+        if (resultCode == Activity.RESULT_OK && requestCode == BARCODE_SCAN_CODE) {
+            val scannedBarcode = data?.getStringExtra(BarcodeScannerActivity.EXTRA_BARCODE_RESULT)
+            if (!scannedBarcode.isNullOrEmpty()) {
+                currentBarcodeEditText?.setText(scannedBarcode)
+                Toast.makeText(context, "Штрих-код отсканирован: $scannedBarcode", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Не удалось отсканировать штрих-код", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

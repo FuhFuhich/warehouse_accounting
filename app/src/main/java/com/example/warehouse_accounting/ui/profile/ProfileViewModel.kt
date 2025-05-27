@@ -3,12 +3,12 @@ package com.example.warehouse_accounting.ui.profile
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.*
-import com.example.warehouse_accounting.ServerController.Service.nya
+import com.example.warehouse_accounting.ServerController.Service.Serv
 import com.example.warehouse_accounting.models.Profile
 
 class ProfileViewModel(
     application: Application,
-    private val nyaService: nya
+    private val nyaService: Serv
 ) : AndroidViewModel(application) {
 
     private val prefs = application.getSharedPreferences("profile_prefs", Context.MODE_PRIVATE)

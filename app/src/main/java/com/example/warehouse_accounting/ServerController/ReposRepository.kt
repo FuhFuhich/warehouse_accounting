@@ -2,7 +2,7 @@ package com.example.warehouse_accounting.ServerController
 
 import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
 
-object PokaRepository {
+object ReposRepository {
     val instance = poka_tak.getInstance()
 
     fun register(login: String, password: String) = instance.register(login, password)
