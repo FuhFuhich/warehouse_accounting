@@ -1,12 +1,8 @@
 package com.example.warehouse_accounting.ui.profile
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -15,10 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.bumptech.glide.Glide
-import com.example.warehouse_accounting.R
 import com.example.warehouse_accounting.databinding.FragmentProfileBinding
-import com.google.android.material.textfield.TextInputLayout
 
 class ProfileFragment : Fragment() {
 
@@ -34,8 +27,7 @@ class ProfileFragment : Fragment() {
     private var isUpdating = false
 
     companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-        private const val VALIDATION_DELAY = 500L // 500ms задержка
+        private const val VALIDATION_DELAY = 500L
     }
 
     override fun onCreateView(
@@ -79,24 +71,48 @@ class ProfileFragment : Fragment() {
     private fun updateUI(profile: com.example.warehouse_accounting.models.Profile) {
         isUpdating = true
 
-        binding.etFirstName.setText(profile.firstName ?: "")
-        binding.etLastName.setText(profile.lastName ?: "")
-        binding.etLogin.setText(profile.login ?: "")
-        binding.etPhone.setText(profile.phone ?: "")
-        binding.etEmail.setText(profile.email ?: "")
+        val firstNameSelection = binding.etFirstName.selectionStart
+        val lastNameSelection = binding.etLastName.selectionStart
+        val loginSelection = binding.etLogin.selectionStart
+        val phoneSelection = binding.etPhone.selectionStart
+        val emailSelection = binding.etEmail.selectionStart
 
-        loadProfileImage(profile.photoUri)
+        if (binding.etFirstName.text?.toString() != (profile.firstName ?: "")) {
+            binding.etFirstName.setText(profile.firstName ?: "")
+        } else {
+            val textLength = binding.etFirstName.text?.length ?: 0
+            binding.etFirstName.setSelection(minOf(firstNameSelection, textLength))
+        }
+
+        if (binding.etLastName.text?.toString() != (profile.lastName ?: "")) {
+            binding.etLastName.setText(profile.lastName ?: "")
+        } else {
+            val textLength = binding.etLastName.text?.length ?: 0
+            binding.etLastName.setSelection(minOf(lastNameSelection, textLength))
+        }
+
+        if (binding.etLogin.text?.toString() != (profile.login ?: "")) {
+            binding.etLogin.setText(profile.login ?: "")
+        } else {
+            val textLength = binding.etLogin.text?.length ?: 0
+            binding.etLogin.setSelection(minOf(loginSelection, textLength))
+        }
+
+        if (binding.etPhone.text?.toString() != (profile.phone ?: "")) {
+            binding.etPhone.setText(profile.phone ?: "")
+        } else {
+            val textLength = binding.etPhone.text?.length ?: 0
+            binding.etPhone.setSelection(minOf(phoneSelection, textLength))
+        }
+
+        if (binding.etEmail.text?.toString() != (profile.email ?: "")) {
+            binding.etEmail.setText(profile.email ?: "")
+        } else {
+            val textLength = binding.etEmail.text?.length ?: 0
+            binding.etEmail.setSelection(minOf(emailSelection, textLength))
+        }
 
         isUpdating = false
-    }
-
-    private fun loadProfileImage(photoUri: String?) {
-        Glide.with(this)
-            .load(photoUri)
-            .placeholder(R.drawable.ic_default_avatar)
-            .error(R.drawable.ic_default_avatar)
-            .circleCrop()
-            .into(binding.ivProfilePicture)
     }
 
     private fun setupTextWatchers() {
@@ -129,7 +145,7 @@ class ProfileFragment : Fragment() {
                 validationRunnable?.let { validationHandler.removeCallbacks(it) }
 
                 validationRunnable = Runnable {
-                    action(s.toString())
+                    action(s?.toString() ?: "")
                 }
                 validationHandler.postDelayed(validationRunnable!!, VALIDATION_DELAY)
             }
@@ -139,19 +155,10 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        binding.btnChangePhoto.setOnClickListener {
-            openImagePicker()
-        }
-
         binding.btnSaveProfile.setOnClickListener {
             binding.root.clearFocus()
             viewModel.saveProfile()
         }
-    }
-
-    private fun openImagePicker() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     private fun showValidationErrors(errors: Map<String, String>) {
@@ -176,35 +183,8 @@ class ProfileFragment : Fragment() {
         binding.tilEmail.error = null
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            data?.data?.let { uri ->
-                handleImageSelection(uri)
-            }
-        }
-    }
-
-    private fun handleImageSelection(uri: Uri) {
-        try {
-            val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-            requireContext().contentResolver.takePersistableUriPermission(uri, takeFlags)
-            viewModel.updatePhoto(uri.toString())
-
-            Glide.with(this)
-                .load(uri)
-                .circleCrop()
-                .into(binding.ivProfilePicture)
-
-        } catch (e: SecurityException) {
-            Toast.makeText(requireContext(), "Ошибка доступа к изображению", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        // Очищаем обработчики
         validationRunnable?.let { validationHandler.removeCallbacks(it) }
         _binding = null
     }

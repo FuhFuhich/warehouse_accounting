@@ -24,15 +24,16 @@
             android:theme="@style/Theme.Warehouse_accounting.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".utils.BarcodeScannerActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@style/Theme.BarcodeScanner" />
+
         <service
             android:name=".service.MyFirebaseMessagingService"
             android:exported="false">

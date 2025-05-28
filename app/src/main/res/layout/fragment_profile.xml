@@ -206,30 +206,10 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_change_photo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:text="@string/change_photo_profile"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:backgroundTint="#444444"
-            app:cornerRadius="8dp"
-            app:strokeColor="#666666"
-            app:strokeWidth="1dp"
-            app:icon="@android:drawable/ic_menu_camera"
-            app:iconTint="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/til_email"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             android:text="@string/save_profile"
@@ -240,7 +220,7 @@
             app:cornerRadius="8dp"
             app:icon="@android:drawable/ic_menu_save"
             app:iconTint="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/btn_change_photo"
+            app:layout_constraintTop_toBottomOf="@id/til_email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

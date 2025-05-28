@@ -3,7 +3,6 @@ package com.example.warehouse_accounting.ui.products
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.warehouse_accounting.R
@@ -21,7 +20,6 @@ class ProductsAdapter(
         val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
         val tvBarcode: TextView = itemView.findViewById(R.id.tv_barcode)
         val tvQuantity: TextView = itemView.findViewById(R.id.tv_quantity)
-        val ivProduct: ImageView = itemView.findViewById(R.id.iv_product_image)
         val tvWarehouse: TextView = itemView.findViewById(R.id.tv_warehouse)
     }
 

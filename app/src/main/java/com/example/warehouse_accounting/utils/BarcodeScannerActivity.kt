@@ -26,6 +26,8 @@ class BarcodeScannerActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_BARCODE_RESULT = "barcode_result"
+        const val EXTRA_PRODUCT_NAME = "product_name"
+        const val EXTRA_BARCODE_INFO = "barcode_info"
         const val REQUEST_CODE_PERMISSIONS = 10
         val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
@@ -64,8 +66,8 @@ class BarcodeScannerActivity : AppCompatActivity() {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
                 .also {
-                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcode ->
-                        returnBarcodeResult(barcode)
+                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcodeData ->
+                        returnBarcodeResult(barcodeData)
                     })
                 }
 
@@ -84,9 +86,11 @@ class BarcodeScannerActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun returnBarcodeResult(barcode: String) {
+    private fun returnBarcodeResult(barcodeData: Triple<String, String?, String?>) {
         val resultIntent = Intent().apply {
-            putExtra(EXTRA_BARCODE_RESULT, barcode)
+            putExtra(EXTRA_BARCODE_RESULT, barcodeData.first)      // штрих-код
+            putExtra(EXTRA_PRODUCT_NAME, barcodeData.second)       // название товара
+            putExtra(EXTRA_BARCODE_INFO, barcodeData.third)        // описание
         }
         setResult(RESULT_OK, resultIntent)
         finish()
@@ -115,7 +119,7 @@ class BarcodeScannerActivity : AppCompatActivity() {
         cameraExecutor.shutdown()
     }
 
-    private inner class BarcodeAnalyzer(private val onBarcodeDetected: (String) -> Unit) : ImageAnalysis.Analyzer {
+    private inner class BarcodeAnalyzer(private val onBarcodeDetected: (Triple<String, String?, String?>) -> Unit) : ImageAnalysis.Analyzer {
 
         private val scanner = BarcodeScanning.getClient()
 
@@ -127,12 +131,16 @@ class BarcodeScannerActivity : AppCompatActivity() {
                     .addOnSuccessListener { barcodes ->
                         for (barcode in barcodes) {
                             barcode.rawValue?.let { barcodeValue ->
-                                onBarcodeDetected(barcodeValue)
+                                val productName = getProductName(barcodeValue, barcode.format)
+                                val description = getBarcodeDescription(barcodeValue, barcode.format)
+
+                                onBarcodeDetected(Triple(barcodeValue, productName, description))
                                 return@addOnSuccessListener
                             }
                         }
                     }
                     .addOnFailureListener {
+                        // Тут будет обработка ошибки сканирования
                     }
                     .addOnCompleteListener {
                         imageProxy.close()
@@ -140,6 +148,41 @@ class BarcodeScannerActivity : AppCompatActivity() {
             } else {
                 imageProxy.close()
             }
+        }
+
+        private fun getProductName(barcode: String, format: Int): String? {
+            return when {
+                (barcode.startsWith("978") || barcode.startsWith("979")) && barcode.length == 13 -> "Книга"
+
+                barcode.startsWith("460") || barcode.startsWith("461") ||
+                        barcode.startsWith("462") || barcode.startsWith("463") -> "Российский товар"
+
+                format == Barcode.FORMAT_QR_CODE -> "QR товар"
+
+                else -> null
+            }
+        }
+
+        private fun getBarcodeDescription(barcode: String, format: Int): String? {
+            val parts = mutableListOf<String>()
+
+            when (format) {
+                Barcode.FORMAT_EAN_13 -> parts.add("EAN-13")
+                Barcode.FORMAT_EAN_8 -> parts.add("EAN-8")
+                Barcode.FORMAT_UPC_A -> parts.add("UPC-A")
+                Barcode.FORMAT_CODE_128 -> parts.add("Code 128")
+                Barcode.FORMAT_QR_CODE -> parts.add("QR код")
+                else -> parts.add("Штрих-код")
+            }
+
+            when {
+                barcode.startsWith("460") -> parts.add("Россия")
+                barcode.startsWith("482") -> parts.add("Украина")
+                barcode.startsWith("481") -> parts.add("Беларусь")
+                barcode.startsWith("978") || barcode.startsWith("979") -> parts.add("ISBN")
+            }
+
+            return if (parts.isNotEmpty()) parts.joinToString(", ") else null
         }
     }
 }

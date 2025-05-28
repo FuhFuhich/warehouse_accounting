@@ -18,6 +18,7 @@ import com.example.warehouse_accounting.ServerController.GlobalWebSocket
 import com.example.warehouse_accounting.ServerController.Repositories.poka_tak
 import com.example.warehouse_accounting.ServerController.Service.Serv
 import com.example.warehouse_accounting.utils.NavigationHeaderHelper
+import com.example.warehouse_accounting.models.Profile
 
 class MainActivity : AppCompatActivity() {
 
@@ -91,6 +92,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         GlobalWebSocket.instance.connect()
+    }
+
+    fun updateNavigationHeader(profile: Profile?) {
+        if (::profilePicture.isInitialized && ::profileName.isInitialized && ::profileEmail.isInitialized) {
+            NavigationHeaderHelper.updateNavigationHeader(
+                profile, profilePicture, profileName, profileEmail
+            )
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

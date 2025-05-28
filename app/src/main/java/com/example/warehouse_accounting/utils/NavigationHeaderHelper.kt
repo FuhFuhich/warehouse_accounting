@@ -29,7 +29,7 @@ class NavigationHeaderHelper {
 
                 profileEmail.text = profile.email ?: "Не указан"
 
-                loadProfileImage(profile.photoUri, profilePicture)
+                //loadProfileImage(profile.photoUri, profilePicture)
             } else {
                 profileName.text = "Не авторизован"
                 profileEmail.text = ""
@@ -37,6 +37,7 @@ class NavigationHeaderHelper {
             }
         }
 
+        /*
         private fun loadProfileImage(photoUri: String?, imageView: ImageView) {
             if (!photoUri.isNullOrEmpty()) {
                 Glide.with(imageView.context)
@@ -50,5 +51,6 @@ class NavigationHeaderHelper {
                 imageView.setImageResource(R.mipmap.ic_launcher_round)
             }
         }
+        */
     }
 }
