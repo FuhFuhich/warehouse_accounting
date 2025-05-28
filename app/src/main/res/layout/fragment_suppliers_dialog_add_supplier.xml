@@ -37,7 +37,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/suppliers_fab_phone"
-        android:inputType="number"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         tools:ignore="TextFields" />
@@ -47,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/suppliers_fab_TIN"
-        android:inputType="number"
         android:textColor="@color/white"
         android:textColorHint="@color/white"/>
 
