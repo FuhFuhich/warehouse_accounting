@@ -3,6 +3,7 @@ package com.example.warehouse_accounting.ui.products
 import androidx.lifecycle.*
 import com.example.warehouse_accounting.ServerController.Service.Serv
 import com.example.warehouse_accounting.models.Product
+import com.example.warehouse_accounting.models.Warehouses
 import kotlinx.coroutines.*
 
 class ProductsViewModel(
@@ -12,6 +13,8 @@ class ProductsViewModel(
     private val _allProducts = mutableListOf<Product>()
     private val _products = MutableLiveData<MutableList<Product>>(mutableListOf())
     val products: LiveData<MutableList<Product>> = _products
+
+    private val _warehouses = mutableListOf<Warehouses>()
 
     val searchQuery: MutableLiveData<String> = savedStateHandle.getLiveData("searchQuery", "")
 
@@ -23,20 +26,24 @@ class ProductsViewModel(
     private val productsObserver = Observer<MutableList<Product>> { list ->
         println("=== PRODUCTS OBSERVER ===")
         println("Получены продукты с сервера: ${list.size}")
-        list.forEach { product ->
-            println("Product: id=${product.id}, name=${product.name}, barcode=${product.barcode}")
-        }
 
         _allProducts.clear()
         _allProducts.addAll(list)
         filterProducts(searchQuery.value ?: "")
+    }
 
-        println("_allProducts обновлен, размер: ${_allProducts.size}")
+    private val warehousesObserver = Observer<MutableList<Warehouses>> { list ->
+        _warehouses.clear()
+        _warehouses.addAll(list)
+        println("Загружены склады: ${_warehouses.map { it.warehousesName }}")
     }
 
     init {
         nyaService.getProductsLiveData().observeForever(productsObserver)
+        nyaService.getWarehousesLiveData().observeForever(warehousesObserver)
         startUpdatingProducts()
+
+        nyaService.requestAllWarehouses()
     }
 
     private fun startUpdatingProducts() {
@@ -52,22 +59,44 @@ class ProductsViewModel(
         super.onCleared()
         viewModelScope.cancel()
         nyaService.getProductsLiveData().removeObserver(productsObserver)
+        nyaService.getWarehousesLiveData().removeObserver(warehousesObserver)
     }
 
-    fun addProducts(product: Product) {
+    private fun isWarehouseExists(warehouseName: String?): Boolean {
+        if (warehouseName.isNullOrBlank()) return true
+
+        return _warehouses.any { warehouse ->
+            warehouse.warehousesName.equals(warehouseName.trim(), ignoreCase = true)
+        }
+    }
+
+    fun addProducts(product: Product): Boolean {
         println("=== ДОБАВЛЕНИЕ ПРОДУКТА ===")
         println("Добавляем: $product")
+
+        if (!isWarehouseExists(product.warehouse)) {
+            val availableWarehouses = _warehouses.joinToString(", ") { it.warehousesName }
+            _notificationEvent.value = "Ошибка" to "Склад '${product.warehouse}' не существует.\nДоступные склады: $availableWarehouses"
+            return false
+        }
 
         _allProducts.add(product)
         filterProducts(searchQuery.value ?: "")
 
         nyaService.addNewProduct(product)
         _notificationEvent.value = "Добавлен товар" to "Товар \"${product.name}\" успешно добавлен."
+        return true
     }
 
-    fun updateProducts(updatedProduct: Product) {
+    fun updateProducts(updatedProduct: Product): Boolean {
         println("=== ОБНОВЛЕНИЕ ПРОДУКТА ===")
         println("Обновляем: $updatedProduct")
+
+        if (!isWarehouseExists(updatedProduct.warehouse)) {
+            val availableWarehouses = _warehouses.joinToString(", ") { it.warehousesName }
+            _notificationEvent.value = "Ошибка" to "Склад '${updatedProduct.warehouse}' не существует.\nДоступные склады: $availableWarehouses"
+            return false
+        }
 
         if (updatedProduct.id != 0) {
             _allProducts.replaceAll { if (it.id == updatedProduct.id) updatedProduct else it }
@@ -79,6 +108,7 @@ class ProductsViewModel(
 
         nyaService.updateProduct(updatedProduct)
         _notificationEvent.value = "Товар обновлён" to "Товар \"${updatedProduct.name}\" успешно обновлён."
+        return true
     }
 
     fun deleteProduct(product: Product) {
@@ -97,6 +127,10 @@ class ProductsViewModel(
         nyaService.requestAllProducts()
     }
 
+    fun getWarehouseNames(): List<String> {
+        return _warehouses.map { it.warehousesName }
+    }
+
     fun getId(): Int = 0
 
     fun filterProducts(query: String) {
@@ -106,7 +140,5 @@ class ProductsViewModel(
         } else {
             _allProducts.filter { it.name.contains(query, ignoreCase = true) }.toMutableList()
         }
-
-        println("Фильтрация: запрос='$query', результат=${_products.value?.size} продуктов")
     }
 }

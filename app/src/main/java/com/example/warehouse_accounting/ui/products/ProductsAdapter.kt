@@ -1,5 +1,6 @@
 package com.example.warehouse_accounting.ui.products
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,11 +32,16 @@ class ProductsAdapter(
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         val product = products[position]
-        holder.tvName.text = product.name
-        holder.tvDescription.text = product.description
-        holder.tvBarcode.text = product.barcode
+
+        Log.d("ProductsAdapter", "Binding position $position: name='${product.name}', desc='${product.description}'")
+
+        holder.tvName.text = product.name.trim().takeIf { it.isNotEmpty() } ?: "Без названия"
+        holder.tvDescription.text = product.description?.trim()?.takeIf { it.isNotEmpty() } ?: "Нет описания"
+        holder.tvBarcode.text = product.barcode.trim().takeIf { it.isNotEmpty() } ?: "Нет штрих-кода"
         holder.tvQuantity.text = product.quantity.toString()
-        holder.tvWarehouse.text = product.warehouse ?: ""
+        holder.tvWarehouse.text = product.warehouse?.trim()?.takeIf { it.isNotEmpty() } ?: "Не указан"
+
+        Log.d("ProductsAdapter", "Set values: name='${holder.tvName.text}', desc='${holder.tvDescription.text}'")
 
         holder.itemView.setOnClickListener {
             editProductCallback(product)
@@ -53,7 +59,25 @@ class ProductsAdapter(
     override fun getItemCount(): Int = products.size
 
     fun updateProducts(newProducts: MutableList<Product>) {
-        products = newProducts
+        Log.d("ProductsAdapter", "Updating products: ${newProducts.size} items")
+
+        newProducts.forEachIndexed { index, product ->
+            Log.d("ProductsAdapter", "Product $index: name='${product.name}', desc='${product.description}'")
+        }
+
+        products.clear()
+        products.addAll(newProducts)
         notifyDataSetChanged()
+    }
+
+    override fun onViewRecycled(holder: ProductViewHolder) {
+        super.onViewRecycled(holder)
+        Log.d("ProductsAdapter", "ViewHolder recycled")
+
+        holder.tvName.text = ""
+        holder.tvDescription.text = ""
+        holder.tvBarcode.text = ""
+        holder.tvQuantity.text = ""
+        holder.tvWarehouse.text = ""
     }
 }
