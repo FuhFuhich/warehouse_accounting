@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.warehouse_accounting.MainActivity
 import com.example.warehouse_accounting.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -65,6 +66,20 @@ class ProfileFragment : Fragment() {
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 viewModel.clearMessages()
             }
+        }
+
+        viewModel.updateNavigationEvent.observe(viewLifecycleOwner) { profile ->
+            updateNavigationHeader(profile)
+        }
+    }
+
+    private fun updateNavigationHeader(profile: com.example.warehouse_accounting.models.Profile?) {
+        try {
+            (requireActivity() as? MainActivity)?.updateNavigationHeader(profile)
+            println("=== NAVIGATION HEADER UPDATED ===")
+            println("Profile: name=${profile?.firstName} ${profile?.lastName}, email=${profile?.email}")
+        } catch (e: Exception) {
+            println("Ошибка обновления navigation header: ${e.message}")
         }
     }
 

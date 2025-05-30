@@ -24,11 +24,16 @@ class ProfileViewModel(
     private val _messages = MutableLiveData<String>()
     val messages: LiveData<String> = _messages
 
+    private val _updateNavigationEvent = MutableLiveData<Profile?>()
+    val updateNavigationEvent: LiveData<Profile?> = _updateNavigationEvent
+
     init {
         serverProfile.observeForever { serverProfile ->
             serverProfile?.let { profile ->
                 _profile.value = profile
                 saveProfileToPrefs(profile)
+
+                _updateNavigationEvent.value = profile
             }
         }
     }
@@ -40,7 +45,7 @@ class ProfileViewModel(
     }
 
     fun isEmailValid(email: String?): Boolean {
-        if (email.isNullOrEmpty()) return true // пустой email считаем валидным
+        if (email.isNullOrEmpty()) return true
         val regex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
         return regex.matches(email)
     }
@@ -109,7 +114,6 @@ class ProfileViewModel(
     fun updatePhone(newPhone: String) {
         val errors = _validationErrors.value?.toMutableMap() ?: mutableMapOf()
 
-        // Форматируем номер телефона
         val formattedPhone = if (newPhone.isEmpty()) "" else formatPhone(newPhone)
 
         if (formattedPhone.isNotEmpty() && !isPhoneValid(formattedPhone)) {
@@ -176,6 +180,9 @@ class ProfileViewModel(
         _profile.value?.let { profile ->
             saveProfileToPrefs(profile)
             nyaService.updateProfile(profile)
+
+            _updateNavigationEvent.value = profile
+
             _messages.value = "Профиль успешно сохранен"
         }
     }

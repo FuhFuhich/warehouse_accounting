@@ -62,23 +62,9 @@ class ProductsViewModel(
         nyaService.getWarehousesLiveData().removeObserver(warehousesObserver)
     }
 
-    private fun isWarehouseExists(warehouseName: String?): Boolean {
-        if (warehouseName.isNullOrBlank()) return true
-
-        return _warehouses.any { warehouse ->
-            warehouse.warehousesName.equals(warehouseName.trim(), ignoreCase = true)
-        }
-    }
-
     fun addProducts(product: Product): Boolean {
         println("=== ДОБАВЛЕНИЕ ПРОДУКТА ===")
         println("Добавляем: $product")
-
-        if (!isWarehouseExists(product.warehouse)) {
-            val availableWarehouses = _warehouses.joinToString(", ") { it.warehousesName }
-            _notificationEvent.value = "Ошибка" to "Склад '${product.warehouse}' не существует.\nДоступные склады: $availableWarehouses"
-            return false
-        }
 
         _allProducts.add(product)
         filterProducts(searchQuery.value ?: "")
@@ -91,12 +77,6 @@ class ProductsViewModel(
     fun updateProducts(updatedProduct: Product): Boolean {
         println("=== ОБНОВЛЕНИЕ ПРОДУКТА ===")
         println("Обновляем: $updatedProduct")
-
-        if (!isWarehouseExists(updatedProduct.warehouse)) {
-            val availableWarehouses = _warehouses.joinToString(", ") { it.warehousesName }
-            _notificationEvent.value = "Ошибка" to "Склад '${updatedProduct.warehouse}' не существует.\nДоступные склады: $availableWarehouses"
-            return false
-        }
 
         if (updatedProduct.id != 0) {
             _allProducts.replaceAll { if (it.id == updatedProduct.id) updatedProduct else it }
